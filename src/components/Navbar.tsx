@@ -118,7 +118,7 @@ export default function Navbar() {
             <LocalizedLink href="/" className="flex items-center group">
               <div className="flex flex-col">
                 <span className="text-2xl lg:text-3xl font-black tracking-tight leading-none">
-                  <span className="gradient-text-authority">Mr.</span>
+                  <span className="gradient-text-authority">Mr. </span>
                   <span className="gradient-text-warm">McDonald</span>
                 </span>
                 <div className="hidden sm:block mt-1">

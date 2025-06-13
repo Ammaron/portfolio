@@ -33,7 +33,7 @@ export default function Footer() {
             <div className="mb-6">
               <Link href="/" className="inline-block group">
                 <span className="text-4xl font-black tracking-tight">
-                  <span className="gradient-text-authority">Mr</span>
+                  <span className="gradient-text-authority">Mr. </span>
                   <span className="gradient-text-warm">McDonald</span>
                 </span>
               </Link>

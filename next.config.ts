@@ -1,11 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  i18n: {
-    locales: ['en', 'es'],
-    defaultLocale: 'en',
-    localeDetection: true,
-  },
+  // Remove the i18n config - it's for pages directory only
   images: {
     remotePatterns: [
       {
