@@ -7,7 +7,7 @@ interface LocalizedLinkProps {
   children: ReactNode;
   className?: string;
   onClick?: () => void;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export default function LocalizedLink({ href, children, ...props }: LocalizedLinkProps) {

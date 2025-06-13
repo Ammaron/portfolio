@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import LocalizedLink from './LocalizedLink';
 import { usePathname, useRouter } from 'next/navigation';
 import { useI18n } from '@/i18n/i18n-context';
@@ -113,7 +114,7 @@ export default function Navbar() {
       <div className="container-authority">
         <div className="flex justify-between items-center py-4 lg:py-4">
           {/* Logo Section - Better Spacing */}
-          <img src="/logo.png" alt="Logo" className="w-10 h-10 lg:w-12 lg:h-12 mr-4" />
+          <Image src="/logo.png" alt="Logo" width={48} height={48} className="w-10 h-10 lg:w-12 lg:h-12 mr-4" />
           <div className="flex items-center">
             <LocalizedLink href="/" className="flex items-center group">
               <div className="flex flex-col">

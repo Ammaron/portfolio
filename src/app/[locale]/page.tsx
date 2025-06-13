@@ -109,6 +109,45 @@ export default function HomePage() {
   const certificationsData = tRaw('home', 'about.certifications');
   const skillsData = tRaw('home', 'about.skills');
 
+  // Type guards to ensure data has expected structure
+  const skills = Array.isArray(skillsData) ? skillsData : [];
+  
+  // Helper function to safely access nested properties
+  const getNestedProperty = (obj: unknown, path: string): string => {
+    if (!obj || typeof obj !== 'object') return '';
+    
+    const keys = path.split('.');
+    let current: unknown = obj;
+    
+    for (const key of keys) {
+      if (current && typeof current === 'object' && key in current) {
+        current = (current as Record<string, unknown>)[key];
+      } else {
+        return '';
+      }
+    }
+    
+    return typeof current === 'string' ? current : '';
+  };
+  
+  // Helper function to safely access arrays
+  const getNestedArray = (obj: unknown, path: string): string[] => {
+    if (!obj || typeof obj !== 'object') return [];
+    
+    const keys = path.split('.');
+    let current: unknown = obj;
+    
+    for (const key of keys) {
+      if (current && typeof current === 'object' && key in current) {
+        current = (current as Record<string, unknown>)[key];
+      } else {
+        return [];
+      }
+    }
+    
+    return Array.isArray(current) ? current : [];
+  };
+  
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -324,8 +363,8 @@ export default function HomePage() {
               
               {/* Skills */}
               <div className="flex flex-wrap gap-3">
-                {skillsData?.map((skill: string) => (
-                  <span key={skill} className="cursor-none px-4 py-2 bg-gradient-to-r from-primary/10 to-secondary/10 text-gray-400 rounded-full text-sm font-medium">
+                {skills.map((skill: string) => (
+                  <span key={skill} className="cursor-none px-4 py-2 bg-gradient-to-r from-primary/10 to-secondary/10 text-gray-400 rounded-full text-sm font-medium">  
                     {skill}
                   </span>
                 ))}
@@ -360,28 +399,28 @@ export default function HomePage() {
                   {activeTab === 'experience' && (
                     <div className="space-y-6 animate-fade-in-up">
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{experienceData?.education?.title}</h3>
-                        <p className="text-sm text-primary font-medium">{experienceData?.education?.position} | {experienceData?.education?.period}</p>
+                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(experienceData, 'education.title')}</h3>
+                        <p className="text-sm text-primary font-medium">{getNestedProperty(experienceData, 'education.position')} | {getNestedProperty(experienceData, 'education.period')}</p>
                         <ul className="mt-3 list-disc list-inside text-sm text-gray-600 space-y-1">
-                          {experienceData?.education?.achievements?.map((achievement: string, index: number) => (
+                          {getNestedArray(experienceData, 'education.achievements').map((achievement: string, index: number) => (
                             <li key={index}>{achievement}</li>
                           ))}
                         </ul>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{experienceData?.business?.title}</h3>
-                        <p className="text-sm text-primary font-medium">{experienceData?.business?.position} | {experienceData?.business?.period}</p>
+                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(experienceData, 'business.title')}</h3>
+                        <p className="text-sm text-primary font-medium">{getNestedProperty(experienceData, 'business.position')} | {getNestedProperty(experienceData, 'business.period')}</p>
                         <ul className="mt-3 list-disc list-inside text-sm text-gray-600 space-y-1">
-                          {experienceData?.business?.achievements?.map((achievement: string, index: number) => (
+                          {getNestedArray(experienceData, 'business.achievements').map((achievement: string, index: number) => (
                             <li key={index}>{achievement}</li>
                           ))}
                         </ul>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{experienceData?.growth?.title}</h3>
-                        <p className="text-sm text-primary font-medium">{experienceData?.growth?.position} | {experienceData?.growth?.period}</p>
+                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(experienceData, 'growth.title')}</h3>
+                        <p className="text-sm text-primary font-medium">{getNestedProperty(experienceData, 'growth.position')} | {getNestedProperty(experienceData, 'growth.period')}</p>
                         <ul className="mt-3 list-disc list-inside text-sm text-gray-600 space-y-1">
-                          {experienceData?.growth?.achievements?.map((achievement: string, index: number) => (
+                          {getNestedArray(experienceData, 'growth.achievements').map((achievement: string, index: number) => (
                             <li key={index}>{achievement}</li>
                           ))}
                         </ul>
@@ -392,19 +431,19 @@ export default function HomePage() {
                   {activeTab === 'education' && (
                     <div className="space-y-6 animate-fade-in-up">
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{educationData?.mba?.title}</h3>
-                        <p className="text-sm text-primary font-medium">{educationData?.mba?.institution} | {educationData?.mba?.period}</p>
-                        <p className="text-sm text-gray-600 mt-2">{educationData?.mba?.description}</p>
+                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(educationData, 'mba.title')}</h3>
+                        <p className="text-sm text-primary font-medium">{getNestedProperty(educationData, 'mba.institution')} | {getNestedProperty(educationData, 'mba.period')}</p>
+                        <p className="text-sm text-gray-600 mt-2">{getNestedProperty(educationData, 'mba.description')}</p>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{educationData?.software?.title}</h3>
-                        <p className="text-sm text-primary font-medium">{educationData?.software?.institution} | {educationData?.software?.period}</p>
-                        <p className="text-sm text-gray-600 mt-2">{educationData?.software?.description}</p>
+                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(educationData, 'software.title')}</h3>
+                        <p className="text-sm text-primary font-medium">{getNestedProperty(educationData, 'software.institution')} | {getNestedProperty(educationData, 'software.period')}</p>
+                        <p className="text-sm text-gray-600 mt-2">{getNestedProperty(educationData, 'software.description')}</p>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{educationData?.businessEd?.title}</h3>
-                        <p className="text-sm text-primary font-medium">{educationData?.businessEd?.institution}</p>
-                        <p className="text-sm text-gray-600 mt-2">{educationData?.businessEd?.description}</p>
+                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(educationData, 'businessEd.title')}</h3>
+                        <p className="text-sm text-primary font-medium">{getNestedProperty(educationData, 'businessEd.institution')}</p>
+                        <p className="text-sm text-gray-600 mt-2">{getNestedProperty(educationData, 'businessEd.description')}</p>
                       </div>
                     </div>
                   )}
@@ -412,20 +451,20 @@ export default function HomePage() {
                   {activeTab === 'certifications' && (
                     <div className="space-y-6 animate-fade-in-up">
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{certificationsData?.management?.title}</h3>
-                        <p className="text-sm text-primary font-medium">{certificationsData?.management?.issuer} | {certificationsData?.management?.period}</p>
+                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(certificationsData, 'management.title')}</h3>
+                        <p className="text-sm text-primary font-medium">{getNestedProperty(certificationsData, 'management.issuer')} | {getNestedProperty(certificationsData, 'management.period')}</p>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{certificationsData?.organizations?.title}</h3>
-                        <p className="text-sm text-primary font-medium">{certificationsData?.organizations?.issuer} | {certificationsData?.organizations?.period}</p>
+                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(certificationsData, 'organizations.title')}</h3>
+                        <p className="text-sm text-primary font-medium">{getNestedProperty(certificationsData, 'organizations.issuer')} | {getNestedProperty(certificationsData, 'organizations.period')}</p>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{certificationsData?.teaching?.title}</h3>
-                        <p className="text-sm text-primary font-medium">{certificationsData?.teaching?.issuer}</p>
+                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(certificationsData, 'teaching.title')}</h3>
+                        <p className="text-sm text-primary font-medium">{getNestedProperty(certificationsData, 'teaching.issuer')}</p>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{certificationsData?.microsoft?.title}</h3>
-                        <p className="text-sm text-primary font-medium">{certificationsData?.microsoft?.issuer} | {certificationsData?.microsoft?.period}</p>
+                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(certificationsData, 'microsoft.title')}</h3>
+                        <p className="text-sm text-primary font-medium">{getNestedProperty(certificationsData, 'microsoft.issuer')} | {getNestedProperty(certificationsData, 'microsoft.period')}</p>
                       </div>
                     </div>
                   )}

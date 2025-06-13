@@ -1,21 +1,31 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, Suspense } from 'react';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
-import { translations } from './translations';
+import { translations, TranslationStructure } from './translations';
 
 type Locale = 'en' | 'es';
 
 interface I18nContextType {
   locale: Locale;
-  t: (section: string, key: string) => string;
-  tRaw: (section: string, key: string) => any;
+  t: (namespace: string, key: string) => string;
+  tRaw: (namespace: string, key: string) => unknown;
   changeLocale: (newLocale: Locale) => void;
 }
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
 
-export function I18nProvider({ children }: { children: ReactNode }) {
+// Helper function to safely access nested object properties
+function getNestedValue(obj: Record<string, unknown>, path: string[]): unknown {
+  return path.reduce((current: unknown, key: string) => {
+    if (current && typeof current === 'object' && key in current) {
+      return (current as Record<string, unknown>)[key];
+    }
+    return undefined;
+  }, obj);
+}
+
+function I18nProviderInner({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState<Locale>('en');
   const [isHydrated, setIsHydrated] = useState(false);
   const searchParams = useSearchParams();
@@ -48,16 +58,20 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     }
     
     // Check localStorage
-    const storedLocale = localStorage.getItem('locale');
-    if (storedLocale === 'en' || storedLocale === 'es') {
-      setLocale(storedLocale);
-      return;
+    if (typeof window !== 'undefined') {
+      const storedLocale = localStorage.getItem('locale');
+      if (storedLocale === 'en' || storedLocale === 'es') {
+        setLocale(storedLocale);
+        return;
+      }
     }
     
     // Check browser language
-    const browserLang = navigator.language.split('-')[0];
-    if (browserLang === 'es') {
-      setLocale('es');
+    if (typeof window !== 'undefined') {
+      const browserLang = navigator.language.split('-')[0];
+      if (browserLang === 'es') {
+        setLocale('es');
+      }
     }
   }, [searchParams, pathname]);
 
@@ -82,60 +96,55 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Use the effective locale consistently throughout
-  const effectiveLocale = isHydrated ? locale : 'en';
-
-  const getNestedValue = (section: string, key: string): any => {
-    try {
-      const sectionData = translations[effectiveLocale][section as keyof typeof translations[typeof effectiveLocale]];
-      if (!sectionData) {
-        console.warn(`Translation section missing: ${effectiveLocale}.${section}`);
-        return null;
-      }
-
-      const keys = key.split('.');
-      let value: any = sectionData;
-      
-      for (const k of keys) {
-        if (value && typeof value === 'object' && k in value) {
-          value = value[k];
-        } else {
-          console.warn(`Translation key missing: ${effectiveLocale}.${section}.${key}`);
-          return null;
-        }
-      }
-
-      return value;
-    } catch (error) {
-      console.error(`Translation error: ${effectiveLocale}.${section}.${key}`, error);
-      return null;
-    }
-  };
-
-  const t = (section: string, key: string): string => {
-    const value = getNestedValue(section, key);
+  const t = (namespace: string, key: string): string => {
+    if (!isHydrated) return '';
     
-    if (typeof value === 'string') {
-      return value;
-    } else {
-      console.warn(`Translation value is not a string: ${effectiveLocale}.${section}.${key}`);
-      return `${section}.${key}`;
-    }
+    const keys = key.split('.');
+    const localeTranslations = translations[locale] as TranslationStructure;
+    
+    // Get the namespace
+    const namespaceData = localeTranslations[namespace as keyof TranslationStructure];
+    if (!namespaceData) return key;
+    
+    // Navigate through the nested keys
+    const result = getNestedValue(namespaceData as Record<string, unknown>, keys);
+    
+    return typeof result === 'string' ? result : key;
   };
 
-  const tRaw = (section: string, key: string): any => {
-    return getNestedValue(section, key);
+  const tRaw = (namespace: string, key: string): unknown => {
+    if (!isHydrated) return null;
+    
+    const keys = key.split('.');
+    const localeTranslations = translations[locale] as TranslationStructure;
+    
+    // Get the namespace
+    const namespaceData = localeTranslations[namespace as keyof TranslationStructure];
+    if (!namespaceData) return null;
+    
+    // Navigate through the nested keys
+    return getNestedValue(namespaceData as Record<string, unknown>, keys);
+  };
+
+  const value = {
+    locale,
+    t,
+    tRaw,
+    changeLocale,
   };
 
   return (
-    <I18nContext.Provider value={{ 
-      locale: effectiveLocale, 
-      t, 
-      tRaw, 
-      changeLocale 
-    }}>
+    <I18nContext.Provider value={value}>
       {children}
     </I18nContext.Provider>
+  );
+}
+
+export function I18nProvider({ children }: { children: ReactNode }) {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <I18nProviderInner>{children}</I18nProviderInner>
+    </Suspense>
   );
 }
 

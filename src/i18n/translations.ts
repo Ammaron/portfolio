@@ -1,5 +1,310 @@
 // i18n/translations.ts
-export const translations = {
+
+// Type definitions for translations structure
+export interface TranslationStructure {
+  nav: {
+    home: string;
+    teachersPayTeachers: string;
+    englishClasses: string;
+    contact: string;
+  };
+  home: {
+    hero: {
+      title: string;
+      subtitle: string;
+      description: string;
+      contactButton: string;
+      classesButton: string;
+      scrollHint: string;
+      availableForLeadership: string;
+    };
+    businessValue: {
+      title: string;
+      subtitle: string;
+      uniqueValue: string;
+      educationExpert: {
+        title: string;
+        description: string;
+      };
+      businessLeader: {
+        title: string;
+        description: string;
+      };
+      techInnovator: {
+        title: string;
+        description: string;
+      };
+    };
+    about: {
+      title: string;
+      subtitle: string;
+      paragraph1: string;
+      paragraph2: string;
+      tabExperience: string;
+      tabEducation: string;
+      tabCertifications: string;
+      businessImpact: string;
+      enrollmentIncrease: string;
+      teachersManaged: string;
+      curriculumDeveloped: string;
+      bilingualAdvantage: string;
+      viewFullResume: string;
+      experience: {
+        education: {
+          title: string;
+          position: string;
+          period: string;
+          achievements: string[];
+        };
+        business: {
+          title: string;
+          position: string;
+          period: string;
+          achievements: string[];
+        };
+        growth: {
+          title: string;
+          position: string;
+          period: string;
+          achievements: string[];
+        };
+      };
+      education: {
+        mba: {
+          title: string;
+          institution: string;
+          period: string;
+          description: string;
+        };
+        software: {
+          title: string;
+          institution: string;
+          period: string;
+          description: string;
+        };
+        businessEd: {
+          title: string;
+          institution: string;
+          period: string;
+          description: string;
+        };
+      };
+      certifications: {
+        management: {
+          title: string;
+          issuer: string;
+          period: string;
+        };
+        organizations: {
+          title: string;
+          issuer: string;
+          period: string;
+        };
+        teaching: {
+          title: string;
+          issuer: string;
+          period: string;
+        };
+        microsoft: {
+          title: string;
+          issuer: string;
+          period: string;
+        };
+      };
+      skills: string[];
+      mbaCredential: string;
+      businessLeadership: string;
+      yearsLeading: string;
+      yearsLeadingLabel: string;
+    };
+    contact: {
+      title: string;
+      subtitle: string;
+      email: string;
+      phone: string;
+      location: string;
+      linkedin: string;
+      formName: string;
+      formEmail: string;
+      formSubject: string;
+      formMessage: string;
+      formSubmit: string;
+      namePlaceholder: string;
+      emailPlaceholder: string;
+      subjectPlaceholder: string;
+      messagePlaceholder: string;
+      quickConnect: string;
+      scheduleCall: string;
+      downloadResume: string;
+      phoneHelper: string;
+      phoneHelperMobile: string;
+      professionalConsultation: string;
+      contactMeToSchedule: string;
+      completeExperience: string;
+      downloadPdf: string;
+    };
+  };
+  tpt: {
+    hero: {
+      title: string;
+      description: string;
+      button: string;
+    };
+    products: {
+      title: string;
+      professionalGradeDesc: string;
+      allResources: string;
+      businessEducation: string;
+      technologyEducation: string;
+      languageLearning: string;
+      leadershipDevelopment: string;
+      hoverForDetails: string;
+      viewOnTPT: string;
+      grades: string;
+      interactive: string;
+      roiDriven: string;
+      businessAligned: string;
+      list: Array<{
+        title: string;
+        description: string;
+        price: string;
+        category: string;
+        grade: string;
+        hasInteractive: boolean;
+        features: string[];
+      }>;
+    };
+    interactive: {
+      title: string;
+      description: string;
+      howToTitle: string;
+      step1: string;
+      step2: string;
+      step3: string;
+      step4: string;
+      contactButton: string;
+    };
+    background: {
+      title: string;
+      description: string;
+      businessTitle: string;
+      businessBullets: string[];
+      techTitle: string;
+      techBullets: string[];
+      resultsTitle: string;
+      resultsDesc: string;
+    };
+  };
+  classes: {
+    hero: {
+      title: string;
+      description: string;
+      button: string;
+    };
+    tabs: {
+      classOfferings: string;
+      pricing: string;
+      testimonials: string;
+    };
+    classLevels: {
+      title: string;
+      description: string;
+      whyChooseTitle: string;
+      whyChooseSubtitle: string;
+      businessFirstTitle: string;
+      businessFirstDesc: string;
+      careerImpactTitle: string;
+      careerImpactDesc: string;
+      executiveInstructionTitle: string;
+      executiveInstructionDesc: string;
+      topicsInclude: string;
+      teacherInfo: string;
+      inquireButton: string;
+      businessFocus: string;
+      careerAdvancement: string;
+      professionalCommunication: string;
+      industrySpecific: string;
+      list: Array<{
+        id: string;
+        level: string;
+        description: string;
+        topics: string[];
+        outcomes: string;
+      }>;
+    };
+    pricing: {
+      title: string;
+      description: string;
+      mostPopular: string;
+      perHour: string;
+      selectPlan: string;
+      additionalInfo: string;
+      packageDiscounts: string;
+      familyDiscounts: string;
+      classesAvailable: string;
+      communication: string;
+      careerFocused: string;
+      industryMaterials: string;
+      options: Array<{
+        id: string;
+        title: string;
+        price: string;
+        unit: string;
+        features: string[];
+        popular: boolean;
+        description: string;
+      }>;
+    };
+    testimonials: {
+      title: string;
+      description: string;
+      startButton: string;
+      list: Array<{
+        id: number;
+        name: string;
+        role: string;
+        company: string;
+        content: string;
+        achievement: string;
+      }>;
+    };
+    cta: {
+      title: string;
+      description: string;
+      contactButton: string;
+      whatsappButton: string;
+    };
+  };
+  footer: {
+    description: string;
+    bilingual: string;
+    quickLinks: string;
+    newsletter: string;
+    subscribeText: string;
+    subscribeButton: string;
+    emailPlaceholder: string;
+    thankYou: string;
+    copyright: string;
+    privacyPolicy: string;
+    termsOfService: string;
+    professionalNetwork: string;
+    professionalCredentials: string;
+    mbaBusinessLeadership: string;
+    educationalLeadership: string;
+    technologyFocus: string;
+    newsletterFeatures: string;
+    leadershipInsights: string;
+    businessTips: string;
+    edTechTrends: string;
+    locationTitle: string;
+    professionalWebsite: string;
+    managementAward: string;
+    programGrowth: string;
+    bilingualExpertise: string;
+  };
+}
+
+export const translations: Record<'en' | 'es', TranslationStructure> = {
   en: {
     // Navigation
     nav: {
