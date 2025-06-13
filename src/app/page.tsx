@@ -4,164 +4,428 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useI18n } from '@/i18n/i18n-context';
+import { BuildingsIcon, ChalkboardTeacherIcon, DesktopIcon, LinkedinLogoIcon, MailboxIcon, MapPinAreaIcon, PhoneIcon } from "@phosphor-icons/react";
+import toast from 'react-hot-toast';
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState('experience');
-  const { t } = useI18n();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const { t, tRaw } = useI18n();
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission logic here
+    console.log('Form submitted:', formData);
+  };
+
+  const handleEmailClick = () => {
+    window.open('mailto:ammaron99@gmail.com', '_blank');
+  };
+
+  const handlePhoneClick = () => {
+    const phoneNumber = '435-893-6006';
+    
+    // Check if device supports tel: links (mobile)
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+      window.open(`tel:${phoneNumber}`, '_self');
+    } else {
+      // Desktop: copy to clipboard
+      navigator.clipboard.writeText(phoneNumber).then(() => {
+        toast.success('Phone number copied to clipboard!');
+      }).catch(() => {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = phoneNumber;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        toast.success('Phone number copied to clipboard!');
+      });
+    }
+  };
+
+  // Add a more robust smooth scroll implementation
+  const smoothScrollTo = (targetY: number, duration: number = 800) => {
+    const startY = window.scrollY;
+    const distance = targetY - startY;
+    const startTime = performance.now();
+
+    const easeInOutQuart = (t: number): number => {
+      return t < 0.5 ? 8 * t * t * t * t : 1 - 8 * (--t) * t * t * t;
+    };
+
+    const animateScroll = (currentTime: number) => {
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+      
+      const ease = easeInOutQuart(progress);
+      window.scrollTo(0, startY + distance * ease);
+
+      if (progress < 1) {
+        requestAnimationFrame(animateScroll);
+      }
+    };
+
+    requestAnimationFrame(animateScroll);
+  };
+
+  const handleScrollToNext = (e: React.MouseEvent) => {
+    e.preventDefault();
+    
+    const valueSection = document.getElementById('value');
+    if (valueSection) {
+      const offsetTop = valueSection.offsetTop - 80;
+      smoothScrollTo(offsetTop, 1000);
+    }
+  };
+
+  // Updated smooth scroll handler for anchor links
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    
+    const targetElement = document.getElementById(targetId.replace('#', ''));
+    if (targetElement) {
+      const offsetTop = targetElement.offsetTop - 80;
+      smoothScrollTo(offsetTop, 1000);
+    }
+  };
+
+  // Get translated data
+  const experienceData = tRaw('home', 'about.experience');
+  const educationData = tRaw('home', 'about.education');
+  const certificationsData = tRaw('home', 'about.certifications');
+  const skillsData = tRaw('home', 'about.skills');
 
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background"></div>
-        </div>
-        <div className="container mx-auto px-4 z-10">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="md:w-1/2 animate-fade-in">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-                <span className="text-primary">{t('home', 'hero.title')}</span>
+      <section className="hero-authority relative flex items-center justify-center text-white">
+        {/* Floating Elements */}
+        <div className="floating-element floating-element-1"></div>
+        <div className="floating-element floating-element-2"></div>
+        <div className="floating-element floating-element-3"></div>
+        <div className="floating-element floating-element-4"></div>
+        
+        <div className="container-authority relative z-10">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-12 min-h-screen pt-20">
+            {/* Content */}
+            <div className="lg:w-3/5 text-center lg:text-left animate-fade-in-up">
+              <div className="mb-6">
+                <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-sm font-medium mb-6 animate-fade-in-up animate-stagger-1">
+                  <svg className="w-4 h-4 mr-2 text-warm" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                  </svg>
+                  {t('home', 'hero.availableForLeadership')}
+                </div>
+              </div>
+              
+              <h1 className="text-hero-authority mb-6 animate-fade-in-up animate-stagger-2">
+                <span className="gradient-text-authority">{t('home', 'hero.title')}</span>
               </h1>
-              <h2 className="text-2xl md:text-3xl font-semibold mb-6">
+              
+              <h2 className="text-subtitle-authority mb-8 opacity-90 animate-fade-in-up animate-stagger-3">
                 {t('home', 'hero.subtitle')}
               </h2>
-              <p className="text-lg mb-8 max-w-lg">
+              
+              <p className="text-xl lg:text-2xl mb-10 max-w-3xl opacity-85 leading-relaxed animate-fade-in-up animate-stagger-4">
                 {t('home', 'hero.description')}
               </p>
-              <div className="flex flex-wrap gap-4">
-                <Link href="/#contact" className="px-6 py-3 bg-primary hover:bg-primary-dark text-white rounded-md transition-colors">
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in-up animate-stagger-5">
+                <a 
+                  href="#contact" 
+                  onClick={(e) => handleAnchorClick(e, 'contact')}
+                  className="btn-authority btn-primary-authority text-lg px-8 py-4"
+                >
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
                   {t('home', 'hero.contactButton')}
-                </Link>
-                <Link href="/english-classes" className="px-6 py-3 border border-primary text-primary hover:bg-primary hover:text-white rounded-md transition-colors">
+                </a>
+                <Link href="/english-classes" className="btn-authority btn-secondary-authority text-lg px-8 py-4 border-white text-white hover:bg-white hover:text-primary">
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
                   {t('home', 'hero.classesButton')}
                 </Link>
               </div>
             </div>
-            <div className="md:w-1/2 flex justify-center animate-fade-in" style={{ animationDelay: '0.3s' }}>
-              <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-primary">
-                <Image 
-                  src="https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
-                  alt="Kirby McDonald" 
-                  fill
-                  className="object-cover"
-                />
+            <div className="lg:w-2/5 flex justify-center animate-scale-in-bounce animate-stagger-6">
+              <div className="relative">
+                <div className="glass-authority w-80 h-80 lg:w-96 lg:h-96 rounded-3xl overflow-hidden animate-gentle-glow">
+                  <Image 
+                    src="/images/profile1.jpg" 
+                    alt="Kirby McDonald - Educational Leader with MBA"
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
+                </div>
+                
+                {/* Floating credential badges */}
+                <div className="absolute -top-4 -right-4 glass-warm rounded-2xl p-4 animate-ambient-float">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-warm-dark">{t('home', 'about.mbaCredential')}</div>
+                    <div className="text-xs text-warm-dark/80">{t('home', 'about.businessLeadership')}</div>
+                  </div>
+                </div>
+                
+                <div className="absolute -bottom-4 -left-4 glass-authority rounded-2xl p-4 animate-ambient-float" style={{ animationDelay: '2s' }}>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-primary">{t('home', 'about.yearsLeading')}</div>
+                    <div className="text-xs text-primary/80">{t('home', 'about.yearsLeadingLabel')}</div>
+                  </div>
+                </div>
               </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Scroll Indicator */}
+        <div className="scroll-indicator-authority">
+          <div 
+            className="flex flex-col items-center cursor-pointer transition-all duration-300 hover:scale-110 group"
+            onClick={handleScrollToNext}
+          >
+            <span className="text-sm mb-3 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+              {t('home', 'hero.scrollHint')}
+            </span>
+            <div className="scroll-bounce-animation">
+              <svg className="w-6 h-6 transition-transform duration-300 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
             </div>
           </div>
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('home', 'about.title')}</h2>
-            <div className="w-20 h-1 bg-primary mx-auto"></div>
+      {/* Strategic Value Section */}
+      <section id="value" className="section-padding-authority bg-gray-50">
+        <div className="container-authority">
+          <div className="text-center mb-16">
+            <h2 className="text-section-title-authority mb-6 gradient-text-authority animate-fade-in-up">
+              {t('home', 'businessValue.title')}
+            </h2>
+            <div className="w-24 h-1 bg-gradient-primary mx-auto mb-6"></div>
+            <p className="text-xl text-gray-600 max-w-4xl mx-auto animate-fade-in-up animate-stagger-2">
+              {t('home', 'businessValue.subtitle')}
+            </p>
           </div>
-          <div className="flex flex-col md:flex-row gap-12 items-center">
-            <div className="md:w-1/2">
-              <p className="text-lg mb-6">
-                {t('home', 'about.paragraph1')}
+          
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Educational Authority */}
+            <div className="authority-card text-center p-8 animate-fade-in-up animate-stagger-3">
+              <div className="w-16 h-16 bg-gradient-primary rounded-2xl mx-auto mb-6 flex items-center justify-center">
+                <ChalkboardTeacherIcon size={64} className="text-black" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4 gradient-text-authority">
+                {t('home', 'businessValue.educationExpert.title')}
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                {t('home', 'businessValue.educationExpert.description')}
               </p>
-              <p className="text-lg mb-6">
-                {t('home', 'about.paragraph2')}
+            </div>
+            
+            {/* MBA Strategy */}
+            <div className="authority-card text-center p-8 animate-fade-in-up animate-stagger-4">
+              <div className="w-16 h-16 bg-gradient-warm rounded-2xl mx-auto mb-6 flex items-center justify-center">
+                <BuildingsIcon size={64} className="text-black" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4 gradient-text-warm">
+                {t('home', 'businessValue.businessLeader.title')}
+              </h3>
+              <p className="!text-gray-600 leading-relaxed">
+                {t('home', 'businessValue.businessLeader.description')}
               </p>
-              <div className="flex flex-wrap gap-3 mt-6">
-                <span className="px-3 py-1 bg-primary/10 text-primary rounded-full">HTML</span>
-                <span className="px-3 py-1 bg-primary/10 text-primary rounded-full">CSS</span>
-                <span className="px-3 py-1 bg-primary/10 text-primary rounded-full">JavaScript</span>
-                <span className="px-3 py-1 bg-primary/10 text-primary rounded-full">Python</span>
-                <span className="px-3 py-1 bg-primary/10 text-primary rounded-full">Microsoft Office</span>
-                <span className="px-3 py-1 bg-primary/10 text-primary rounded-full">Adobe Creative Suite</span>
-                <span className="px-3 py-1 bg-primary/10 text-primary rounded-full">Curriculum Development</span>
+            </div>
+            
+            {/* Technology Vision */}
+            <div className="authority-card text-center p-8 animate-fade-in-up animate-stagger-5">
+              <div className="w-16 h-16 bg-gradient-accent rounded-2xl mx-auto mb-6 flex items-center justify-center">
+                <DesktopIcon size={64} className="text-black" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4 gradient-text-accent">
+                {t('home', 'businessValue.techInnovator.title')}
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                {t('home', 'businessValue.techInnovator.description')}
+              </p>
+            </div>
+          </div>
+          
+          <div className="mt-16 text-center">
+            <div className="glass-authority p-8 rounded-3xl max-w-4xl mx-auto animate-fade-in-up animate-stagger-6">
+              <p className="text-lg text-gray-700 leading-relaxed">
+                <strong className="gradient-text-authority">Unique Value:</strong> {t('home', 'businessValue.uniqueValue')}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About/Experience Section */}
+      <section id="about" className="section-padding-authority bg-background">
+        <div className="container-authority">
+          <div className="text-center mb-16">
+            <h2 className="text-section-title-authority mb-6 gradient-text-authority">
+              {t('home', 'about.title')}
+            </h2>
+            <div className="w-24 h-1 bg-gradient-primary mx-auto mb-6"></div>
+            <p className="text-xl text-gray-200 max-w-3xl mx-auto">
+              {t('home', 'about.subtitle')}
+            </p>
+          </div>
+          
+          <div className="flex flex-col md:flex-row gap-12 items-start">
+            {/* Content */}
+            <div className="md:w-3/5">
+              <div className="prose prose-lg max-w-none mb-8">
+                <p className="text-lg text-gray-300 leading-relaxed mb-6">
+                  {t('home', 'about.paragraph1')}
+                </p>
+                <p className="text-lg text-gray-300 leading-relaxed mb-8">
+                  {t('home', 'about.paragraph2')}
+                </p>
+              </div>
+              
+              {/* Business Impact Metrics */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div className="text-center">
+                  <div className="text-3xl font-bold gradient-text-authority mb-2">20%</div>
+                  <div className="text-sm text-gray-100">{t('home', 'about.enrollmentIncrease')}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold gradient-text-warm mb-2">5+</div>
+                  <div className="text-sm text-gray-100">{t('home', 'about.teachersManaged')}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold gradient-text-accent mb-2">100%</div>
+                  <div className="text-sm text-gray-100">{t('home', 'about.curriculumDeveloped')}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold gradient-text-authority mb-2">2</div>
+                  <div className="text-sm text-gray-100">{t('home', 'about.bilingualAdvantage')}</div>
+                </div>
+              </div>
+              
+              {/* Skills */}
+              <div className="flex flex-wrap gap-3">
+                {skillsData?.map((skill: string) => (
+                  <span key={skill} className="cursor-none px-4 py-2 bg-gradient-to-r from-primary/10 to-secondary/10 text-gray-400 rounded-full text-sm font-medium">
+                    {skill}
+                  </span>
+                ))}
               </div>
             </div>
-            <div className="md:w-1/2">
-              <div className="bg-gray-light p-6 rounded-lg shadow-lg">
-                <div className="flex border-b border-gray">
+            
+            {/* Experience Tabs */}
+            <div className="md:w-2/5">
+              <div className="authority-card p-8">
+                <div className="flex border-b border-gray-200 mb-6">
                   <button 
-                    className={`px-4 py-2 font-medium ${activeTab === 'experience' ? 'text-primary border-b-2 border-primary' : 'text-gray-dark hover:text-primary'}`}
+                    className={`cursor-pointer px-4 py-3 font-semibold text-sm transition-colors ${activeTab === 'experience' ? 'text-primary border-b-2 border-primary' : 'text-gray-600 hover:text-primary'}`}
                     onClick={() => setActiveTab('experience')}
                   >
                     {t('home', 'about.tabExperience')}
                   </button>
                   <button 
-                    className={`px-4 py-2 font-medium ${activeTab === 'education' ? 'text-primary border-b-2 border-primary' : 'text-gray-dark hover:text-primary'}`}
+                    className={`cursor-pointer px-4 py-3 font-semibold text-sm transition-colors ${activeTab === 'education' ? 'text-primary border-b-2 border-primary' : 'text-gray-600 hover:text-primary'}`}
                     onClick={() => setActiveTab('education')}
                   >
                     {t('home', 'about.tabEducation')}
                   </button>
                   <button 
-                    className={`px-4 py-2 font-medium ${activeTab === 'certifications' ? 'text-primary border-b-2 border-primary' : 'text-gray-dark hover:text-primary'}`}
+                    className={`cursor-pointer px-4 py-3 font-semibold text-sm transition-colors ${activeTab === 'certifications' ? 'text-primary border-b-2 border-primary' : 'text-gray-600 hover:text-primary'}`}
                     onClick={() => setActiveTab('certifications')}
                   >
                     {t('home', 'about.tabCertifications')}
                   </button>
                 </div>
-                <div className="py-4">
+                
+                <div className="min-h-[300px]">
                   {activeTab === 'experience' && (
-                    <div className="space-y-4 animate-fade-in">
+                    <div className="space-y-6 animate-fade-in-up">
                       <div>
-                        <h3 className="text-lg font-semibold">ELL Tutoring and Teaching</h3>
-                        <p className="text-sm text-gray-dark">Mentor Teacher and English Instructor | Sept 2023 - Present</p>
-                        <ul className="mt-2 list-disc list-inside text-sm">
-                          <li>Mentored and managed more than five teachers</li>
-                          <li>Taught English (A1 to B2) to Spanish-speaking students aged 12 to 60</li>
+                        <h3 className="text-lg font-bold text-gray-900">{experienceData?.education?.title}</h3>
+                        <p className="text-sm text-primary font-medium">{experienceData?.education?.position} | {experienceData?.education?.period}</p>
+                        <ul className="mt-3 list-disc list-inside text-sm text-gray-600 space-y-1">
+                          {experienceData?.education?.achievements?.map((achievement: string, index: number) => (
+                            <li key={index}>{achievement}</li>
+                          ))}
                         </ul>
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold">Cedar City High School</h3>
-                        <p className="text-sm text-gray-dark">Business and CTE Teacher | Oct 2022 - Aug 2023</p>
-                        <ul className="mt-2 list-disc list-inside text-sm">
-                          <li>Designed courses in Web Development, Programming, and Office Applications</li>
-                          <li>Integrated real-world business simulations</li>
+                        <h3 className="text-lg font-bold text-gray-900">{experienceData?.business?.title}</h3>
+                        <p className="text-sm text-primary font-medium">{experienceData?.business?.position} | {experienceData?.business?.period}</p>
+                        <ul className="mt-3 list-disc list-inside text-sm text-gray-600 space-y-1">
+                          {experienceData?.business?.achievements?.map((achievement: string, index: number) => (
+                            <li key={index}>{achievement}</li>
+                          ))}
                         </ul>
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold">Colorado City Unified School District</h3>
-                        <p className="text-sm text-gray-dark">Title IV Coordinator, Business Teacher | July 2021 - Oct 2022</p>
-                        <ul className="mt-2 list-disc list-inside text-sm">
-                          <li>Increased CTE program enrollment by 20 percent</li>
-                          <li>Taught History, Spanish, Business, Adobe Design, Robotics, and more</li>
+                        <h3 className="text-lg font-bold text-gray-900">{experienceData?.growth?.title}</h3>
+                        <p className="text-sm text-primary font-medium">{experienceData?.growth?.position} | {experienceData?.growth?.period}</p>
+                        <ul className="mt-3 list-disc list-inside text-sm text-gray-600 space-y-1">
+                          {experienceData?.growth?.achievements?.map((achievement: string, index: number) => (
+                            <li key={index}>{achievement}</li>
+                          ))}
                         </ul>
                       </div>
                     </div>
                   )}
                   
                   {activeTab === 'education' && (
-                    <div className="space-y-4 animate-fade-in">
+                    <div className="space-y-6 animate-fade-in-up">
                       <div>
-                        <h3 className="text-lg font-semibold">Brigham Young University</h3>
-                        <p className="text-sm text-gray-dark">Bachelor of Software Development | Expected May 2027</p>
+                        <h3 className="text-lg font-bold text-gray-900">{educationData?.mba?.title}</h3>
+                        <p className="text-sm text-primary font-medium">{educationData?.mba?.institution} | {educationData?.mba?.period}</p>
+                        <p className="text-sm text-gray-600 mt-2">{educationData?.mba?.description}</p>
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold">Western Governors University</h3>
-                        <p className="text-sm text-gray-dark">Master of Business Administration | Graduated Aug 2024</p>
+                        <h3 className="text-lg font-bold text-gray-900">{educationData?.software?.title}</h3>
+                        <p className="text-sm text-primary font-medium">{educationData?.software?.institution} | {educationData?.software?.period}</p>
+                        <p className="text-sm text-gray-600 mt-2">{educationData?.software?.description}</p>
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold">Southern Utah University</h3>
-                        <p className="text-sm text-gray-dark">Bachelor of Business Education</p>
+                        <h3 className="text-lg font-bold text-gray-900">{educationData?.businessEd?.title}</h3>
+                        <p className="text-sm text-primary font-medium">{educationData?.businessEd?.institution}</p>
+                        <p className="text-sm text-gray-600 mt-2">{educationData?.businessEd?.description}</p>
                       </div>
                     </div>
                   )}
                   
                   {activeTab === 'certifications' && (
-                    <div className="space-y-4 animate-fade-in">
+                    <div className="space-y-6 animate-fade-in-up">
                       <div>
-                        <h3 className="text-lg font-semibold">Utah State Teaching License</h3>
-                        <p className="text-sm text-gray-dark">Issued Aug 2023</p>
+                        <h3 className="text-lg font-bold text-gray-900">{certificationsData?.management?.title}</h3>
+                        <p className="text-sm text-primary font-medium">{certificationsData?.management?.issuer} | {certificationsData?.management?.period}</p>
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold">Microsoft Office Specialist</h3>
-                        <p className="text-sm text-gray-dark">Word, Excel, PowerPoint | Dec 2022</p>
+                        <h3 className="text-lg font-bold text-gray-900">{certificationsData?.organizations?.title}</h3>
+                        <p className="text-sm text-primary font-medium">{certificationsData?.organizations?.issuer} | {certificationsData?.organizations?.period}</p>
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold">Award of Excellence in Management Communication</h3>
-                        <p className="text-sm text-gray-dark">Microsoft | Oct 2023</p>
+                        <h3 className="text-lg font-bold text-gray-900">{certificationsData?.teaching?.title}</h3>
+                        <p className="text-sm text-primary font-medium">{certificationsData?.teaching?.issuer}</p>
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold">Award of Excellence in Managing Organizations</h3>
-                        <p className="text-sm text-gray-dark">WGU | Aug 2023</p>
+                        <h3 className="text-lg font-bold text-gray-900">{certificationsData?.microsoft?.title}</h3>
+                        <p className="text-sm text-primary font-medium">{certificationsData?.microsoft?.issuer} | {certificationsData?.microsoft?.period}</p>
                       </div>
                     </div>
                   )}
@@ -173,106 +437,181 @@ export default function HomePage() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-gradient-to-br from-primary/5 to-secondary/5">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t('home', 'contact.title')}</h2>
-            <div className="w-20 h-1 bg-primary mx-auto"></div>
-            <p className="mt-4 text-lg">{t('home', 'contact.subtitle')}</p>
+      <section id="contact" className="section-padding-authority bg-gradient-to-br from-gray-50 to-white">
+        <div className="container-authority">
+          <div className="text-center mb-16">
+            <h2 className="text-section-title-authority mb-6 gradient-text-authority">
+              {t('home', 'contact.title')}
+            </h2>
+            <div className="w-24 h-1 bg-gradient-primary mx-auto mb-6"></div>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              {t('home', 'contact.subtitle')}
+            </p>
           </div>
           
-          <div className="max-w-4xl mx-auto">
-            <div className="flex flex-col md:flex-row gap-8">
-              <div className="md:w-1/3">
-                <div className="bg-background p-6 rounded-lg shadow-md text-center h-full">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
-                      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">{t('home', 'contact.email')}</h3>
-                  <p className="text-primary">ammaron99@gmail.com</p>
+          <div className="max-w-6xl mx-auto">
+            {/* Contact Options */}
+            <div className="grid md:grid-cols-4 gap-6 mb-16">
+              <div
+                onClick={handleEmailClick}
+                className="authority-card text-center p-6 block cursor-pointer hover:scale-105 transition-transform"
+              >
+                <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <MailboxIcon size={40} className="text-black" />
                 </div>
+                <h3 className="text-lg font-bold mb-2">{t('home', 'contact.email')}</h3>
+                <p className="text-primary font-medium">ammaron99@gmail.com</p>
               </div>
               
-              <div className="md:w-1/3">
-                <div className="bg-background p-6 rounded-lg shadow-md text-center h-full">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path>
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">{t('home', 'contact.phone')}</h3>
-                  <p className="text-primary">435-893-6006</p>
+              <div
+                onClick={handlePhoneClick}
+                className="authority-card text-center p-6 cursor-pointer hover:scale-105 transition-transform"
+              >
+                <div className="w-12 h-12 bg-gradient-warm rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <PhoneIcon size={40} />
                 </div>
+                <h3 className="text-lg font-bold mb-2">{t('home', 'contact.phone')}</h3>
+                <p className="text-warm font-medium">435-893-6006</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {/Mobi|Android/i.test(navigator.userAgent) ? t('home', 'contact.phoneHelperMobile') : t('home', 'contact.phoneHelper')}
+                </p>
               </div>
               
-              <div className="md:w-1/3">
-                <div className="bg-background p-6 rounded-lg shadow-md text-center h-full">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"></path>
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">{t('home', 'contact.location')}</h3>
-                  <p className="text-primary">Cedar City, Utah</p>
+              <div className="authority-card text-center p-6">
+                <div className="w-12 h-12 bg-gradient-accent rounded-xl flex items-center justify-center mx-auto mb-4">
+                <MapPinAreaIcon size={40} className="text-black" />
+
                 </div>
+                <h3 className="text-lg font-bold mb-2">{t('home', 'contact.location')}</h3>
+                <p className="text-accent font-medium">Cedar City, Utah</p>
               </div>
+              
+              <Link 
+                href="https://www.linkedin.com/in/ammaron" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="authority-card text-center p-6 block hover:scale-105 transition-transform"
+              >
+                <div className="w-12 h-12 bg-gradient-authority rounded-xl flex items-center justify-center mx-auto mb-4">
+                <LinkedinLogoIcon size={40} />
+                </div>
+                <h3 className="text-lg font-bold mb-2">{t('home', 'contact.linkedin')}</h3>
+                <p className="text-secondary font-medium">Professional Network</p>
+              </Link>
             </div>
             
-            <form className="mt-12 bg-background p-8 rounded-lg shadow-lg">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            {/* Contact Form */}
+            <div className="authority-card p-8 lg:p-12">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+                      {t('home', 'contact.formName')}
+                    </label>
+                    <input 
+                      type="text" 
+                      id="name" 
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                      placeholder={t('home', 'contact.namePlaceholder')}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                      {t('home', 'contact.formEmail')}
+                    </label>
+                    <input 
+                      type="email" 
+                      id="email" 
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                      placeholder={t('home', 'contact.emailPlaceholder')}
+                      required
+                    />
+                  </div>
+                </div>
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2">{t('home', 'contact.formName')}</label>
+                  <label htmlFor="subject" className="block text-sm font-semibold text-gray-700 mb-2">
+                    {t('home', 'contact.formSubject')}
+                  </label>
                   <input 
                     type="text" 
-                    id="name" 
-                    className="w-full px-4 py-2 border border-gray rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder={t('home', 'contact.namePlaceholder')}
+                    id="subject" 
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                    placeholder={t('home', 'contact.subjectPlaceholder')}
                     required
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">{t('home', 'contact.formEmail')}</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    className="w-full px-4 py-2 border border-gray rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder={t('home', 'contact.emailPlaceholder')}
+                  <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
+                    {t('home', 'contact.formMessage')}
+                  </label>
+                  <textarea 
+                    id="message" 
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    rows={6} 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors resize-none"
+                    placeholder={t('home', 'contact.messagePlaceholder')}
                     required
-                  />
+                  ></textarea>
                 </div>
-              </div>
-              <div className="mb-6">
-                <label htmlFor="subject" className="block text-sm font-medium mb-2">{t('home', 'contact.formSubject')}</label>
-                <input 
-                  type="text" 
-                  id="subject" 
-                  className="w-full px-4 py-2 border border-gray rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder={t('home', 'contact.subjectPlaceholder')}
-                  required
-                />
-              </div>
-              <div className="mb-6">
-                <label htmlFor="message" className="block text-sm font-medium mb-2">{t('home', 'contact.formMessage')}</label>
-                <textarea 
-                  id="message" 
-                  rows={5} 
-                  className="w-full px-4 py-2 border border-gray rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder={t('home', 'contact.messagePlaceholder')}
-                  required
-                ></textarea>
-              </div>
-              <div className="text-center">
-                <button 
-                  type="submit" 
-                  className="px-8 py-3 bg-primary hover:bg-primary-dark text-white rounded-md transition-colors"
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <button 
+                    type="submit" 
+                    className="btn-authority btn-primary-authority text-lg px-8 py-4"
+                  >
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                    {t('home', 'contact.formSubmit')}
+                  </button>
+                  <Link 
+                    href="https://linkedin.com/in/ammaron" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="btn-authority btn-secondary-authority text-lg px-8 py-4"
+                  >
+                    <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                    </svg>
+                    LinkedIn
+                  </Link>
+                </div>
+              </form>
+            </div>
+            
+            {/* Quick Actions */}
+            <div className="grid md:grid-cols-2 gap-6 mt-12">
+              <div className="glass-authority p-6 rounded-2xl text-center">
+                <h3 className="text-lg font-bold mb-3">{t('home', 'contact.scheduleCall')}</h3>
+                <p className="text-gray-600 text-sm mb-4">{t('home', 'contact.professionalConsultation')}</p>
+                <a 
+                  href="#contact" 
+                  onClick={(e) => handleAnchorClick(e, 'contact')}
+                  className="btn-authority btn-warm-authority"
                 >
-                  {t('home', 'contact.formSubmit')}
-                </button>
+                  {t('home', 'contact.contactMeToSchedule')}
+                </a>
               </div>
-            </form>
+              
+              <div className="glass-authority p-6 rounded-2xl text-center">
+                <h3 className="text-lg font-bold mb-3">{t('home', 'contact.downloadResume')}</h3>
+                <p className="text-gray-600 text-sm mb-4">{t('home', 'contact.completeExperience')}</p>
+                <Link href="/resume.pdf" className="btn-authority btn-secondary-authority" target="_blank" rel="noopener noreferrer">
+                  {t('home', 'contact.downloadPdf')}
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
