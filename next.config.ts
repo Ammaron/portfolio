@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Remove the i18n config - it's for pages directory only
+  output: 'export', 
   images: {
     remotePatterns: [
       {
