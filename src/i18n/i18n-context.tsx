@@ -27,13 +27,24 @@ function getNestedValue(obj: Record<string, unknown>, path: string[]): unknown {
 
 function I18nProviderInner({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState<Locale>('en');
-  const [isHydrated, setIsHydrated] = useState(false);
+  
+  // Always call hooks - never conditionally
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
-    setIsHydrated(true);
+    // Handle cases where hooks might return null during SSG
+    if (!searchParams || !pathname) {
+      // During static generation, try to extract locale from pathname if available
+      if (pathname) {
+        const pathSegments = pathname.split('/').filter(Boolean);
+        if (pathSegments[0] === 'es' || pathSegments[0] === 'en') {
+          setLocale(pathSegments[0] as Locale);
+        }
+      }
+      return;
+    }
     
     // Check URL for locale parameter first
     const urlLang = searchParams.get('lang');
@@ -81,24 +92,25 @@ function I18nProviderInner({ children }: { children: ReactNode }) {
       localStorage.setItem('locale', newLocale);
       document.documentElement.lang = newLocale;
       
-      // Update URL with new locale
-      const currentPath = pathname;
-      const segments = currentPath.split('/').filter(Boolean);
-      
-      // Remove existing locale if present
-      if (segments[0] === 'en' || segments[0] === 'es') {
-        segments.shift();
+      // Update URL with new locale only if router and pathname are available
+      if (router && pathname) {
+        const currentPath = pathname;
+        const segments = currentPath.split('/').filter(Boolean);
+        
+        // Remove existing locale if present
+        if (segments[0] === 'en' || segments[0] === 'es') {
+          segments.shift();
+        }
+        
+        // Add new locale
+        const newPath = `/${newLocale}${segments.length > 0 ? '/' + segments.join('/') : ''}`;
+        router.push(newPath);
       }
-      
-      // Add new locale
-      const newPath = `/${newLocale}${segments.length > 0 ? '/' + segments.join('/') : ''}`;
-      router.push(newPath);
     }
   };
 
   const t = (namespace: string, key: string): string => {
-    if (!isHydrated) return '';
-    
+    // Always provide translations, even during static generation
     const keys = key.split('.');
     const localeTranslations = translations[locale] as TranslationStructure;
     
@@ -113,8 +125,7 @@ function I18nProviderInner({ children }: { children: ReactNode }) {
   };
 
   const tRaw = (namespace: string, key: string): unknown => {
-    if (!isHydrated) return null;
-    
+    // Always provide translations, even during static generation
     const keys = key.split('.');
     const localeTranslations = translations[locale] as TranslationStructure;
     
@@ -150,7 +161,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
 export function useI18n() {
   const context = useContext(I18nContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useI18n must be used within an I18nProvider');
   }
   return context;
