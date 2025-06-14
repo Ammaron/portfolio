@@ -309,6 +309,7 @@ export default function EnglishClassesPage() {
                             alt={classItem.level}
                             fill
                             className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex items-end">
                             <h3 className="text-white text-2xl font-bold p-6">{classItem.level}</h3>
@@ -518,6 +519,7 @@ export default function EnglishClassesPage() {
                           alt={testimonial.name}
                           fill
                           className="object-cover"
+                          sizes="64px"
                         />
                       </div>
                       <div>

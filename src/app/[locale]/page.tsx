@@ -204,13 +204,14 @@ export default function HomePage() {
             </div>
             <div className="lg:w-2/5 flex justify-center animate-scale-in-bounce animate-stagger-6">
               <div className="relative">
-                <div className="glass-authority w-80 h-80 lg:w-96 lg:h-96 rounded-3xl overflow-hidden animate-gentle-glow">
+                <div className="glass-authority w-80 h-80 lg:w-96 lg:h-96 rounded-3xl overflow-hidden animate-gentle-glow relative">
                   <Image 
                     src="/images/profile1.jpg" 
                     alt="Kirby McDonald - Educational Leader with MBA"
                     fill
                     className="object-cover"
                     priority
+                    sizes="(max-width: 768px) 320px, 384px"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
                 </div>

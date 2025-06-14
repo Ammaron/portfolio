@@ -137,6 +137,7 @@ export default function TeachersPayTeachersPage() {
                         alt={product.title}
                         fill
                         className="object-cover transition-transform duration-300 hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
                       <div className="absolute top-3 right-3 bg-gradient-primary text-white px-3 py-1 rounded-full text-sm font-bold">
                         {product.price}

@@ -114,8 +114,16 @@ export default function Navbar() {
       <div className="container-authority">
         <div className="flex justify-between items-center py-4 lg:py-4">
           {/* Logo Section - Better Spacing */}
-          <Image src="/logo.png" alt="Logo" width={48} height={48} className="w-10 h-10 lg:w-12 lg:h-12 mr-4" />
           <div className="flex items-center">
+            <Image 
+              src="/logo.png" 
+              alt="Mr. McDonald Logo" 
+              width={48} 
+              height={48} 
+              className="w-12 h-12 mr-4"
+              priority
+              sizes="48px"
+            />
             <LocalizedLink href="/" className="flex items-center group">
               <div className="flex flex-col">
                 <span className="text-2xl lg:text-3xl font-black tracking-tight leading-none">
