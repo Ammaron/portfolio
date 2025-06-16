@@ -65,8 +65,11 @@ export default function ClarityProvider({
     if (hasConsent === false && clarityInitialized) {
       // User declined consent or revoked it
       console.log('Microsoft Clarity consent revoked');
-      if (typeof window !== 'undefined' && (window as any).clarity) {
-        (window as any).clarity('consent', false);
+      if (typeof window !== 'undefined') {
+        const windowWithClarity = window as Window & { clarity?: (action: string, value: boolean) => void };
+        if (windowWithClarity.clarity) {
+          windowWithClarity.clarity('consent', false);
+        }
       }
     }
   }, [hasConsent, clarityInitialized]);
@@ -126,8 +129,11 @@ export const clarityAPI = {
   // Helper to revoke consent and clear cookies
   revokeConsent: () => {
     localStorage.setItem('cookie-consent', 'declined');
-    if (typeof window !== 'undefined' && (window as any).clarity) {
-      (window as any).clarity('consent', false);
+    if (typeof window !== 'undefined') {
+      const windowWithClarity = window as Window & { clarity?: (action: string, value: boolean) => void };
+      if (windowWithClarity.clarity) {
+        windowWithClarity.clarity('consent', false);
+      }
     }
   }
 };

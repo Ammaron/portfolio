@@ -37,8 +37,11 @@ export default function CookieConsent({ onConsentChange }: CookieConsentProps) {
 
   const informClarity = (consented: boolean) => {
     // Inform Microsoft Clarity about consent status
-    if (typeof window !== 'undefined' && (window as any).clarity) {
-      (window as any).clarity('consent', consented);
+    if (typeof window !== 'undefined') {
+      const windowWithClarity = window as Window & { clarity?: (action: string, value: boolean) => void };
+      if (windowWithClarity.clarity) {
+        windowWithClarity.clarity('consent', consented);
+      }
     }
   };
 

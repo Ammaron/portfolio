@@ -6,7 +6,7 @@ export default function PrivacyPolicy() {
   const { t, tRaw } = useI18n();
 
   // Helper function to safely handle arrays
-  const safeArray = (value: any): string[] => {
+  const safeArray = (value: unknown): string[] => {
     if (Array.isArray(value)) return value;
     if (typeof value === 'string') return [value];
     return [];

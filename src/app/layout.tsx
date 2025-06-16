@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 import ClarityProvider from '@/components/Clarity';
 
@@ -95,19 +96,6 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-        {/* Google Analytics */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-EVSFDMJ2WZ"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-EVSFDMJ2WZ');
-            `,
-          }}
-        />
-        
         {/* Favicon and App Icons */}
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -234,6 +222,20 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.className} antialiased`}>
+        {/* Google Analytics using Next.js Script component */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-EVSFDMJ2WZ"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-EVSFDMJ2WZ');
+          `}
+        </Script>
+        
         <ClarityProvider />
         {children}
       </body>
