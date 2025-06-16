@@ -3,11 +3,13 @@ import { ReactNode } from 'react';
 import { I18nProvider } from '@/i18n/i18n-context';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import CookieConsent from '@/components/CookieConsent';
 import { Toaster } from 'react-hot-toast';
 
 interface LocaleLayoutProps {
   children: ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
+
 }
 
 // This function validates that the locale is supported
@@ -15,9 +17,12 @@ function isValidLocale(locale: string): locale is 'en' | 'es' {
   return ['en', 'es'].includes(locale);
 }
 
-export default function LocaleLayout({ children, params }: LocaleLayoutProps) {
+export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
+  // Await the params before using its properties
+  const { locale } = await params;
+  
   // Validate the locale parameter
-  if (!isValidLocale(params.locale)) {
+  if (!isValidLocale(locale)) {
     notFound();
   }
 
@@ -30,6 +35,9 @@ export default function LocaleLayout({ children, params }: LocaleLayoutProps) {
         </main>
         <Footer />
       </div>
+      
+      {/* Cookie Consent Banner */}
+      <CookieConsent />
       
       {/* Toast Notifications */}
       <Toaster

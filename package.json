@@ -10,6 +10,7 @@
     "export": "next build"
   },
   "dependencies": {
+    "@microsoft/clarity": "^1.0.0",
     "@phosphor-icons/react": "^2.1.10",
     "next": "15.3.2",
     "react": "^19.0.0",

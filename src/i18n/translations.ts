@@ -288,10 +288,12 @@ export interface TranslationStructure {
     privacyPolicy: string;
     termsOfService: string;
     professionalNetwork: string;
+    // Professional Credentials section
     professionalCredentials: string;
     mbaBusinessLeadership: string;
     educationalLeadership: string;
     technologyFocus: string;
+    // Newsletter features
     newsletterFeatures: string;
     leadershipInsights: string;
     businessTips: string;
@@ -301,6 +303,72 @@ export interface TranslationStructure {
     managementAward: string;
     programGrowth: string;
     bilingualExpertise: string;
+  };
+  cookieConsent: {
+    title: string;
+    description: string;
+    accept: string;
+    decline: string;
+    privacyPolicy: string;
+    feature1: string;
+    feature2: string;
+    feature3: string;
+    feature4: string;
+  };
+  privacyPolicy: {
+    title: string;
+    lastUpdated: string;
+    introduction: {
+      title: string;
+      content: string;
+    };
+    informationWeCollect: {
+      title: string;
+      websiteAnalytics: {
+        title: string;
+        description: string;
+        items: string[];
+      };
+      contactInformation: {
+        title: string;
+        description: string;
+        items: string[];
+      };
+    };
+    howWeUse: {
+      title: string;
+      items: string[];
+    };
+    whatWeDont: {
+      title: string;
+      items: string[];
+    };
+    yourRights: {
+      title: string;
+      description: string;
+      items: string[];
+    };
+    dataSecurity: {
+      title: string;
+      content: string;
+    };
+    thirdPartyServices: {
+      title: string;
+      description: string;
+      items: string[];
+      footer: string;
+    };
+    contactUs: {
+      title: string;
+      description: string;
+      email: string;
+      phone: string;
+      location: string;
+    };
+    changes: {
+      title: string;
+      content: string;
+    };
   };
 }
 
@@ -808,6 +876,103 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
       managementAward: 'Award-Winning Business Communication',
       programGrowth: '20% Program Growth Achievement',
       bilingualExpertise: 'Bilingual Professional Expertise'
+    },
+    // Cookie Consent
+    cookieConsent: {
+      title: 'Cookie Policy',
+      description: 'This website uses Microsoft Clarity to understand how visitors use our site and make improvements. We do not currently use advertising or marketing cookies, but may add analytics for marketing insights in the future.',
+      accept: 'Got It',
+      decline: 'No Thanks',
+      privacyPolicy: 'Privacy Policy',
+      feature1: 'Essential cookies for site functionality',
+      feature2: 'Website analytics to improve your experience',
+      feature3: 'Optional: Future marketing insights (anonymized)',
+      feature4: 'GDPR compliant'
+    },
+    // Privacy Policy
+    privacyPolicy: {
+      title: 'Privacy Policy',
+      lastUpdated: 'Last Updated: June 16, 2025',
+      introduction: {
+        title: 'Introduction',
+        content: 'This privacy policy explains how we collect, use, and protect your information when you visit our website or use our services.'
+      },
+      informationWeCollect: {
+        title: 'Information We Collect',
+        websiteAnalytics: {
+          title: 'Website Analytics',
+          description: 'We use Microsoft Clarity to collect data on how visitors use our site. This helps us improve our website and services.',
+          items: [
+            'Pages visited',
+            'Time spent on site',
+            'Links clicked',
+            'Referring website'
+          ]
+        },
+        contactInformation: {
+          title: 'Contact Information',
+          description: 'If you contact us, we collect your name, email address, and any other information you provide.',
+          items: [
+            'Name',
+            'Email address',
+            'Phone number',
+            'Message content'
+          ]
+        }
+      },
+      howWeUse: {
+        title: 'How We Use Your Information',
+        items: [
+          'To improve our website and services',
+          'To respond to your comments and questions',
+          'To send you updates and promotional materials',
+          'To analyze website usage and trends'
+        ]
+      },
+      whatWeDont: {
+        title: 'What We Don\'t Do with Your Information',
+        items: [
+          'We don\'t sell or rent your personal information to third parties',
+          'We don\'t use your information for automated decision-making',
+          'We don\'t collect sensitive information like race, religion, or health data'
+        ]
+      },
+      yourRights: {
+        title: 'Your Rights',
+        description: 'You have the right to access, correct, or delete your personal information. You can also object to or restrict certain processing of your data.',
+        items: [
+          'Right to access your data',
+          'Right to correct your data',
+          'Right to delete your data',
+          'Right to object to processing'
+        ]
+      },
+      dataSecurity: {
+        title: 'Data Security',
+        content: 'We take data security seriously and use appropriate measures to protect your information from unauthorized access, disclosure, or misuse.'
+      },
+      thirdPartyServices: {
+        title: 'Third Party Services',
+        description: 'We may use third party services to help us operate our business and the website or provide services to you.',
+        items: [
+          'Microsoft Clarity (analytics)',
+          'Email service providers',
+          'Payment processors',
+          'Customer relationship management (CRM) software'
+        ],
+        footer: 'We ensure that these third parties comply with data protection laws and have appropriate security measures in place.'
+      },
+      contactUs: {
+        title: 'Contact Us',
+        description: 'If you have any questions or concerns about this privacy policy or our data practices, please contact us.',
+        email: 'Email: ammaron99@gmail.com',
+        phone: 'Phone: (435) 893-6006',
+        location: 'Location: Cedar City, Utah'
+      },
+      changes: {
+        title: 'Changes to This Policy',
+        content: 'We may update this privacy policy from time to time. We will notify you of any changes by posting the new policy on our website with a new effective date.'
+      }
     }
   },
   es: {
@@ -1313,6 +1478,103 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
       managementAward: 'Comunicación Empresarial Galardonada',
       programGrowth: '20% Logro de Crecimiento de Programas',
       bilingualExpertise: 'Experiencia Profesional Bilingüe'
+    },
+    // Cookie Consent
+    cookieConsent: {
+      title: 'Política de Cookies',
+      description: 'Este sitio web utiliza cookies de análisis de Microsoft Clarity para entender cómo interactúas con nuestro sitio y mejorar tu experiencia. No utilizamos cookies de publicidad o seguimiento en redes sociales.',
+      accept: 'Aceptar Análisis',
+      decline: 'Rechazar',
+      privacyPolicy: 'Leer nuestra Política de Privacidad',
+      feature1: 'Cookies esenciales para la funcionalidad del sitio',
+      feature2: 'Cookies de análisis para el rendimiento del sitio web',
+      feature3: 'Sin cookies de publicidad',
+      feature4: 'Cumple con GDPR'
+    },
+    // Privacy Policy
+    privacyPolicy: {
+      title: 'Política de Privacidad',
+      lastUpdated: 'Última Actualización: 16 de junio de 2025',
+      introduction: {
+        title: 'Introducción',
+        content: 'Esta política de privacidad explica cómo recopilamos, usamos, y protegemos tu información cuando visitas nuestro sitio web o utilizas nuestros servicios.'
+      },
+      informationWeCollect: {
+        title: 'Información que Recopilamos',
+        websiteAnalytics: {
+          title: 'Análisis del Sitio Web',
+          description: 'Utilizamos Microsoft Clarity para recopilar datos sobre cómo los visitantes usan nuestro sitio. Esto nos ayuda a mejorar nuestro sitio web y servicios.',
+          items: [
+            'Páginas visitadas',
+            'Tiempo pasado en el sitio',
+            'Enlaces clicados',
+            'Sitio web de referencia'
+          ]
+        },
+        contactInformation: {
+          title: 'Información de Contacto',
+          description: 'Si nos contactas, recopilamos tu nombre, dirección de correo electrónico, y cualquier otra información que proporciones.',
+          items: [
+            'Nombre',
+            'Dirección de correo electrónico',
+            'Número de teléfono',
+            'Contenido del mensaje'
+          ]
+        }
+      },
+      howWeUse: {
+        title: 'Cómo Usamos Tu Información',
+        items: [
+          'Para mejorar nuestro sitio web y servicios',
+          'Para responder a tus comentarios y preguntas',
+          'Para enviarte actualizaciones y materiales promocionales',
+          'Para analizar el uso y las tendencias del sitio web'
+        ]
+      },
+      whatWeDont: {
+        title: 'Lo Que No Hacemos Con Tu Información',
+        items: [
+          'No vendemos ni alquilamos tu información personal a terceros',
+          'No usamos tu información para la toma de decisiones automatizada',
+          'No recopilamos información sensible como raza, religión o datos de salud'
+        ]
+      },
+      yourRights: {
+        title: 'Tus Derechos',
+        description: 'Tienes el derecho de acceder, corregir, o eliminar tu información personal. También puedes oponerte a o restringir ciertos tratamientos de tus datos.',
+        items: [
+          'Derecho a acceder a tus datos',
+          'Derecho a corregir tus datos',
+          'Derecho a eliminar tus datos',
+          'Derecho a oponerte al tratamiento'
+        ]
+      },
+      dataSecurity: {
+        title: 'Seguridad de los Datos',
+        content: 'Tomamos en serio la seguridad de los datos y usamos medidas apropiadas para proteger tu información contra el acceso no autorizado, divulgación o uso indebido.'
+      },
+      thirdPartyServices: {
+        title: 'Servicios de Terceros',
+        description: 'Podemos usar servicios de terceros para ayudarnos a operar nuestro negocio y el sitio web o proporcionar servicios a ti.',
+        items: [
+          'Microsoft Clarity (análisis)',
+          'Proveedores de servicios de correo electrónico',
+          'Procesadores de pagos',
+          'Software de gestión de relaciones con clientes (CRM)'
+        ],
+        footer: 'Nos aseguramos de que estos terceros cumplan con las leyes de protección de datos y tengan medidas de seguridad apropiadas.'
+      },
+      contactUs: {
+        title: 'Contáctanos',
+        description: 'Si tienes alguna pregunta o inquietud sobre esta política de privacidad o nuestras prácticas de datos, por favor contáctanos.',
+        email: 'Correo electrónico: ammaron99@gmail.com',
+        phone: 'Teléfono: (435) 893-6006',
+        location: 'Ubicación: Cedar City, Utah'
+      },
+      changes: {
+        title: 'Cambios a Esta Política',
+        content: 'Podemos actualizar esta política de privacidad de vez en cuando. Te notificaremos sobre cualquier cambio publicando la nueva política en nuestro sitio web con una nueva fecha de entrada en vigor.'
+      }
     }
   }
 };

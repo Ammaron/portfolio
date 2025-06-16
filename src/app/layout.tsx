@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import ClarityProvider from '@/components/Clarity';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -233,6 +234,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.className} antialiased`}>
+        <ClarityProvider />
         {children}
       </body>
     </html>
