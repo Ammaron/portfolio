@@ -70,7 +70,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
         <div className="flex flex-col gap-3">
           {/* WhatsApp Professional Contact */}
           <a
-            href="https://wa.me/4358936006"
+            href="https://wa.me/904975329"
             target="_blank"
             rel="noopener noreferrer"
             className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-300 hover:shadow-xl group"
