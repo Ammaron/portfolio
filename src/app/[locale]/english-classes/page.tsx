@@ -74,7 +74,7 @@ export default function EnglishClassesPage() {
     e.preventDefault();
     
     // If we're on the home page, scroll to contact section
-    if (pathname === '/') {
+    if (pathname === '/' || pathname === '/en' || pathname === '/es') {
       const contactElement = document.getElementById('contact');
       if (contactElement) {
         const offsetTop = contactElement.offsetTop - 80;
@@ -179,7 +179,7 @@ function getClassImage(classId: string): string {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animate-stagger-4">
-              <a 
+              <Link 
                 href="/#contact" 
                 onClick={handleContactClick}
                 className="btn-authority btn-primary-authority text-lg px-8 py-4"
@@ -188,7 +188,7 @@ function getClassImage(classId: string): string {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
                 {t('classes', 'hero.button')}
-              </a>
+              </Link>
               <a 
                 href="https://calendly.com/your-link" 
                 target="_blank"
@@ -354,13 +354,13 @@ function getClassImage(classId: string): string {
                           </div>
                         </div>
                         <div className="text-center">
-                          <a 
+                          <Link 
                             href="/#contact" 
                             onClick={handleContactClick}
                             className="inline-block px-6 py-3 bg-white text-primary rounded-lg hover:bg-gray-100 transition-colors font-semibold"
                           >
                             {t('classes', 'classLevels.connectButton')}
-                          </a>
+                          </Link>
                         </div>
                       </div>
                     </div>
@@ -386,13 +386,13 @@ function getClassImage(classId: string): string {
                     </span>
                   </div>
                   <div className="mt-8">
-                    <a 
+                    <Link 
                       href="/#contact" 
                       onClick={handleContactClick}
                       className="btn-authority btn-primary-authority"
                     >
                       {t('classes', 'classLevels.inquireButton')}
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -561,13 +561,13 @@ function getClassImage(classId: string): string {
               </div>
               
               <div className="text-center">
-                <a 
+                <Link 
                   href="/#contact" 
                   onClick={handleContactClick}
                   className="btn-authority btn-primary-authority text-lg px-8 py-4"
                 >
                   {t('classes', 'testimonials.startButton')}
-                </a>
+                </Link>
               </div>
             </div>
           )}
@@ -585,7 +585,7 @@ function getClassImage(classId: string): string {
               {t('classes', 'cta.description')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a 
+              <Link 
                 href="/#contact" 
                 onClick={handleContactClick}
                 className="btn-authority btn-primary-authority text-lg px-8 py-4"
@@ -594,7 +594,7 @@ function getClassImage(classId: string): string {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
                 {t('classes', 'cta.contactButton')}
-              </a>
+              </Link>
               <a 
                 href="https://wa.me/+51904975329" 
                 target="_blank" 
