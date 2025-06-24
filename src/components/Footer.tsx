@@ -20,10 +20,10 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-white relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-10 left-10 w-32 h-32 bg-gradient-primary rounded-full blur-3xl"></div>
-        <div className="absolute bottom-10 right-10 w-40 h-40 bg-gradient-warm rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-gradient-accent rounded-full blur-3xl"></div>
+      <div className="absolute inset-0 opacity-10 overflow-hidden">
+        <div className="absolute top-10 left-10 w-32 h-32 bg-gradient-primary rounded-full blur-3xl max-w-[calc(100vw-80px)]"></div>
+        <div className="absolute bottom-10 right-10 w-40 h-40 bg-gradient-warm rounded-full blur-3xl max-w-[calc(100vw-80px)]"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-gradient-accent rounded-full blur-3xl max-w-[calc(100vw-40px)]"></div>
       </div>
       
       <div className="container-authority relative z-10 py-16">
@@ -32,7 +32,7 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <div className="mb-6">
               <Link href="/" className="inline-block group">
-                <span className="text-4xl font-black tracking-tight">
+                <span className="text-4xl font-black tracking-tight break-words">
                   <span className="gradient-text-authority">Mr. </span>
                   <span className="gradient-text-warm">McDonald</span>
                 </span>
@@ -41,8 +41,8 @@ export default function Footer() {
                 Educational Leader | MBA | Technology Innovator
               </div>
             </div>
-            
-            <p className="text-gray-300 text-lg leading-relaxed mb-6 max-w-lg">
+
+            <p className="text-gray-300 leading-relaxed mb-8 max-w-lg">
               {t('footer', 'description')}
             </p>
             
@@ -51,7 +51,7 @@ export default function Footer() {
             </p>
             
             {/* Professional Social Links */}
-            <div className="flex space-x-4 mb-6">
+            <div className="flex flex-wrap gap-4 mb-8">
               <a 
                 href="https://linkedin.com/in/ammaron" 
                 target="_blank" 

@@ -3,156 +3,154 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import { useI18n } from '@/i18n/i18n-context';
+import { AirplaneTakeoffIcon, BriefcaseIcon, UserSoundIcon } from "@phosphor-icons/react";
+
+interface ClassLevel {
+  id: string;
+  level: string;
+  description: string;
+  topics: string[];
+  outcomes: string;
+  programDetails?: string;
+  image: string; // Remove the optional ? to make it required
+}
+
+interface PricingOption {
+  id: string;
+  title: string;
+  price: string;
+  unit: string;
+  features: string[];
+  popular: boolean;
+  description: string;
+}
+
+interface Testimonial {
+  id: number;
+  name: string;
+  role: string;
+  company: string;
+  content: string;
+  achievement: string;
+  image?: string;
+}
 
 export default function EnglishClassesPage() {
   const [activeTab, setActiveTab] = useState('classes');
-  const { t } = useI18n();
+  const [flippedCards, setFlippedCards] = useState<Set<string>>(new Set());
+  const { t, tRaw } = useI18n();
+  const router = useRouter();
+  const pathname = usePathname();
   
-  // Professional success stories
-  const testimonials = [
-    {
-      id: 1,
-      name: 'Maria Rodriguez',
-      role: 'Marketing Manager - B2 Level Graduate',
-      company: 'Tech Startup',
-      content: 'Kirby\'s business-focused approach helped me transition from basic English to leading international marketing campaigns. The MBA perspective in teaching made all the difference.',
-      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-      achievement: 'Promoted to Marketing Manager'
-    },
-    {
-      id: 2,
-      name: 'Carlos Mendez',
-      role: 'Software Engineer - A2 to B2 Progress',
-      company: 'Fortune 500',
-      content: 'The combination of English instruction with technology focus was perfect for my career in software development. Now I lead international development teams.',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-      achievement: 'International Team Lead'
-    },
-    {
-      id: 3,
-      name: 'Ana Gutierrez',
-      role: 'Educational Administrator - C1 Level',
-      company: 'School District',
-      content: 'Learning from an educator with MBA experience was invaluable. Kirby understands both language learning and professional advancement needs.',
-      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-      achievement: 'District Leadership Role'
+  // Add smooth scroll functionality (same as Navbar)
+  const smoothScrollTo = (targetY: number, duration: number = 1000) => {
+    const startY = window.scrollY;
+    const distance = targetY - startY;
+    const startTime = performance.now();
+
+    const easeInOutQuart = (t: number): number => {
+      return t < 0.5 ? 8 * t * t * t * t : 1 - 8 * (--t) * t * t * t;
+    };
+
+    const animateScroll = (currentTime: number) => {
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+      
+      const ease = easeInOutQuart(progress);
+      window.scrollTo(0, startY + distance * ease);
+
+      if (progress < 1) {
+        requestAnimationFrame(animateScroll);
+      }
+    };
+
+    requestAnimationFrame(animateScroll);
+  };
+
+  // Handle navigation to contact section (same as Navbar)
+  const handleContactClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    
+    // If we're on the home page, scroll to contact section
+    if (pathname === '/') {
+      const contactElement = document.getElementById('contact');
+      if (contactElement) {
+        const offsetTop = contactElement.offsetTop - 80;
+        smoothScrollTo(offsetTop, 1000);
+      }
+    } else {
+      // If we're on another page, navigate to home page and then scroll
+      router.push('/');
+      
+      // Wait for the page to load, then scroll to contact
+      setTimeout(() => {
+        const contactElement = document.getElementById('contact');
+        if (contactElement) {
+          const offsetTop = contactElement.offsetTop - 80;
+          smoothScrollTo(offsetTop, 1200);
+        } else {
+          // If element not found immediately, try again after a short delay
+          setTimeout(() => {
+            const contactElement = document.getElementById('contact');
+            if (contactElement) {
+              const offsetTop = contactElement.offsetTop - 80;
+              smoothScrollTo(offsetTop, 1200);
+            }
+          }, 500);
+        }
+      }, 100);
     }
-  ];
+  };
   
-  // Professional English program offerings
-  const classes = [
-    {
-      id: 'business-foundation',
-      level: 'Business Foundation (A1-A2)',
-      description: 'Essential English for workplace communication, professional emails, and basic business interactions.',
-      topics: [
-        'Professional introductions and networking',
-        'Business email writing and communication',
-        'Basic presentation skills and meetings',
-        'Workplace vocabulary and etiquette',
-        'Career goal setting and planning'
-      ],
-      image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-      outcomes: 'Confidently handle basic workplace interactions and professional communication'
-    },
-    {
-      id: 'professional-advancement',
-      level: 'Professional Advancement (B1)',
-      description: 'Advanced business communication for career growth, leadership roles, and international business.',
-      topics: [
-        'Advanced presentation and public speaking',
-        'Negotiation and persuasion techniques',
-        'Leadership communication styles',
-        'International business etiquette',
-        'Strategic thinking in English'
-      ],
-      image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-      outcomes: 'Lead meetings, give presentations, and advance to management positions'
-    },
-    {
-      id: 'executive-communication',
-      level: 'Executive Communication (B2)',
-      description: 'C-suite level communication skills for senior professionals and business leaders.',
-      topics: [
-        'Executive presentation and boardroom skills',
-        'Cross-cultural business communication',
-        'Strategic communication and vision setting',
-        'Media interviews and public speaking',
-        'International partnership development'
-      ],
-      image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-      outcomes: 'Communicate effectively at the highest levels of business leadership'
-    },
-    {
-      id: 'industry-specific',
-      level: 'Industry-Specific Programs',
-      description: 'Specialized English for technology, education, healthcare, and other professional sectors.',
-      topics: [
-        'Technology and software development terminology',
-        'Educational leadership and administration',
-        'Healthcare and medical communication',
-        'Financial services and consulting',
-        'Manufacturing and engineering'
-      ],
-      image: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-      outcomes: 'Master industry-specific vocabulary and communication protocols'
-    }
-  ];
+  // Handle card flip toggle for mobile
+  const handleCardClick = (cardId: string) => {
+    setFlippedCards(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(cardId)) {
+        newSet.delete(cardId);
+      } else {
+        newSet.add(cardId);
+      }
+      return newSet;
+    });
+  };
   
-  // Professional investment options
-  const pricingOptions = [
-    {
-      id: 'executive-coaching',
-      title: 'Executive Coaching',
-      price: '$85',
-      unit: 'per session',
-      features: [
-        'One-on-one executive-level instruction',
-        'Customized curriculum for your industry',
-        'Flexible scheduling for busy professionals',
-        'Career advancement strategy included',
-        'Business communication assessments',
-        'Presentation and public speaking coaching',
-        'International business etiquette'
-      ],
-      popular: true,
-      description: 'Premium coaching for C-suite and senior professionals'
-    },
-    {
-      id: 'professional-group',
-      title: 'Professional Group',
-      price: '$45',
-      unit: 'per session',
-      features: [
-        'Small groups of 2-4 professionals',
-        'Industry-focused curriculum',
-        'Peer learning and networking',
-        'Regular progress assessments',
-        'Business case study discussions',
-        'Materials and resources included'
-      ],
-      popular: false,
-      description: 'Collaborative learning with professional peers'
-    },
-    {
-      id: 'corporate-training',
-      title: 'Corporate Training',
-      price: 'Custom',
-      unit: 'pricing',
-      features: [
-        'On-site or virtual team training',
-        'Customized for company needs',
-        'Scalable for any team size',
-        'ROI measurement and reporting',
-        'Employee progress tracking',
-        'Integration with HR systems',
-        'Ongoing support and resources'
-      ],
-      popular: false,
-      description: 'Comprehensive training solutions for organizations'
-    }
-  ];
+// Helper function to get appropriate image for each class
+function getClassImage(classId: string): string {
+  const imageMap: Record<string, string> = {
+    // Actual class IDs from translations
+    'essential-foundations': 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'practical-communication': 'https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'independent-mastery': 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'advanced-fluency': 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'expert-proficiency': 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'native-mastery': 'https://images.unsplash.com/photo-1444653614773-995cb1ef9efa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+  };
+  
+  // Default fallback image
+  const defaultImage = 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+  
+  return imageMap[classId] || defaultImage;
+}
+  
+  // Professional English program offerings - use tRaw for array data
+  const classesData = tRaw('classes', 'classLevels.list') as ClassLevel[] || [];
+  const classes = classesData.map((classItem: ClassLevel) => {
+    const imageUrl = getClassImage(classItem.id);
+    
+    return {
+      ...classItem,
+      image: imageUrl // This will always be a string now
+    };
+  });
+  
+  // Professional investment options - use tRaw for array data
+  const pricingOptions = tRaw('classes', 'pricing.options') as PricingOption[] || [];
+  
+  // Professional success stories - use tRaw for array data
+  const testimonials = tRaw('classes', 'testimonials.list') as Testimonial[] || [];
   
   return (
     <div className="min-h-screen pt-20">
@@ -181,15 +179,16 @@ export default function EnglishClassesPage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animate-stagger-4">
-              <Link 
+              <a 
                 href="/#contact" 
+                onClick={handleContactClick}
                 className="btn-authority btn-primary-authority text-lg px-8 py-4"
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
                 {t('classes', 'hero.button')}
-              </Link>
+              </a>
               <a 
                 href="https://calendly.com/your-link" 
                 target="_blank"
@@ -199,7 +198,7 @@ export default function EnglishClassesPage() {
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                Schedule Consultation
+                {t('classes', 'classLevels.scheduleConsultation')}
               </a>
             </div>
           </div>
@@ -223,9 +222,7 @@ export default function EnglishClassesPage() {
             <div className="grid lg:grid-cols-3 gap-8">
               <div className="authority-card text-center p-8">
                 <div className="w-16 h-16 bg-gradient-primary rounded-2xl mx-auto mb-6 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
+                  <AirplaneTakeoffIcon size={64} className="text-primary" />
                 </div>
                 <h3 className="text-2xl font-bold mb-4 gradient-text-primary">{t('classes', 'classLevels.businessFirstTitle')}</h3>
                 <p className="text-gray-600 leading-relaxed">
@@ -235,9 +232,7 @@ export default function EnglishClassesPage() {
               
               <div className="authority-card text-center p-8">
                 <div className="w-16 h-16 bg-gradient-warm rounded-2xl mx-auto mb-6 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                  </svg>
+                  <UserSoundIcon size={64} className="text-primary" />
                 </div>
                 <h3 className="text-2xl font-bold mb-4 gradient-text-warm">{t('classes', 'classLevels.careerImpactTitle')}</h3>
                 <p className="text-gray-600 leading-relaxed">
@@ -247,9 +242,7 @@ export default function EnglishClassesPage() {
               
               <div className="authority-card text-center p-8">
                 <div className="w-16 h-16 bg-gradient-accent rounded-2xl mx-auto mb-6 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
+                  <BriefcaseIcon size={64} className="text-primary" />
                 </div>
                 <h3 className="text-2xl font-bold mb-4 gradient-text-accent">{t('classes', 'classLevels.executiveInstructionTitle')}</h3>
                 <p className="text-gray-600 leading-relaxed">
@@ -266,19 +259,19 @@ export default function EnglishClassesPage() {
         <div className="container-authority">
           <div className="flex justify-center border-b border-gray-200 mb-16">
             <button 
-              className={`px-8 py-4 font-semibold text-lg transition-all duration-300 ${activeTab === 'classes' ? 'text-primary border-b-3 border-primary bg-primary/5' : 'text-gray-600 hover:text-primary'}`}
+              className={`cursor-pointer  px-8 py-4 font-semibold text-lg transition-all duration-300 ${activeTab === 'classes' ? 'text-gray-300 border-b-3 border-primary bg-primary/5' : 'text-gray-400 hover:text-primary'}`}
               onClick={() => setActiveTab('classes')}
             >
               {t('classes', 'tabs.classOfferings')}
             </button>
-            <button 
+            {/* <button 
               className={`px-8 py-4 font-semibold text-lg transition-all duration-300 ${activeTab === 'pricing' ? 'text-primary border-b-3 border-primary bg-primary/5' : 'text-gray-600 hover:text-primary'}`}
               onClick={() => setActiveTab('pricing')}
             >
               {t('classes', 'tabs.pricing')}
-            </button>
+            </button> */}
             <button 
-              className={`px-8 py-4 font-semibold text-lg transition-all duration-300 ${activeTab === 'testimonials' ? 'text-primary border-b-3 border-primary bg-primary/5' : 'text-gray-600 hover:text-primary'}`}
+              className={`cursor-pointer px-8 py-4 font-semibold text-lg transition-all duration-300 ${activeTab === 'testimonials' ? 'text-gray-300 border-b-3 border-primary bg-primary/5' : 'text-gray-400 hover:text-primary'}`}
               onClick={() => setActiveTab('testimonials')}
             >
               {t('classes', 'tabs.testimonials')}
@@ -292,15 +285,15 @@ export default function EnglishClassesPage() {
                 <h2 className="text-section-title-authority mb-6 gradient-text-authority">
                   {t('classes', 'classLevels.title')}
                 </h2>
-                <p className="text-xl text-gray-600 leading-relaxed">
+                <p className="text-xl text-gray-200 leading-relaxed">
                   {t('classes', 'classLevels.description')}
                 </p>
               </div>
               
               <div className="grid lg:grid-cols-2 gap-8">
-                {classes.map((classItem, index) => (
-                  <div key={classItem.id} className="card-flip-authority animate-fade-in-up cursor-pointer" style={{ animationDelay: `${index * 0.1}s` }}>
-                    <div className="card-flip-inner-authority">
+                {classes.map((classItem: ClassLevel, index: number) => (
+                  <div key={classItem.id} className="card-flip-authority animate-fade-in-up cursor-pointer" style={{ animationDelay: `${index * 0.1}s` }} onClick={() => handleCardClick(classItem.id)}>
+                    <div className={`card-flip-inner-authority ${flippedCards.has(classItem.id) ? 'flipped' : ''}`}>
                       {/* Card Front */}
                       <div className="card-flip-front-authority authority-card bg-white overflow-hidden">
                         <div className="relative h-48">
@@ -318,11 +311,16 @@ export default function EnglishClassesPage() {
                         <div className="p-8">
                           <p className="text-gray-600 mb-6 leading-relaxed">{classItem.description}</p>
                           <div className="bg-gradient-to-r from-primary/10 to-accent/10 p-4 rounded-lg">
-                            <h5 className="font-semibold text-gray-900 mb-2">Professional Outcome:</h5>
+                            <h5 className="font-semibold text-gray-900 mb-2">{t('classes', 'classLevels.professionalOutcome')}</h5>
                             <p className="text-gray-700 text-sm">{classItem.outcomes}</p>
                           </div>
                           <div className="mt-4 text-center">
-                            <span className="text-primary font-medium text-sm">Hover for curriculum details</span>
+                            <span className="text-primary font-medium text-sm hidden md:inline">
+                              {t('classes', 'classLevels.hoverForDetails')}
+                            </span>
+                            <span className="text-primary font-medium text-sm md:hidden">
+                              {t('classes', 'classLevels.clickForDetails')}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -331,9 +329,15 @@ export default function EnglishClassesPage() {
                       <div className="card-flip-back-authority p-8 flex flex-col justify-between text-white">
                         <div>
                           <h3 className="text-2xl font-bold mb-4">{classItem.level}</h3>
+                          {/* Add program duration for Essential English Foundations */}
+                          {classItem.id === 'essential-foundations' && (
+                            <p className="text-sm opacity-90 mb-4 bg-white/10 p-3 rounded-lg">
+                              {t('classes', 'classLevels.programDuration')}
+                            </p>
+                          )}
                           <h4 className="font-bold mb-4 opacity-90">{t('classes', 'classLevels.topicsInclude')}</h4>
                           <ul className="space-y-3 mb-6">
-                            {classItem.topics.map((topic, i) => (
+                            {classItem.topics.map((topic: string, i: number) => (
                               <li key={i} className="flex items-start">
                                 <svg className="w-4 h-4 mr-3 text-white mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
@@ -342,14 +346,21 @@ export default function EnglishClassesPage() {
                               </li>
                             ))}
                           </ul>
+                          
+                          {/* Certification Section */}
+                          <div className="mb-6 pb-4 border-t border-white/20 pt-4">
+                            <h4 className="font-bold mb-2 opacity-90">{t('classes', 'classLevels.certification')}</h4>
+                            <p className="text-sm opacity-90">{t('classes', 'classLevels.certificationDescription')}</p>
+                          </div>
                         </div>
                         <div className="text-center">
-                          <Link 
+                          <a 
                             href="/#contact" 
+                            onClick={handleContactClick}
                             className="inline-block px-6 py-3 bg-white text-primary rounded-lg hover:bg-gray-100 transition-colors font-semibold"
                           >
-                            Learn More
-                          </Link>
+                            {t('classes', 'classLevels.connectButton')}
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -359,28 +370,29 @@ export default function EnglishClassesPage() {
               
               <div className="max-w-4xl mx-auto text-center mt-16">
                 <div className="authority-card p-8">
-                  <h3 className="text-2xl font-bold mb-4 gradient-text-authority">Professional Instruction</h3>
+                  <h3 className="text-2xl font-bold mb-4 gradient-text-authority">{t('classes', 'classLevels.professionalInstructionTitle')}</h3>
                   <p className="text-lg text-gray-600 mb-6 leading-relaxed">
                     {t('classes', 'classLevels.teacherInfo')}
                   </p>
                   <div className="flex flex-wrap justify-center gap-4">
-                    <span className="px-4 py-2 bg-gradient-primary text-white rounded-full text-sm font-medium">
-                      MBA Business Leadership
+                    <span className="px-4 py-2 bg-gradient-primary text-muted rounded-full text-sm font-medium">
+                      {t('classes', 'classLevels.mbaBadge')}
                     </span>
-                    <span className="px-4 py-2 bg-gradient-warm text-white rounded-full text-sm font-medium">
-                      5+ Years Educational Leadership
+                    <span className="px-4 py-2 bg-gradient-warm text-muted rounded-full text-sm font-medium">
+                      {t('classes', 'classLevels.experienceBadge')}
                     </span>
-                    <span className="px-4 py-2 bg-gradient-accent text-white rounded-full text-sm font-medium">
-                      Bilingual Professional
+                    <span className="px-4 py-2 bg-gradient-accent text-muted rounded-full text-sm font-medium">
+                      {t('classes', 'classLevels.bilingualBadge')}
                     </span>
                   </div>
                   <div className="mt-8">
-                    <Link 
+                    <a 
                       href="/#contact" 
+                      onClick={handleContactClick}
                       className="btn-authority btn-primary-authority"
                     >
                       {t('classes', 'classLevels.inquireButton')}
-                    </Link>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -400,7 +412,7 @@ export default function EnglishClassesPage() {
               </div>
               
               <div className="grid lg:grid-cols-3 gap-8 mb-16">
-                {pricingOptions.map((option, index) => (
+                {pricingOptions.map((option: PricingOption, index: number) => (
                   <div 
                     key={option.id} 
                     className={`authority-card overflow-hidden relative ${
@@ -421,7 +433,7 @@ export default function EnglishClassesPage() {
                         <span className="text-gray-500 ml-2">{option.unit}</span>
                       </div>
                       <ul className="space-y-4 mb-8">
-                        {option.features.map((feature, i) => (
+                        {option.features.map((feature: string, i: number) => (
                           <li key={i} className="flex items-start">
                             <svg className="w-5 h-5 mr-3 text-primary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
@@ -510,12 +522,12 @@ export default function EnglishClassesPage() {
               </div>
               
               <div className="grid lg:grid-cols-3 gap-8 mb-16">
-                {testimonials.map((testimonial, index) => (
+                {testimonials.map((testimonial: Testimonial, index: number) => (
                   <div key={testimonial.id} className="authority-card p-8 animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
                     <div className="flex items-center mb-6">
                       <div className="relative w-16 h-16 rounded-full overflow-hidden mr-4">
                         <Image
-                          src={testimonial.image}
+                          src={testimonial.image || 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'}
                           alt={testimonial.name}
                           fill
                           className="object-cover"
@@ -531,7 +543,7 @@ export default function EnglishClassesPage() {
                     
                     <div className="relative mb-6">
                       <svg className="absolute top-0 left-0 w-8 h-8 text-primary/20 -translate-x-2 -translate-y-2" fill="currentColor" viewBox="0 0 32 32">
-                        <path d="M10 8c-2.2 0-4 1.8-4 4v10h10V12h-6c0-1.1 0.9-2 2-2h2V8h-4zm12 0c-2.2 0-4 1.8-4 4v10h10V12h-6c0-1.1 0.9-2 2-2h2V8h-4z"></path>
+                        <path d="M10 8c-2.2 0-4 1.8-4 4v10h10V12h-6c0-1.1 0.9-2 2-2h2V8h-4zm12 0c-2.2 0-4 1.8-4 4v10h-10V12h6c0-1.1-.9-2-2-2h-2V8h4z"></path>
                       </svg>
                       <p className="italic text-gray-700 leading-relaxed pl-6">{testimonial.content}</p>
                     </div>
@@ -549,12 +561,13 @@ export default function EnglishClassesPage() {
               </div>
               
               <div className="text-center">
-                <Link 
+                <a 
                   href="/#contact" 
+                  onClick={handleContactClick}
                   className="btn-authority btn-primary-authority text-lg px-8 py-4"
                 >
                   {t('classes', 'testimonials.startButton')}
-                </Link>
+                </a>
               </div>
             </div>
           )}
@@ -568,21 +581,22 @@ export default function EnglishClassesPage() {
             <h2 className="text-section-title-authority mb-6 gradient-text-authority">
               {t('classes', 'cta.title')}
             </h2>
-            <p className="text-xl text-gray-600 mb-10 leading-relaxed">
+            <p className="text-xl text-gray-200 mb-10 leading-relaxed">
               {t('classes', 'cta.description')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
+              <a 
                 href="/#contact" 
+                onClick={handleContactClick}
                 className="btn-authority btn-primary-authority text-lg px-8 py-4"
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
                 {t('classes', 'cta.contactButton')}
-              </Link>
+              </a>
               <a 
-                href="https://wa.me/4358936006" 
+                href="https://wa.me/+51904975329" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="btn-authority btn-warm-authority text-lg px-8 py-4"

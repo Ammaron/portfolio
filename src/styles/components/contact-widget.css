@@ -1,0 +1,70 @@
+/* Professional Contact Widget */
+.contact-widget {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 50; /* Increased from 40 to ensure it's above footer */
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  pointer-events: auto; /* Ensure it's clickable */
+}
+
+.contact-widget-button {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  color: white;
+  position: relative; /* Ensure proper stacking */
+  z-index: 51; /* Even higher z-index for buttons */
+}
+
+.contact-widget-button:hover {
+  transform: scale(1.05) translateY(-1px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.contact-widget-button .icon {
+  width: 1.75rem;
+  height: 1.75rem;
+  transition: transform 0.3s ease;
+}
+
+.contact-widget-button:hover .icon {
+  transform: scale(1.1);
+}
+
+.contact-widget-whatsapp {
+  background: var(--gradient-accent);
+}
+
+.contact-widget-linkedin {
+  background: var(--gradient-primary);
+}
+
+/* Hide on print */
+@media print {
+  .contact-widget {
+    display: none !important;
+  }
+}
+
+/* Hide completely on mobile */
+@media (max-width: 768px) {
+  .contact-widget {
+    display: none !important;
+  }
+}
+
+/* Also hide on smaller screens */
+@media (max-width: 480px) {
+  .contact-widget {
+    display: none !important;
+  }
+}

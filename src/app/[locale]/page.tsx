@@ -17,11 +17,14 @@ export default function HomePage() {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isMobile, setIsMobile] = useState(false); // Add state for mobile detection
   const { t, tRaw } = useI18n();
 
   // Initialize EmailJS when component mounts
   useEffect(() => {
     initEmailJS();
+    // Safe mobile detection after hydration
+    setIsMobile(/Mobi|Android/i.test(navigator.userAgent));
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -91,7 +94,7 @@ export default function HomePage() {
     const phoneNumber = '435-893-6006';
     
     // Check if device supports tel: links (mobile)
-    if (/Mobi|Android/i.test(navigator.userAgent)) {
+    if (isMobile) {
       window.open(`tel:${phoneNumber}`, '_self');
     } else {
       // Desktop: copy to clipboard
@@ -566,7 +569,7 @@ export default function HomePage() {
                 <h3 className="text-lg font-bold mb-2">{t('home', 'contact.phone')}</h3>
                 <p className="text-warm font-medium">435-893-6006</p>
                 <p className="text-xs text-gray-500 mt-1">
-                  {/Mobi|Android/i.test(navigator.userAgent) ? t('home', 'contact.phoneHelperMobile') : t('home', 'contact.phoneHelper')}
+                  {isMobile ? t('home', 'contact.phoneHelperMobile') : t('home', 'contact.phoneHelper')}
                 </p>
               </div>
               

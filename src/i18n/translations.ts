@@ -218,18 +218,33 @@ export interface TranslationStructure {
       executiveInstructionTitle: string;
       executiveInstructionDesc: string;
       topicsInclude: string;
+      programIncludes: string;
       teacherInfo: string;
       inquireButton: string;
       businessFocus: string;
       careerAdvancement: string;
       professionalCommunication: string;
       industrySpecific: string;
+      certification: string;
+      certificationDescription: string;
+      professionalOutcome: string;
+      hoverForDetails: string;
+      clickForDetails: string;
+      connectButton: string;
+      programDuration: string;
+      // Professional credentials badges
+      mbaBadge: string;
+      experienceBadge: string;
+      bilingualBadge: string;
+      scheduleConsultation: string;
+      professionalInstructionTitle: string;
       list: Array<{
         id: string;
         level: string;
         description: string;
         topics: string[];
         outcomes: string;
+        programDetails?: string;
       }>;
     };
     pricing: {
@@ -266,6 +281,7 @@ export interface TranslationStructure {
         company: string;
         content: string;
         achievement: string;
+        image?: string;
       }>;
     };
     cta: {
@@ -673,71 +689,141 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
         description: 'Comprehensive English language programs designed for career advancement and business success. Each program combines language acquisition with practical business applications.',
         whyChooseTitle: 'Why Choose Professional English Instruction?',
         whyChooseSubtitle: 'MBA-informed teaching approach designed specifically for career advancement and business success.',
-        businessFirstTitle: 'Business-First Approach',
-        businessFirstDesc: 'Every lesson is designed with real business applications and career advancement in mind, not just language learning.',
-        careerImpactTitle: 'Measurable Career Impact',
-        careerImpactDesc: 'Track your professional growth with concrete metrics: promotions, salary increases, and expanded opportunities.',
+        businessFirstTitle: 'Real-World Application Focus',
+        businessFirstDesc: 'Every lesson connects to practical situations you\'ll actually encounter in daily life, travel, and professional settings.',
+        careerImpactTitle: 'Trackable Life Results',
+        careerImpactDesc: 'Measure your progress through real achievements: confident conversations, successful interviews, and expanded opportunities.',
         executiveInstructionTitle: 'Executive-Level Instruction',
-        executiveInstructionDesc: 'Learn from an MBA-educated professional who understands both language acquisition and business strategy.',
+        executiveInstructionDesc: 'Learn from a licensed educator with an MBA and years of proven classroom experience in both business and English instruction.',
         topicsInclude: 'Program includes',
+        programIncludes: 'Program Includes',
         teacherInfo: 'All programs led by Kirby McDonald, MBA—a bilingual educational leader with extensive business and technology experience.',
         inquireButton: 'Discuss Your Goals',
         businessFocus: 'Business-Focused Curriculum',
         careerAdvancement: 'Career Advancement Track',
         professionalCommunication: 'Professional Communication',
         industrySpecific: 'Industry-Specific Training',
+        certification: 'Certification',
+        certificationDescription: 'Upon completion a certification will be given showing completion of course and backed by Mr. McDonald. Find out more on our certification page.',
+        professionalOutcome: 'Professional Outcome:',
+        hoverForDetails: 'Pasa el cursor para detalles del currículo',
+        clickForDetails: 'Haz clic para detalles del currículo',
+        connectButton: 'Conectar',
+        programDuration: '¡De principiante completo a comunicador funcional en 90-100 horas guiadas y tareas para aprendizaje fuera del aula!',
+        // Professional credentials badges
+        mbaBadge: 'Liderazgo Empresarial MBA',
+        experienceBadge: '5+ Años de Liderazgo Educativo', 
+        bilingualBadge: 'Profesional Bilingüe',
+        scheduleConsultation: 'Programar Consulta',
+        professionalInstructionTitle: 'Instrucción Profesional',
         list: [
           {
-            id: 'business-foundation',
-            level: 'Business Foundation (A1-A2)',
-            description: 'Essential English for workplace communication, professional emails, and basic business interactions.',
+            id: 'essential-foundations',
+            level: 'Essential English Foundations (A1)',
+            description: 'Master the building blocks of English communication',
             topics: [
-              'Professional introductions and networking',
-              'Business email writing and communication',
-              'Basic presentation skills and meetings',
-              'Workplace vocabulary and etiquette',
-              'Career goal setting and planning'
+              'Personal Communication - Introduce yourself, share basic information, and build social connections',
+              'Daily Life Navigation - Handle routine situations like shopping, dining, and transportation',
+              'Workplace Essentials - Present yourself professionally and engage in simple work conversations',
+              'Grammar Foundations - Master present tense, basic questions, and essential sentence structures',
+              'Practical Vocabulary - Learn 800+ high-frequency words for immediate real-world use',
+              'Speaking Confidence - Practice pronunciation and fluency through guided conversations',
+              'Functional Writing - Complete forms, write simple messages, and basic personal correspondence',
+              'Cultural Awareness - Understand basic social customs and communication styles',
+              'Official Certification - Receive internationally recognized CEFR A1 certificate upon completion'
             ],
-            outcomes: 'Confidently handle basic workplace interactions and professional communication'
+            outcomes: 'Upon completion, you\'ll confidently introduce yourself, handle basic daily conversations, and navigate essential situations like shopping, ordering food, and asking for directions in English-speaking environments.',
+            programDetails: 'Complete beginner to functional communicator in 90-100 guided hours and homework for learning outside of the classroom!'
           },
           {
-            id: 'professional-advancement',
-            level: 'Professional Advancement (B1)',
-            description: 'Advanced business communication for career growth, leadership roles, and international business.',
+            id: 'practical-communication',
+            level: 'Practical English Communication (A2)',
+            description: 'Build confidence for real-world interactions',
             topics: [
-              'Advanced presentation and public speaking',
-              'Negotiation and persuasion techniques',
-              'Leadership communication styles',
-              'International business etiquette',
-              'Strategic thinking in English'
+              'Experience Sharing - Describe past events, future plans, and personal experiences in detail',
+              'Travel Mastery - Navigate airports, hotels, restaurants, and tourist attractions independently',
+              'Social Interaction - Engage in longer conversations about hobbies, opinions, and current events',
+              'Professional Development - Participate in meetings, make presentations, and network effectively',
+              'Advanced Grammar - Master past tenses, future forms, and conditional expressions',
+              'Expanded Vocabulary - Acquire 1,500+ words including abstract concepts and specialized terms',
+              'Listening Skills - Understand movies, podcasts, and natural speech patterns',
+              'Writing Proficiency - Create emails, reports, and personal narratives with proper structure',
+              'Official Certification - Receive internationally recognized CEFR A2 certificate upon completion'
             ],
-            outcomes: 'Lead meetings, give presentations, and advance to management positions'
+            outcomes: 'Upon completion, you\'ll comfortably discuss your experiences and plans, handle extended conversations about familiar topics, and effectively communicate in most travel and social situations with English speakers.',
+            programDetails: 'Elementary to confident communicator in 90-100 guided hours and homework for learning outside of the classroom!'
           },
           {
-            id: 'executive-communication',
-            level: 'Executive Communication (B2)',
-            description: 'C-suite level communication skills for senior professionals and business leaders.',
+            id: 'independent-mastery',
+            level: 'Independent English Mastery (B1)',
+            description: 'Express yourself clearly on any familiar topic',
             topics: [
-              'Executive presentation and boardroom skills',
-              'Cross-cultural business communication',
-              'Strategic communication and vision setting',
-              'Media interviews and public speaking',
-              'International partnership development'
+              'Opinion Expression - Articulate viewpoints, justify decisions, and engage in debates effectively',
+              'Problem-Solving - Handle complaints, negotiate solutions, and manage unexpected situations',
+              'Academic Skills - Write structured essays, analyze texts, and present research findings',
+              'Career Advancement - Lead meetings, deliver presentations, and interview confidently',
+              'Complex Grammar - Master reported speech, passive voice, and advanced conditional forms',
+              'Specialized Vocabulary - Learn 2,500+ words including business, academic, and technical terms',
+              'Media Comprehension - Understand news, documentaries, and authentic materials independently',
+              'Creative Writing - Produce stories, formal letters, and persuasive texts with style',
+              'Official Certification - Receive internationally recognized CEFR B1 certificate upon completion'
             ],
-            outcomes: 'Communicate effectively at the highest levels of business leadership'
+            outcomes: 'Upon completion, you\'ll express opinions confidently, handle unexpected situations abroad, participate actively in workplace discussions, and articulate complex ideas about topics that interest you.',
+            programDetails: 'Intermediate speaker to autonomous communicator in 150-200 guided hours and homework for learning outside of the classroom!'
           },
           {
-            id: 'industry-specific',
-            level: 'Industry-Specific Programs',
-            description: 'Specialized English for technology, education, healthcare, and other professional sectors.',
+            id: 'advanced-fluency',
+            level: 'Advanced English Fluency (B2)',
+            description: 'Communicate with native-like confidence and precision',
             topics: [
-              'Technology and software development terminology',
-              'Educational leadership and administration',
-              'Healthcare and medical communication',
-              'Financial services and consulting',
-              'Manufacturing and engineering'
+              'Advanced Discourse - Discuss abstract concepts, analyze complex issues, and debate with sophistication',
+              'Professional Excellence - Lead international teams, negotiate contracts, and present to senior executives',
+              'Academic Mastery - Write research papers, critical analyses, and comprehensive reports',
+              'Cultural Fluency - Understand humor, idioms, and subtle cultural references naturally',
+              'Sophisticated Grammar - Perfect advanced structures, stylistic variations, and register awareness',
+              'Extensive Vocabulary - Command 4,000+ words including nuanced expressions and academic language',
+              'Native-Level Comprehension - Follow rapid speech, technical discussions, and literary works',
+              'Persuasive Communication - Craft compelling arguments, influential presentations, and professional correspondence',
+              'Official Certification - Receive internationally recognized CEFR B2 certificate upon completion'
             ],
-            outcomes: 'Master industry-specific vocabulary and communication protocols'
+            outcomes: 'Upon completion, you\'ll engage fluently in complex discussions, excel in professional environments, understand nuanced content, and communicate sophisticated ideas with accuracy and natural flow.',
+            programDetails: 'Upper-intermediate to near-native speaker in 150-200 guided hours and homework for learning outside of the classroom!'
+          },
+          {
+            id: 'expert-proficiency',
+            level: 'Expert English Proficiency (C1)',
+            description: 'Achieve professional-level eloquence and precision',
+            topics: [
+              'Executive Communication - Lead boardroom discussions, deliver keynote speeches, and influence senior stakeholders',
+              'Academic Excellence - Conduct research, write dissertations, and participate in scholarly discourse',
+              'Strategic Thinking - Analyze complex scenarios, synthesize information, and present strategic recommendations',
+              'Cross-Cultural Leadership - Navigate international business environments and cultural sensitivities expertly',
+              'Masterful Grammar - Employ sophisticated structures with perfect accuracy and stylistic awareness',
+              'Professional Vocabulary - Master 6,000+ words including specialized terminology and subtle distinctions',
+              'Critical Analysis - Evaluate complex texts, media, and arguments with depth and insight',
+              'Advanced Writing - Create publication-quality documents, proposals, and analytical reports',
+              'Official Certification - Receive internationally recognized CEFR C1 certificate upon completion'
+            ],
+            outcomes: 'Upon completion, you\'ll communicate with native-speaker fluency, lead complex negotiations, analyze sophisticated texts, and express yourself with remarkable accuracy and natural style in any professional or academic context.',
+            programDetails: 'Advanced speaker to expert communicator in 200-300 guided hours and homework for learning outside of the classroom!'
+          },
+          {
+            id: 'native-mastery',
+            level: 'Native-Level English Mastery (C2)',
+            description: 'Reach the pinnacle of English language expertise',
+            topics: [
+              'Intellectual Discourse - Engage in philosophical debates, literary criticism, and high-level academic discussions',
+              'Global Leadership - Navigate the most complex international negotiations and diplomatic communications',
+              'Creative Mastery - Write with artistic expression, humor, and sophisticated stylistic techniques',
+              'Professional Distinction - Excel in roles requiring exceptional language skills: interpretation, translation, editing',
+              'Flawless Grammar - Demonstrate intuitive command of all grammatical subtleties and stylistic nuances',
+              'Complete Vocabulary - Command 8,000+ words with full understanding of connotations and register',
+              'Literary Appreciation - Analyze and appreciate literature, poetry, and complex cultural texts',
+              'Authoritative Writing - Produce expert-level content: academic papers, professional publications, creative works',
+              'Official Certification - Receive internationally recognized CEFR C2 certificate upon completion'
+            ],
+            outcomes: 'Upon completion, you\'ll possess native-speaker competence, excel in the most demanding professional situations, create original content with artistic flair, and demonstrate complete mastery of English in all its forms and registers.',
+            programDetails: 'Expert speaker to native-level mastery in 300-500 guided hours and homework for learning outside of the classroom!'
           }
         ]
       },
@@ -818,7 +904,8 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
             role: 'Marketing Manager - B2 Level Graduate',
             company: 'Tech Startup',
             content: 'Kirby\'s business-focused approach helped me transition from basic English to leading international marketing campaigns. The MBA perspective in teaching made all the difference.',
-            achievement: 'Promoted to Marketing Manager'
+            achievement: 'Promoted to Marketing Manager',
+            image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'
           },
           {
             id: 2,
@@ -826,7 +913,8 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
             role: 'Software Engineer - A2 to B2 Progress',
             company: 'Fortune 500',
             content: 'The combination of English instruction with technology focus was perfect for my career in software development. Now I lead international development teams.',
-            achievement: 'International Team Lead'
+            achievement: 'International Team Lead',
+            image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'
           },
           {
             id: 3,
@@ -834,7 +922,8 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
             role: 'Educational Administrator - C1 Level',
             company: 'School District',
             content: 'Learning from an educator with MBA experience was invaluable. Kirby understands both language learning and professional advancement needs.',
-            achievement: 'District Leadership Role'
+            achievement: 'District Leadership Role',
+            image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'
           }
         ]
       },
@@ -1275,71 +1364,141 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
         description: 'Programas comprensivos de inglés diseñados para avance profesional y éxito empresarial. Cada programa combina adquisición de idioma con aplicaciones prácticas de negocios.',
         whyChooseTitle: '¿Por qué Elegir Instrucción Profesional de Inglés?',
         whyChooseSubtitle: 'Enfoque de enseñanza informado por MBA diseñado específicamente para avance profesional y éxito empresarial.',
-        businessFirstTitle: 'Enfoque Empresarial Primero',
-        businessFirstDesc: 'Cada lección está diseñada con aplicaciones empresariales reales y avance profesional en mente, no solo aprendizaje de idiomas.',
-        careerImpactTitle: 'Impacto Profesional Medible',
-        careerImpactDesc: 'Rastrea tu crecimiento profesional con métricas concretas: promociones, aumentos salariales y oportunidades expandidas.',
+        businessFirstTitle: 'Enfoque de Aplicación del Mundo Real',
+        businessFirstDesc: 'Cada lección se conecta con situaciones prácticas que realmente encontrarás en la vida diaria, viajes y entornos profesionales.',
+        careerImpactTitle: 'Resultados de Vida Rastreables',
+        careerImpactDesc: 'Mide tu progreso a través de logros reales: conversaciones confiadas, entrevistas exitosas y oportunidades expandidas.',
         executiveInstructionTitle: 'Instrucción de Nivel Ejecutivo',
-        executiveInstructionDesc: 'Aprende de un profesional educado con MBA que entiende tanto la adquisición de idiomas como la estrategia empresarial.',
+        executiveInstructionDesc: 'Aprende de un educador licenciado con un MBA y años de experiencia comprobada en el aula tanto en negocios como en instrucción de inglés.',
         topicsInclude: 'El programa incluye',
+        programIncludes: 'El programa incluye',
         teacherInfo: 'Todos los programas dirigidos por Kirby McDonald, MBA—un líder educativo bilingüe con amplia experiencia empresarial y tecnológica.',
         inquireButton: 'Discutir Tus Objetivos',
         businessFocus: 'Currículo Enfocado en Negocios',
         careerAdvancement: 'Pista de Avance Profesional',
         professionalCommunication: 'Comunicación Profesional',
         industrySpecific: 'Entrenamiento Específico de Industria',
+        certification: 'Certificación',
+        certificationDescription: 'Al completar, se otorgará una certificación que muestra la finalización del curso y respaldada por el Sr. McDonald. Descubre más en nuestra página de certificación.',
+        professionalOutcome: 'Resultado Profesional:',
+        hoverForDetails: 'Pasa el cursor para detalles del currículo',
+        clickForDetails: 'Haz clic para detalles del currículo',
+        connectButton: 'Conectar',
+        programDuration: '¡De principiante completo a comunicador funcional en 90-100 horas guiadas y tareas para aprendizaje fuera del aula!',
+        // Professional credentials badges
+        mbaBadge: 'Liderazgo Empresarial MBA',
+        experienceBadge: '5+ Años de Liderazgo Educativo', 
+        bilingualBadge: 'Profesional Bilingüe',
+        scheduleConsultation: 'Programar Consulta',
+        professionalInstructionTitle: 'Instrucción Profesional',
         list: [
           {
-            id: 'business-foundation',
-            level: 'Fundación Empresarial (A1-A2)',
-            description: 'Inglés esencial para comunicación en el lugar de trabajo, correos profesionales e interacciones empresariales básicas.',
+            id: 'essential-foundations',
+            level: 'Essential English Foundations (A1)',
+            description: 'Master the building blocks of English communication',
             topics: [
-              'Presentaciones profesionales y networking',
-              'Redacción de correos empresariales y comunicación',
-              'Habilidades básicas de presentación y reuniones',
-              'Vocabulario y etiqueta del lugar de trabajo',
-              'Establecimiento de objetivos profesionales y planificación'
+              'Personal Communication - Introduce yourself, share basic information, and build social connections',
+              'Daily Life Navigation - Handle routine situations like shopping, dining, and transportation',
+              'Workplace Essentials - Present yourself professionally and engage in simple work conversations',
+              'Grammar Foundations - Master present tense, basic questions, and essential sentence structures',
+              'Practical Vocabulary - Learn 800+ high-frequency words for immediate real-world use',
+              'Speaking Confidence - Practice pronunciation and fluency through guided conversations',
+              'Functional Writing - Complete forms, write simple messages, and basic personal correspondence',
+              'Cultural Awareness - Understand basic social customs and communication styles',
+              'Official Certification - Receive internationally recognized CEFR A1 certificate upon completion'
             ],
-            outcomes: 'Manejar con confianza interacciones básicas del lugar de trabajo y comunicación profesional'
+            outcomes: 'Upon completion, you\'ll confidently introduce yourself, handle basic daily conversations, and navigate essential situations like shopping, ordering food, and asking for directions in English-speaking environments.',
+            programDetails: 'Complete beginner to functional communicator in 90-100 guided hours and homework for learning outside of the classroom!'
           },
           {
-            id: 'professional-advancement',
-            level: 'Avance Profesional (B1)',
-            description: 'Comunicación empresarial avanzada para crecimiento profesional, roles de liderazgo y negocios internacionales.',
+            id: 'practical-communication',
+            level: 'Practical English Communication (A2)',
+            description: 'Build confidence for real-world interactions',
             topics: [
-              'Presentación avanzada y hablar en público',
-              'Técnicas de negociación y persuasión',
-              'Estilos de comunicación de liderazgo',
-              'Etiqueta empresarial internacional',
-              'Pensamiento estratégico en inglés'
+              'Experience Sharing - Describe past events, future plans, and personal experiences in detail',
+              'Travel Mastery - Navigate airports, hotels, restaurants, and tourist attractions independently',
+              'Social Interaction - Engage in longer conversations about hobbies, opinions, and current events',
+              'Professional Development - Participate in meetings, make presentations, and network effectively',
+              'Advanced Grammar - Master past tenses, future forms, and conditional expressions',
+              'Expanded Vocabulary - Acquire 1,500+ words including abstract concepts and specialized terms',
+              'Listening Skills - Understand movies, podcasts, and natural speech patterns',
+              'Writing Proficiency - Create emails, reports, and personal narratives with proper structure',
+              'Official Certification - Receive internationally recognized CEFR A2 certificate upon completion'
             ],
-            outcomes: 'Liderar reuniones, dar presentaciones y avanzar a posiciones gerenciales'
+            outcomes: 'Upon completion, you\'ll comfortably discuss your experiences and plans, handle extended conversations about familiar topics, and effectively communicate in most travel and social situations with English speakers.',
+            programDetails: 'Elementary to confident communicator in 90-100 guided hours and homework for learning outside of the classroom!'
           },
           {
-            id: 'executive-communication',
-            level: 'Comunicación Ejecutiva (B2)',
-            description: 'Habilidades de comunicación de nivel C-suite para profesionales senior y líderes empresariales.',
+            id: 'independent-mastery',
+            level: 'Independent English Mastery (B1)',
+            description: 'Express yourself clearly on any familiar topic',
             topics: [
-              'Habilidades de presentación ejecutiva y sala de juntas',
-              'Comunicación empresarial intercultural',
-              'Comunicación estratégica y establecimiento de visión',
-              'Entrevistas con medios y hablar en público',
-              'Desarrollo de asociaciones internacionales'
+              'Opinion Expression - Articulate viewpoints, justify decisions, and engage in debates effectively',
+              'Problem-Solving - Handle complaints, negotiate solutions, and manage unexpected situations',
+              'Academic Skills - Write structured essays, analyze texts, and present research findings',
+              'Career Advancement - Lead meetings, deliver presentations, and interview confidently',
+              'Complex Grammar - Master reported speech, passive voice, and advanced conditional forms',
+              'Specialized Vocabulary - Learn 2,500+ words including business, academic, and technical terms',
+              'Media Comprehension - Understand news, documentaries, and authentic materials independently',
+              'Creative Writing - Produce stories, formal letters, and persuasive texts with style',
+              'Official Certification - Receive internationally recognized CEFR B1 certificate upon completion'
             ],
-            outcomes: 'Comunicarse efectivamente en los más altos niveles de liderazgo empresarial'
+            outcomes: 'Upon completion, you\'ll express opinions confidently, handle unexpected situations abroad, participate actively in workplace discussions, and articulate complex ideas about topics that interest you.',
+            programDetails: 'Intermediate speaker to autonomous communicator in 150-200 guided hours and homework for learning outside of the classroom!'
           },
           {
-            id: 'industry-specific',
-            level: 'Programas Específicos de Industria',
-            description: 'Inglés especializado para tecnología, educación, atención médica y otros sectores profesionales.',
+            id: 'advanced-fluency',
+            level: 'Advanced English Fluency (B2)',
+            description: 'Communicate with native-like confidence and precision',
             topics: [
-              'Terminología de tecnología y desarrollo de software',
-              'Liderazgo y administración educativa',
-              'Comunicación médica y de atención médica',
-              'Servicios financieros y consultoría',
-              'Manufactura e ingeniería'
+              'Advanced Discourse - Discuss abstract concepts, analyze complex issues, and debate with sophistication',
+              'Professional Excellence - Lead international teams, negotiate contracts, and present to senior executives',
+              'Academic Mastery - Write research papers, critical analyses, and comprehensive reports',
+              'Cultural Fluency - Understand humor, idioms, and subtle cultural references naturally',
+              'Sophisticated Grammar - Perfect advanced structures, stylistic variations, and register awareness',
+              'Extensive Vocabulary - Command 4,000+ words including nuanced expressions and academic language',
+              'Native-Level Comprehension - Follow rapid speech, technical discussions, and literary works',
+              'Persuasive Communication - Craft compelling arguments, influential presentations, and professional correspondence',
+              'Official Certification - Receive internationally recognized CEFR B2 certificate upon completion'
             ],
-            outcomes: 'Dominar vocabulario específico de la industria y protocolos de comunicación'
+            outcomes: 'Upon completion, you\'ll engage fluently in complex discussions, excel in professional environments, understand nuanced content, and communicate sophisticated ideas with accuracy and natural flow.',
+            programDetails: 'Upper-intermediate to near-native speaker in 150-200 guided hours and homework for learning outside of the classroom!'
+          },
+          {
+            id: 'expert-proficiency',
+            level: 'Expert English Proficiency (C1)',
+            description: 'Achieve professional-level eloquence and precision',
+            topics: [
+              'Executive Communication - Lead boardroom discussions, deliver keynote speeches, and influence senior stakeholders',
+              'Academic Excellence - Conduct research, write dissertations, and participate in scholarly discourse',
+              'Strategic Thinking - Analyze complex scenarios, synthesize information, and present strategic recommendations',
+              'Cross-Cultural Leadership - Navigate international business environments and cultural sensitivities expertly',
+              'Masterful Grammar - Employ sophisticated structures with perfect accuracy and stylistic awareness',
+              'Professional Vocabulary - Master 6,000+ words including specialized terminology and subtle distinctions',
+              'Critical Analysis - Evaluate complex texts, media, and arguments with depth and insight',
+              'Advanced Writing - Create publication-quality documents, proposals, and analytical reports',
+              'Official Certification - Receive internationally recognized CEFR C1 certificate upon completion'
+            ],
+            outcomes: 'Upon completion, you\'ll communicate with native-speaker fluency, lead complex negotiations, analyze sophisticated texts, and express yourself with remarkable accuracy and natural style in any professional or academic context.',
+            programDetails: 'Advanced speaker to expert communicator in 200-300 guided hours and homework for learning outside of the classroom!'
+          },
+          {
+            id: 'native-mastery',
+            level: 'Native-Level English Mastery (C2)',
+            description: 'Reach the pinnacle of English language expertise',
+            topics: [
+              'Intellectual Discourse - Engage in philosophical debates, literary criticism, and high-level academic discussions',
+              'Global Leadership - Navigate the most complex international negotiations and diplomatic communications',
+              'Creative Mastery - Write with artistic expression, humor, and sophisticated stylistic techniques',
+              'Professional Distinction - Excel in roles requiring exceptional language skills: interpretation, translation, editing',
+              'Flawless Grammar - Demonstrate intuitive command of all grammatical subtleties and stylistic nuances',
+              'Complete Vocabulary - Command 8,000+ words with full understanding of connotations and register',
+              'Literary Appreciation - Analyze and appreciate literature, poetry, and complex cultural texts',
+              'Authoritative Writing - Produce expert-level content: academic papers, professional publications, creative works',
+              'Official Certification - Receive internationally recognized CEFR C2 certificate upon completion'
+            ],
+            outcomes: 'Upon completion, you\'ll possess native-speaker competence, excel in the most demanding professional situations, create original content with artistic flair, and demonstrate complete mastery of English in all its forms and registers.',
+            programDetails: 'Expert speaker to native-level mastery in 300-500 guided hours and homework for learning outside of the classroom!'
           }
         ]
       },
@@ -1420,7 +1579,8 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
             role: 'Gerente de Marketing - Graduada Nivel B2',
             company: 'Startup Tecnológica',
             content: 'El enfoque empresarial de Kirby me ayudó a hacer la transición del inglés básico a liderar campañas de marketing internacional. La perspectiva MBA en la enseñanza marcó toda la diferencia.',
-            achievement: 'Promovida a Gerente de Marketing'
+            achievement: 'Promovida a Gerente de Marketing',
+            image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'
           },
           {
             id: 2,
@@ -1428,7 +1588,8 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
             role: 'Ingeniero de Software - Progreso A2 a B2',
             company: 'Fortune 500',
             content: 'La combinación de instrucción de inglés con enfoque tecnológico fue perfecta para mi carrera en desarrollo de software. Ahora lidero equipos de desarrollo internacional.',
-            achievement: 'Líder de Equipo Internacional'
+            achievement: 'Líder de Equipo Internacional',
+            image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'
           },
           {
             id: 3,
@@ -1436,7 +1597,8 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
             role: 'Administradora Educativa - Nivel C1',
             company: 'Distrito Escolar',
             content: 'Aprender de un educador con experiencia MBA fue invaluable. Kirby entiende tanto el aprendizaje de idiomas como las necesidades de avance profesional.',
-            achievement: 'Rol de Liderazgo Distrital'
+            achievement: 'Rol de Liderazgo Distrital',
+            image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'
           }
         ]
       },

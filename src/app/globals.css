@@ -1,104 +1,20 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #1e293b;
-  
-  /* Unique Educational Authority Palette - Professional but Distinctive */
-  --primary: #2563eb;          /* Sophisticated royal blue */
-  --primary-dark: #1d4ed8;     /* Deeper authority */
-  --primary-light: #3b82f6;    /* Lighter touch */
-  
-  --secondary: #6366f1;        /* Distinctive indigo-purple */
-  --secondary-dark: #4f46e5;   /* Rich depth */
-  --secondary-light: #818cf8;  /* Softer accent */
-  
-  --accent: #0ea5e9;           /* Unique sky blue - not typical cyan */
-  --accent-dark: #0284c7;      /* Deeper sky */
-  --accent-light: #38bdf8;     /* Bright highlight */
-  
-  --warm: #f59e0b;             /* Sophisticated amber for warmth */
-  --warm-dark: #d97706;        /* Deeper warmth */
-  --warm-light: #fbbf24;       /* Bright accent */
-  
-  --success: #059669;          /* Emerald success */
-  --warning: #dc2626;          /* Clear warning */
-  --error: #ef4444;            /* Alert red */
-  
-  /* Improved Grays for Better Readability */
-  --gray-50: #f8fafc;
-  --gray-100: #f1f5f9;
-  --gray-200: #e2e8f0;
-  --gray-300: #cbd5e1;
-  --gray-400: #94a3b8;
-  --gray-500: #64748b;
-  --gray-600: #475569;
-  --gray-700: #334155;
-  --gray-800: #1e293b;
-  --gray-900: #0f172a;
-
-  /* Better contrast text colors */
-  --text-primary: #1e293b;     /* Dark blue-gray for excellent readability */
-  --text-secondary: #475569;   /* Medium gray for secondary text */
-  --text-muted: #64748b;       /* Lighter gray for muted text */
-  --text-on-dark: #f8fafc;     /* Light text for dark backgrounds */
-
-  /* Legacy color mappings for existing components */
-  --gray-light: var(--gray-100);
-  --gray: var(--gray-200);
-  --gray-dark: var(--gray-800);
-  
-  /* Unique Gradient Combinations */
-  --gradient-primary: linear-gradient(135deg, var(--primary), var(--secondary));
-  --gradient-hero: linear-gradient(135deg, var(--gray-900), var(--gray-700), var(--primary));
-  --gradient-accent: linear-gradient(135deg, var(--accent), var(--warm));
-  --gradient-warm: linear-gradient(135deg, var(--secondary), var(--warm));
-  --gradient-authority: linear-gradient(135deg, var(--primary), var(--secondary-light));
-  
-  /* Softer ambient backgrounds for better readability */
-  --gradient-ambient-1: radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.08) 0%, transparent 70%);
-  --gradient-ambient-2: radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.06) 0%, transparent 70%);
-  --gradient-ambient-3: radial-gradient(circle at 40% 80%, rgba(14, 165, 233, 0.04) 0%, transparent 70%);
-  
-  /* Improved Shadows with better contrast */
-  --shadow-sm: 0 1px 2px 0 rgba(37, 99, 235, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(37, 99, 235, 0.1), 0 2px 4px -1px rgba(37, 99, 235, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(37, 99, 235, 0.1), 0 4px 6px -2px rgba(37, 99, 235, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(37, 99, 235, 0.1), 0 10px 10px -5px rgba(37, 99, 235, 0.04);
-  --shadow-2xl: 0 25px 50px -12px rgba(37, 99, 235, 0.25);
-  
-  /* Custom glass shadows with color tint */
-  --shadow-glass: 0 8px 32px rgba(37, 99, 235, 0.12);
-  --shadow-warm: 0 8px 32px rgba(245, 158, 11, 0.15);
-  
-  /* Border radius system */
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
-  
-  /* Typography */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0f172a;
-    --foreground: #f8fafc;
-    --text-primary: #f8fafc;
-    --text-secondary: #cbd5e1;
-    --text-muted: #94a3b8;
-    --text-on-dark: #1e293b;
-    --gray-light: var(--gray-800);
-    --gray: var(--gray-700);
-    --gray-dark: var(--gray-200);
-  }
-}
+/* Import modular CSS files with correct paths */
+@import "../styles/variables.css";
+@import "../styles/animations.css";
+@import "../styles/components/card-flip.css";
+@import "../styles/components/contact-widget.css";
+@import "../styles/components/ui-components.css";
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 body {
@@ -108,9 +24,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.6;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  width: 100%;
+  max-width: 100vw; /* Ensure body doesn't exceed viewport width */
 }
 
-/* Improved Text Readability */
+/* Base Typography */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   line-height: 1.2;
@@ -121,7 +40,6 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-muted);
 }
 
-/* Better contrast for light text on backgrounds */
 .text-on-dark {
   color: var(--text-on-dark); 
 }
@@ -131,560 +49,7 @@ h1, h2, h3, h4, h5, h6 {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* Unique Animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes scaleInBounce {
-  0% {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  50% {
-    transform: scale(1.02);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes gradientFlow {
-  0%, 100% { 
-    background-position: 0% 50%; 
-  }
-  50% { 
-    background-position: 100% 50%; 
-  }
-}
-
-@keyframes ambientFloat {
-  0%, 100% { 
-    transform: translate(0, 0) rotate(0deg); 
-  }
-  25% { 
-    transform: translate(10px, -15px) rotate(1deg); 
-  }
-  50% { 
-    transform: translate(-5px, -25px) rotate(-1deg); 
-  }
-  75% { 
-    transform: translate(-15px, -10px) rotate(0.5deg); 
-  }
-}
-
-@keyframes gentleGlow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(37, 99, 235, 0.2);
-  }
-  50% {
-    box-shadow: 0 0 30px rgba(37, 99, 235, 0.35);
-  }
-}
-
-@keyframes bounceGentle {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-8px);
-  }
-  60% {
-    transform: translateY(-4px);
-  }
-}
-
-/* Basketball-style bounce animation for scroll indicator */
-@keyframes scrollBounceVisible {
-  0% {
-    transform: translateY(0) scale(1);
-  }
-  4% {
-    transform: translateY(20px) scale(1.02);
-  }
-  8% {
-    transform: translateY(-12px) scale(0.99);
-  }
-  12% {
-    transform: translateY(12px) scale(1.01);
-  }
-  16% {
-    transform: translateY(-4px) scale(1);
-  }
-  20%, 100% {
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* WORKING PROFESSIONAL 3D CARD FLIP - CLEAN VERSION */
-
-/* Step 1: Container with perspective */
-.card-flip-authority {
-  perspective: 1000px !important;
-  height: 480px !important;
-  margin-bottom: 3rem !important;
-  cursor: pointer !important;
-  transform: none !important;
-}
-
-/* Step 2: The rotating inner container */
-.card-flip-inner-authority {
-  position: relative !important;
-  width: 100% !important;
-  height: 100% !important;
-  transform-style: preserve-3d !important;
-  transition: transform 0.6s ease-in-out !important;
-  transform: rotateY(0deg) !important;
-}
-
-/* Step 3: TRIGGER THE FLIP */
-.card-flip-authority:hover .card-flip-inner-authority {
-  transform: rotateY(180deg) !important;
-}
-
-/* Step 4: Position both faces in the same space */
-.card-flip-front-authority,
-.card-flip-back-authority {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  backface-visibility: hidden !important;
-  border-radius: 1rem !important;
-  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15) !important;
-}
-
-/* Step 5: Front face - normal orientation */
-.card-flip-front-authority {
-  transform: rotateY(0deg) !important;
-  background: white !important;
-  z-index: 2 !important;
-}
-
-/* Step 6: Back face - pre-flipped 180° with FIXED STRUCTURE */
-.card-flip-back-authority {
-  transform: rotateY(180deg) !important;
-  background: linear-gradient(135deg, #2563eb, #6366f1, #818cf8) !important;
-  color: white !important;
-  display: flex !important;
-  flex-direction: column !important;
-  z-index: 1 !important;
-  padding: 1.5rem !important;
-  /* CRITICAL: Fixed internal structure */
-  justify-content: flex-start !important;
-  align-items: stretch !important;
-}
-
-/* FIXED LAYOUT STRUCTURE - Force consistent positioning */
-.card-flip-back-authority > div:first-child {
-  /* Content area - fixed height minus button area */
-  height: calc(100% - 80px) !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: flex-start !important;
-  overflow: hidden !important;
-  padding-bottom: 1rem !important;
-}
-
-.card-flip-back-authority > div:last-child {
-  /* Button area - fixed at bottom */
-  height: 80px !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  padding-top: 0 !important;
-  margin-top: 0 !important;
-  flex-shrink: 0 !important;
-}
-
-/* Alternative approach: Absolute positioning for buttons */
-.card-flip-back-authority {
-  position: relative !important;
-}
-
-.card-flip-back-authority > div:last-child {
-  position: absolute !important;
-  bottom: 1.5rem !important;
-  left: 1.5rem !important;
-  right: 1.5rem !important;
-  height: auto !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* Adjust content area to leave space for absolute button */
-.card-flip-back-authority > div:first-child {
-  height: calc(100% - 100px) !important;
-  padding-bottom: 0 !important;
-  margin-bottom: 0 !important;
-}
-
-/* Ensure content doesn't overflow into button area */
-.card-flip-back-authority h3 {
-  color: white !important;
-  font-weight: 700 !important;
-  margin-bottom: 0.75rem !important;
-  font-size: 1.1rem !important;
-  line-height: 1.3 !important;
-}
-
-.card-flip-back-authority p {
-  color: rgba(255, 255, 255, 0.95) !important;
-  margin-bottom: 0.75rem !important;
-  font-size: 0.9rem !important;
-  line-height: 1.4 !important;
-}
-
-/* Compact the feature listings */
-.card-flip-back-authority .space-y-3,
-.card-flip-back-authority .space-y-2 {
-  margin-bottom: 0.5rem !important;
-}
-
-.card-flip-back-authority .space-y-3 > div,
-.card-flip-back-authority .space-y-2 > div {
-  margin-bottom: 0.3rem !important;
-  font-size: 0.85rem !important;
-  line-height: 1.3 !important;
-}
-
-/* Limit feature list height to prevent overflow */
-.card-flip-back-authority .space-y-2 {
-  max-height: 120px !important;
-  overflow: hidden !important;
-}
-
-/* Style the button on the back face properly */
-.card-flip-back-authority a,
-.card-flip-back-authority button {
-  background: rgba(255, 255, 255, 0.95) !important;
-  color: #2563eb !important;
-  border: 2px solid rgba(255, 255, 255, 0.3) !important;
-  padding: 0.75rem 1.5rem !important;
-  border-radius: 0.75rem !important;
-  font-weight: 600 !important;
-  text-decoration: none !important;
-  transition: all 0.3s ease !important;
-  backdrop-filter: blur(10px) !important;
-  text-align: center !important;
-  display: inline-block !important;
-  min-width: 140px !important;
-}
-
-.card-flip-back-authority a:hover,
-.card-flip-back-authority button:hover {
-  background: white !important;
-  color: #1d4ed8 !important;
-  border-color: white !important;
-  transform: translateY(-2px) scale(1.05) !important;
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3) !important;
-}
-
-/* Override ALL conflicting styles from authority-card and flex classes */
-.card-flip-front-authority.authority-card,
-.card-flip-front-authority.bg-white,
-.card-flip-front-authority.flex,
-.card-flip-front-authority.flex-col {
-  transform: rotateY(0deg) !important;
-  margin: 0 !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-}
-
-/* Force the hover override */
-.card-flip-authority:hover .card-flip-front-authority.authority-card,
-.card-flip-authority:hover .card-flip-front-authority.bg-white,
-.card-flip-authority:hover .card-flip-front-authority.flex {
-  transform: rotateY(0deg) !important;
-}
-
-/* Add subtle animation */
-.card-flip-authority:hover {
-  transform: translateY(-4px) !important;
-  transition: transform 0.3s ease !important;
-}
-
-/* Add beautiful gradient overlay to back */
-.card-flip-back-authority::before {
-  content: '' !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  background: 
-    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 60%),
-    radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 60%) !important;
-  pointer-events: none !important;
-  border-radius: inherit !important;
-  z-index: 0 !important;
-}
-
-/* Ensure content is above the overlay */
-.card-flip-back-authority > * {
-  position: relative !important;
-  z-index: 1 !important;
-}
-
-/* Fix feature list styling on back */
-.card-flip-back-authority .space-y-2 > div,
-.card-flip-back-authority .space-y-3 > div {
-  margin-bottom: 0.5rem !important;
-}
-
-.card-flip-back-authority svg {
-  flex-shrink: 0 !important;
-}
-
-/* Improve text contrast on back face */
-.card-flip-back-authority h3 {
-  color: white !important;
-  font-weight: 700 !important;
-  margin-bottom: 1rem !important;
-}
-
-.card-flip-back-authority p {
-  color: rgba(255, 255, 255, 0.95) !important;
-  margin-bottom: 1rem !important;
-}
-
-.card-flip-back-authority .opacity-90 {
-  opacity: 0.9 !important;
-  color: rgba(255, 255, 255, 0.9) !important;
-}
-
-/* Animation Classes */
-.animate-fade-in-up {
-  animation: fadeInUp 0.8s ease-out forwards;
-}
-
-.animate-slide-in-left {
-  animation: slideInLeft 0.7s ease-out forwards;
-}
-
-.animate-scale-in-bounce {
-  animation: scaleInBounce 0.6s ease-out forwards;
-}
-
-.animate-ambient-float {
-  animation: ambientFloat 8s ease-in-out infinite;
-}
-
-.animate-gradient-flow {
-  background-size: 200% 200%;
-  animation: gradientFlow 4s ease-in-out infinite;
-}
-
-.animate-gentle-glow {
-  animation: gentleGlow 3s ease-in-out infinite;
-}
-
-.animate-bounce-gentle {
-  animation: bounceGentle 2s ease-in-out infinite;
-}
-
-.scroll-bounce-animation {
-  animation: scrollBounceVisible 10s ease-in-out infinite !important;
-  animation-delay: 3s;
-}
-
-/* Staggered Animations for Visual Interest */
-.animate-stagger-1 { animation-delay: 0.1s; }
-.animate-stagger-2 { animation-delay: 0.2s; }
-.animate-stagger-3 { animation-delay: 0.3s; }
-.animate-stagger-4 { animation-delay: 0.4s; }
-.animate-stagger-5 { animation-delay: 0.5s; }
-.animate-stagger-6 { animation-delay: 0.6s; }
-
-/* Improved Card System with Better Contrast */
-.authority-card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(37, 99, 235, 0.08);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-glass);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 2rem;
-  padding-bottom: 1rem;
-}
-
-.authority-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--gradient-primary);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.authority-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-  border-color: rgba(37, 99, 235, 0.15);
-}
-
-.authority-card:hover::before {
-  opacity: 1;
-}
-
-/* Enhanced Glass Morphism with Better Readability */
-.glass-authority {
-  background: rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(25px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: var(--shadow-glass);
-}
-
-.glass-warm {
-  background: rgba(245, 158, 11, 0.12);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(245, 158, 11, 0.25);
-  box-shadow: var(--shadow-warm);
-}
-
-/* Improved Button System */
-.btn-authority {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.875rem 2rem;
-  font-weight: 600;
-  border-radius: var(--radius-lg);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-  border: none;
-  text-decoration: none;
-  position: relative;
-  overflow: hidden;
-  font-size: 0.95rem;
-  letter-spacing: 0.025em;
-  line-height: 1.4;
-}
-
-.btn-authority::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-  transition: left 0.6s;
-}
-
-.btn-authority:hover::before {
-  left: 100%;
-}
-
-.btn-primary-authority {
-  background: var(--gradient-authority);
-  color: white;
-  box-shadow: var(--shadow-md);
-}
-
-.btn-primary-authority:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-xl);
-}
-
-.btn-secondary-authority {
-  background: transparent;
-  color: var(--primary);
-  border: 2px solid var(--primary);
-}
-
-.btn-secondary-authority:hover {
-  background: var(--primary);
-  color: white;
-  transform: translateY(-2px);
-}
-
-.btn-warm-authority {
-  background: var(--gradient-warm);
-  color: white;
-  box-shadow: var(--shadow-warm);
-}
-
-.btn-warm-authority:hover {
-  transform: translateY(-3px) scale(1.02);
-}
-
-/* Improved Gradient Text with Better Contrast */
-.gradient-text-authority {
-  background: var(--gradient-authority);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 800;
-  display: inline-block;
-}
-
-.gradient-text-warm {
-  background: var(--gradient-warm);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 700;
-  display: inline-block;
-}
-
-.gradient-text-accent {
-  background: var(--gradient-accent);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 700;
-  display: inline-block;
-}
-
-.gradient-text-primary {
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 700;
-  display: inline-block;
-}
-
-/* Better fallback for browsers that don't support background-clip */
-@supports not (-webkit-background-clip: text) {
-  .gradient-text-authority,
-  .gradient-text-warm,
-  .gradient-text-accent,
-  .gradient-text-primary {
-    color: var(--primary);
-    background: none;
-  }
-}
-
-/* Improved Hero System with Better Text Contrast */
+/* Hero Section */
 .hero-authority {
   background: var(--gradient-hero);
   position: relative;
@@ -716,52 +81,52 @@ h1, h2, h3, h4, h5, h6 {
   background: linear-gradient(to top, var(--background), transparent);
 }
 
-/* Hero text should be white and readable */
 .hero-authority .text-on-dark {
   color: var(--text-on-dark);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Floating Elements for Ambient Effect */
+/* Floating Elements */
 .floating-element {
   position: absolute;
   border-radius: var(--radius-lg);
   opacity: 0.3;
   animation: ambientFloat 12s ease-in-out infinite;
+  max-width: calc(100vw - 40px); /* Prevent overflow */
 }
 
 .floating-element-1 {
   top: 15%;
-  left: 10%;
-  width: 80px;
-  height: 80px;
+  left: clamp(10px, 10%, calc(100% - 90px)); /* Responsive positioning */
+  width: clamp(60px, 8vw, 80px); /* Responsive size */
+  height: clamp(60px, 8vw, 80px);
   background: var(--gradient-primary);
   animation-delay: 0s;
 }
 
 .floating-element-2 {
   top: 25%;
-  right: 15%;
-  width: 60px;
-  height: 60px;
+  right: clamp(10px, 15%, calc(100% - 70px));
+  width: clamp(45px, 6vw, 60px);
+  height: clamp(45px, 6vw, 60px);
   background: var(--gradient-warm);
   animation-delay: 3s;
 }
 
 .floating-element-3 {
   bottom: 30%;
-  left: 20%;
-  width: 100px;
-  height: 40px;
+  left: clamp(10px, 20%, calc(100% - 110px));
+  width: clamp(80px, 10vw, 100px);
+  height: clamp(30px, 4vw, 40px);
   background: var(--gradient-accent);
   animation-delay: 6s;
 }
 
 .floating-element-4 {
   bottom: 40%;
-  right: 10%;
-  width: 70px;
-  height: 70px;
+  right: clamp(10px, 10%, calc(100% - 80px));
+  width: clamp(50px, 7vw, 70px);
+  height: clamp(50px, 7vw, 70px);
   background: var(--gradient-authority);
   animation-delay: 9s;
 }
@@ -782,7 +147,7 @@ h1, h2, h3, h4, h5, h6 {
   color: rgba(255, 255, 255, 1);
 }
 
-/* Override any default smooth scroll behavior */
+/* Base Styles */
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
@@ -811,7 +176,7 @@ html {
   }
 }
 
-/* Better Typography Hierarchy */
+/* Typography Hierarchy */
 .text-hero-authority {
   font-size: clamp(2.75rem, 6vw, 5rem);
   font-weight: 900;
@@ -832,7 +197,7 @@ html {
   line-height: 1.3;
 }
 
-/* Improved readability for different text contexts */
+/* Text Context Styles */
 .hero-text {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -845,31 +210,7 @@ html {
   font-weight: 700;
 }
 
-/* Accessibility Enhancements */
-@media (prefers-reduced-motion: reduce) {
-  .card-flip-inner-authority {
-    transition: none;
-  }
-  
-  .card-flip-authority:hover .card-flip-inner-authority {
-    transform: none;
-  }
-  
-  .scroll-bounce-animation {
-    animation: scrollBounceVisible 10s ease-in-out infinite !important;
-    animation-delay: 3s !important;
-  }
-  
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* Better Focus Styles */
+/* Focus Styles */
 .focus-authority:focus,
 .btn-authority:focus,
 input:focus,

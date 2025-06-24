@@ -99,7 +99,7 @@ export default function Navbar() {
 
   const navLinks = [
     { name: t('nav', 'home'), href: '/' },
-    { name: t('nav', 'teachersPayTeachers'), href: '/teachers-pay-teachers' },
+    // { name: t('nav', 'teachersPayTeachers'), href: '/teachers-pay-teachers' },
     { name: t('nav', 'englishClasses'), href: '/english-classes' },
   ];
 
@@ -189,7 +189,7 @@ export default function Navbar() {
             {/* Mobile Language Switcher */}
             <button 
               onClick={handleLanguageSwitch}
-              className="flex items-center px-3 py-2 text-xs font-medium text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded"
+              className="cursor-pointer flex items-center px-3 py-2 text-xs font-medium text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded"
               aria-label={`Switch to ${alternateLocaleText}`}
             >
               <TranslateIcon size={16} className="mr-1" />

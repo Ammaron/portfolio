@@ -1,0 +1,96 @@
+:root {
+  --background: #ffffff;
+  --foreground: #1e293b;
+  
+  /* Unique Educational Authority Palette - Professional but Distinctive */
+  --primary: #2563eb;          /* Sophisticated royal blue */
+  --primary-dark: #1d4ed8;     /* Deeper authority */
+  --primary-light: #3b82f6;    /* Lighter touch */
+  
+  --secondary: #6366f1;        /* Distinctive indigo-purple */
+  --secondary-dark: #4f46e5;   /* Rich depth */
+  --secondary-light: #818cf8;  /* Softer accent */
+  
+  --accent: #0ea5e9;           /* Unique sky blue - not typical cyan */
+  --accent-dark: #0284c7;      /* Deeper sky */
+  --accent-light: #38bdf8;     /* Bright highlight */
+  
+  --warm: #f59e0b;             /* Sophisticated amber for warmth */
+  --warm-dark: #d97706;        /* Deeper warmth */
+  --warm-light: #fbbf24;       /* Bright accent */
+  
+  --success: #059669;          /* Emerald success */
+  --warning: #dc2626;          /* Clear warning */
+  --error: #ef4444;            /* Alert red */
+  
+  /* Improved Grays for Better Readability */
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --gray-900: #0f172a;
+
+  /* Better contrast text colors */
+  --text-primary: #1e293b;     /* Dark blue-gray for excellent readability */
+  --text-secondary: #475569;   /* Medium gray for secondary text */
+  --text-muted: #64748b;       /* Lighter gray for muted text */
+  --text-on-dark: #f8fafc;     /* Light text for dark backgrounds */
+
+  /* Legacy color mappings for existing components */
+  --gray-light: var(--gray-100);
+  --gray: var(--gray-200);
+  --gray-dark: var(--gray-800);
+  
+  /* Unique Gradient Combinations */
+  --gradient-primary: linear-gradient(135deg, var(--primary), var(--secondary));
+  --gradient-hero: linear-gradient(135deg, var(--gray-900), var(--gray-700), var(--primary));
+  --gradient-accent: linear-gradient(135deg, var(--accent), var(--warm));
+  --gradient-warm: linear-gradient(135deg, var(--secondary), var(--warm));
+  --gradient-authority: linear-gradient(135deg, var(--primary), var(--secondary-light));
+  
+  /* Softer ambient backgrounds for better readability */
+  --gradient-ambient-1: radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.08) 0%, transparent 70%);
+  --gradient-ambient-2: radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.06) 0%, transparent 70%);
+  --gradient-ambient-3: radial-gradient(circle at 40% 80%, rgba(14, 165, 233, 0.04) 0%, transparent 70%);
+  
+  /* Improved Shadows with better contrast */
+  --shadow-sm: 0 1px 2px 0 rgba(37, 99, 235, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(37, 99, 235, 0.1), 0 2px 4px -1px rgba(37, 99, 235, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(37, 99, 235, 0.1), 0 4px 6px -2px rgba(37, 99, 235, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(37, 99, 235, 0.1), 0 10px 10px -5px rgba(37, 99, 235, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(37, 99, 235, 0.25);
+  
+  /* Custom glass shadows with color tint */
+  --shadow-glass: 0 8px 32px rgba(37, 99, 235, 0.12);
+  --shadow-warm: 0 8px 32px rgba(245, 158, 11, 0.15);
+  
+  /* Border radius system */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0f172a;
+    --foreground: #f8fafc;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --text-on-dark: #1e293b;
+    --gray-light: var(--gray-800);
+    --gray: var(--gray-700);
+    --gray-dark: var(--gray-200);
+  }
+}
