@@ -1,14 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import { useI18n } from '@/i18n/i18n-context';
 import { Certificate, ShieldCheckIcon, Globe, GraduationCap } from '@phosphor-icons/react';
 
 export default function CertificationsPage() {
   const [searchCode, setSearchCode] = useState('');
-  const { t } = useI18n();
 
   const handleVerification = (e: React.FormEvent) => {
     e.preventDefault();

@@ -4,6 +4,13 @@ import { createCertificate } from '@/lib/database';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_here';
 
+interface JwtPayload {
+  role: string;
+  username?: string;
+  iat?: number;
+  exp?: number;
+}
+
 // Helper function to verify JWT token
 function verifyAdminToken(authHeader: string | null) {
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -13,14 +20,14 @@ function verifyAdminToken(authHeader: string | null) {
   const token = authHeader.substring(7);
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as any;
+    const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
     
     if (decoded.role !== 'admin') {
       return { valid: false, error: 'Insufficient permissions' };
     }
 
     return { valid: true, user: decoded };
-  } catch (jwtError) {
+  } catch {
     return { valid: false, error: 'Invalid or expired token' };
   }
 }
@@ -82,10 +89,11 @@ export async function POST(request: NextRequest) {
         }
       });
 
-    } catch (dbError: any) {
+    } catch (dbError: unknown) {
       console.error('Database error creating certificate:', dbError);
+      const errorMessage = dbError instanceof Error ? dbError.message : 'Failed to create certificate in database';
       return NextResponse.json(
-        { success: false, error: dbError.message || 'Failed to create certificate in database' },
+        { success: false, error: errorMessage },
         { status: 500 }
       );
     }

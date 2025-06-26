@@ -1,9 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Image from 'next/image';
-import { useI18n } from '@/i18n/i18n-context';
 import { ShieldCheckIcon, WarningIcon, CalendarIcon, UserIcon, GraduationCap, ClockIcon } from '@phosphor-icons/react';
 
 interface Certificate {
@@ -33,28 +31,9 @@ export default function CertificateVerificationPage() {
   const [result, setResult] = useState<VerificationResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
-  const { t } = useI18n();
   const searchParams = useSearchParams();
 
-  // Load search history from localStorage and check URL params
-  useEffect(() => {
-    const history = localStorage.getItem('cert_search_history');
-    if (history) {
-      setSearchHistory(JSON.parse(history));
-    }
-
-    // Check for URL parameter
-    const codeFromUrl = searchParams?.get('code');
-    if (codeFromUrl) {
-      setSearchCode(codeFromUrl);
-      // Auto-verify if code is provided in URL
-      setTimeout(() => {
-        handleVerificationWithCode(codeFromUrl);
-      }, 500);
-    }
-  }, [searchParams]);
-
-  const handleVerificationWithCode = async (code: string) => {
+  const handleVerificationWithCode = useCallback(async (code: string) => {
     setIsLoading(true);
     setResult(null);
 
@@ -79,7 +58,7 @@ export default function CertificateVerificationPage() {
         setSearchHistory(newHistory);
         localStorage.setItem('cert_search_history', JSON.stringify(newHistory));
       }
-    } catch (error) {
+    } catch {
       setResult({
         success: false,
         error: 'Failed to verify certificate. Please try again.'
@@ -87,7 +66,25 @@ export default function CertificateVerificationPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [verificationCode, searchHistory]);
+
+  // Load search history from localStorage and check URL params
+  useEffect(() => {
+    const history = localStorage.getItem('cert_search_history');
+    if (history) {
+      setSearchHistory(JSON.parse(history));
+    }
+
+    // Check for URL parameter
+    const codeFromUrl = searchParams?.get('code');
+    if (codeFromUrl) {
+      setSearchCode(codeFromUrl);
+      // Auto-verify if code is provided in URL
+      setTimeout(() => {
+        handleVerificationWithCode(codeFromUrl);
+      }, 500);
+    }
+  }, [searchParams, handleVerificationWithCode]);
 
   const handleVerification = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -401,7 +398,7 @@ export default function CertificateVerificationPage() {
               <div>
                 <h4 className="font-semibold text-gray-900 mb-3">Having trouble verifying?</h4>
                 <ul className="space-y-2 text-sm text-gray-600">
-                  <li>• Ensure you're entering the complete certificate code</li>
+                  <li>• Ensure you&apos;re entering the complete certificate code</li>
                   <li>• Check for any typos or extra characters</li>
                   <li>• Verification codes are case-sensitive</li>
                   <li>• Contact us if you continue having issues</li>

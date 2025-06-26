@@ -31,8 +31,14 @@ interface SuccessResult {
   studentEmail?: string;
 }
 
+interface ConfettiOptions {
+  spread?: number;
+  startVelocity?: number;
+  decay?: number;
+  scalar?: number;
+}
+
 export default function AdminCertificationsPage() {
-  const [activeTab, setActiveTab] = useState<'create' | 'search'>('create');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [authState, setAuthState] = useState<AuthState>({
     isAuthenticated: false,
@@ -86,7 +92,7 @@ export default function AdminCertificationsPage() {
           error: null
         });
       }
-    } catch (error) {
+    } catch {
       localStorage.removeItem('admin_token');
       setAuthState({
         isAuthenticated: false,
@@ -126,7 +132,7 @@ export default function AdminCertificationsPage() {
           error: result.error || 'Invalid credentials'
         });
       }
-    } catch (error) {
+    } catch {
       setAuthState({
         isAuthenticated: false,
         isLoading: false,
@@ -179,7 +185,7 @@ export default function AdminCertificationsPage() {
       origin: { y: 0.7 }
     };
 
-    function fire(particleRatio: number, opts: any) {
+    function fire(particleRatio: number, opts: ConfettiOptions) {
       confetti({
         ...defaults,
         ...opts,
@@ -216,37 +222,48 @@ export default function AdminCertificationsPage() {
   };
 
   // Send certificate email using EmailJS
-  const sendCertificateEmail = async (certificate: any) => {
-    if (!certificate.student_email) return;
+  const sendCertificateEmail = async (certificate: unknown) => {
+    const cert = certificate as {
+      student_email?: string;
+      student_name: string;
+      certificate_code: string;
+      course_type: string;
+      level: string;
+      completion_date: string;
+      grade?: string;
+      hours_completed?: number;
+    };
+    
+    if (!cert.student_email) return;
 
     try {
       const templateParams = {
-        to_name: certificate.student_name,
-        to_email: certificate.student_email,
-        certificate_code: certificate.certificate_code,
-        course_type: certificate.course_type,
-        level: certificate.level,
-        completion_date: new Date(certificate.completion_date).toLocaleDateString('en-US', {
+        to_name: cert.student_name,
+        to_email: cert.student_email,
+        certificate_code: cert.certificate_code,
+        course_type: cert.course_type,
+        level: cert.level,
+        completion_date: new Date(cert.completion_date).toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'long',
           day: 'numeric'
         }),
-        verification_url: `${window.location.origin}/certifications/verify?code=${certificate.certificate_code}`,
+        verification_url: `${window.location.origin}/certifications/verify?code=${cert.certificate_code}`,
         from_name: 'Kirby McDonald',
-        grade: certificate.grade || 'Pass',
-        hours_completed: certificate.hours_completed || 'N/A',
-        message: `Congratulations ${certificate.student_name}!
+        grade: cert.grade || 'Pass',
+        hours_completed: cert.hours_completed || 'N/A',
+        message: `Congratulations ${cert.student_name}!
 
-Your ${certificate.course_type} (Level ${certificate.level}) certificate has been issued.
+Your ${cert.course_type} (Level ${cert.level}) certificate has been issued.
 
 Certificate Details:
-- Certificate Code: ${certificate.certificate_code}
-- Course: ${certificate.course_type}
-- Level: ${certificate.level}
-- Grade: ${certificate.grade || 'Pass'}
-- Hours Completed: ${certificate.hours_completed || 'N/A'}
+- Certificate Code: ${cert.certificate_code}
+- Course: ${cert.course_type}
+- Level: ${cert.level}
+- Grade: ${cert.grade || 'Pass'}
+- Hours Completed: ${cert.hours_completed || 'N/A'}
 
-You can verify your certificate at any time using this link: ${window.location.origin}/certifications/verify?code=${certificate.certificate_code}
+You can verify your certificate at any time using this link: ${window.location.origin}/certifications/verify?code=${cert.certificate_code}
 
 This certificate demonstrates your achievement in professional English communication and is recognized internationally. You can share this verification link with employers, universities, or other institutions that require proof of your English proficiency.
 
@@ -265,8 +282,8 @@ Professional English Programs`
 
       console.log('Certificate email sent successfully:', response);
       return true;
-    } catch (error) {
-      console.error('Failed to send certificate email:', error);
+    } catch {
+      console.log('Failed to send certificate email');
       return false;
     }
   };
@@ -326,9 +343,8 @@ Professional English Programs`
           alert(result.error || 'Failed to create certificate');
         }
       }
-    } catch (error) {
+    } catch {
       alert('Network error. Please try again.');
-      console.error('Certificate creation error:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -683,7 +699,7 @@ Professional English Programs`
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  Leave empty for certificates that don't expire
+                  Leave empty for certificates that don&apos;t expire
                 </p>
               </div>
 

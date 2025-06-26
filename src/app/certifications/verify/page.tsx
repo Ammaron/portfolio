@@ -1,11 +1,15 @@
 import { redirect } from 'next/navigation';
 
 interface PageProps {
-  searchParams: { code?: string };
+  searchParams: Promise<{ code?: string }>;
+
 }
 
-export default function CertificationsVerifyRedirect({ searchParams }: PageProps) {
+export default async function CertificationsVerifyRedirect({ searchParams }: PageProps) {
+  // Await searchParams in Next.js 15
+  const params = await searchParams;
+
   // Redirect to the English version with the code parameter if provided
-  const codeParam = searchParams.code ? `?code=${searchParams.code}` : '';
+  const codeParam = params.code ? `?code=${params.code}` : '';
   redirect(`/en/certifications/verify${codeParam}`);
 }

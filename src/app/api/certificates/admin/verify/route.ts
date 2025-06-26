@@ -3,6 +3,13 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_here';
 
+interface JwtPayload {
+  role: string;
+  username?: string;
+  iat?: number;
+  exp?: number;
+}
+
 export async function GET(request: NextRequest) {
   try {
     const authHeader = request.headers.get('authorization');
@@ -17,7 +24,7 @@ export async function GET(request: NextRequest) {
     const token = authHeader.substring(7);
 
     try {
-      const decoded = jwt.verify(token, JWT_SECRET) as any;
+      const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
       
       // Check if token is valid and user has admin role
       if (decoded.role !== 'admin') {
@@ -36,7 +43,7 @@ export async function GET(request: NextRequest) {
         }
       });
 
-    } catch (jwtError) {
+    } catch {
       return NextResponse.json(
         { success: false, error: 'Invalid or expired token' },
         { status: 401 }
