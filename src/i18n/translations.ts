@@ -998,15 +998,15 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
       },
       testimonials: {
         title: 'Professional Success Stories',
-        description: 'Hear from professionals who have advanced their careers through our business-focused English programs.',
+        description: 'Hear from others who have advanced their English journey through our programs.',
         startButton: 'Start Your Professional Journey',
         list: [
           {
             id: 1,
-            name: 'Maria Rodriguez',
-            role: 'Marketing Manager - B2 Level Graduate',
+            name: 'Even',
+            role: 'A2',
             company: 'Tech Startup',
-            content: 'Kirby\'s business-focused approach helped me transition from basic English to leading international marketing campaigns. The MBA perspective in teaching made all the difference.',
+            content: 'Mr. McDonald helped me comprehend and understand the English language. I understand and can write in that language better than before. I like Mr. McDonald\'s classes.',
             achievement: 'Promoted to Marketing Manager',
             image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'
           },
@@ -1499,7 +1499,62 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
         interactive: 'Interactivo',
         roiDriven: 'Enfocado en ROI',
         businessAligned: 'Alineado con Negocios',
-        list: []
+        list: [
+          {
+            title: 'Excelencia en Comunicación Empresarial',
+            description: 'Currículo diseñado por MBA para habilidades de comunicación profesional con seguimiento de ROI y aplicaciones del mundo real',
+            price: '$24.99',
+            category: 'business',
+            grade: '9-12, Ed. Adultos',
+            hasInteractive: true,
+            features: ['Métricas de ROI', 'Casos de Negocio', 'Enfoque en Liderazgo', 'Herramientas de Evaluación']
+          },
+          {
+            title: 'Integración Tecnológica para Educadores',
+            description: 'Marco estratégico para implementar tecnología en entornos educativos con medición de impacto empresarial',
+            price: '$29.99',
+            category: 'tech',
+            grade: 'Desarrollo Profesional',
+            hasInteractive: true,
+            features: ['Guía de Implementación', 'Pila Tecnológica', 'Calculadora de ROI', 'Materiales de Capacitación']
+          },
+          {
+            title: 'Inglés Profesional para el Avance Profesional',
+            description: 'Currículo de inglés enfocado en negocios diseñado para el crecimiento profesional y desarrollo profesional',
+            price: '$19.99',
+            category: 'language',
+            grade: 'Profesional Adulto',
+            hasInteractive: false,
+            features: ['Enfoque Profesional', 'Preparación para Entrevistas', 'Vocabulario de Negocios', 'Habilidades de Networking']
+          },
+          {
+            title: 'Kit de Herramientas de Liderazgo Educativo',
+            description: 'Estrategias informadas por MBA para líderes educativos con herramientas prácticas para la gestión de equipos y el crecimiento',
+            price: '$34.99',
+            category: 'leadership',
+            grade: 'Liderazgo/Admin',
+            hasInteractive: true,
+            features: ['Gestión de Equipos', 'Estrategias de Crecimiento', 'Planificación Presupuestaria', 'Métricas de Desempeño']
+          },
+          {
+            title: 'Estrategia e Implementación de EdTech',
+            description: 'Guía completa para integrar tecnología en la educación con desarrollo de casos de negocio y análisis de ROI',
+            price: '$27.99',
+            category: 'tech',
+            grade: 'Liderazgo K-12',
+            hasInteractive: true,
+            features: ['Planificación Estratégica', 'Selección de Proveedores', 'Programas de Capacitación', 'Métricas de Éxito']
+          },
+          {
+            title: 'Habilidades Empresariales para Educadores',
+            description: 'Currículo de desarrollo profesional que ayuda a los educadores a desarrollar perspicacia empresarial y habilidades de liderazgo',
+            price: '$22.99',
+            category: 'business',
+            grade: 'Desarrollo Profesional',
+            hasInteractive: false,
+            features: ['Gestión Presupuestaria', 'Pensamiento Estratégico', 'Desarrollo de Liderazgo', 'Planificación de Carrera']
+          }
+        ]
       },
       interactive: {
         title: 'Aprendizaje Mejorado por Tecnología',
@@ -1530,7 +1585,7 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
         button: 'Explorar Programas'
       },
       tabs: {
-        classOfferings: 'Ofertas de Programas',
+        classOfferings: 'Programas',
         pricing: 'Opciones de Inversión',
         testimonials: 'Historias de Éxito'
       },
@@ -1560,12 +1615,122 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
         clickForDetails: 'Haz clic para detalles',
         connectButton: 'Conectar',
         programDuration: 'Comunicador funcional en 90-100 horas!',
+        // Professional credentials badges
         mbaBadge: 'MBA',
         experienceBadge: '5+ Años',
         bilingualBadge: 'Bilingüe',
         scheduleConsultation: 'Programar Consulta',
         professionalInstructionTitle: 'Instrucción Profesional',
-        list: []
+        list: [
+          {
+            id: 'essential-foundations',
+            level: 'Fundamentos Esenciales de Inglés (A1)',
+            description: 'Domina los componentes básicos de la comunicación en inglés',
+            topics: [
+              'Comunicación Personal - Preséntate, comparte información básica y construye conexiones sociales',
+              'Navegación de la Vida Diaria - Maneja situaciones rutinarias como compras, cenas y transporte',
+              'Esenciales del Lugar de Trabajo - Preséntate profesionalmente y participa en conversaciones de trabajo sencillas',
+              'Fundamentos de Gramática - Domina el tiempo presente, preguntas básicas y estructuras de oraciones esenciales',
+              'Vocabulario Práctico - Aprende más de 800 palabras de alta frecuencia para uso inmediato en el mundo real',
+              'Confianza al Hablar - Practica la pronunciación y fluidez a través de conversaciones guiadas',
+              'Escritura Funcional - Completa formularios, escribe mensajes simples y correspondencia personal básica',
+              'Conciencia Cultural - Comprende costumbres sociales básicas y estilos de comunicación',
+              'Certificación Oficial - Recibe un certificado CEFR A1 reconocido internacionalmente al finalizar'
+            ],
+            outcomes: 'Al finalizar, te presentarás con confianza, manejarás conversaciones diarias básicas y navegarás situaciones esenciales como compras, pedir comida y pedir direcciones en entornos de habla inglesa.',
+            programDetails: '¡De principiante completo a comunicador funcional en 90-100 horas guiadas y tareas para aprendizaje fuera del aula!'
+          },
+          {
+            id: 'practical-communication',
+            level: 'Comunicación Práctica en Inglés (A2)',
+            description: 'Construye confianza para interacciones en el mundo real',
+            topics: [
+              'Compartir Experiencias - Describe eventos pasados, planes futuros y experiencias personales en detalle',
+              'Dominio en Viajes - Navega aeropuertos, hoteles, restaurantes y atracciones turísticas de forma independiente',
+              'Interacción Social - Participa en conversaciones más largas sobre pasatiempos, opiniones y eventos actuales',
+              'Desarrollo Profesional - Participa en reuniones, haz presentaciones y establece contactos de manera efectiva',
+              'Gramática Avanzada - Domina tiempos pasados, formas futuras y expresiones condicionales',
+              'Vocabulario Ampliado - Adquiere más de 1,500 palabras incluyendo conceptos abstractos y términos especializados',
+              'Habilidades de Escucha - Comprende películas, podcasts y patrones de habla natural',
+              'Competencia en Escritura - Crea correos electrónicos, informes y narrativas personales con estructura adecuada',
+              'Certificación Oficial - Recibe un certificado CEFR A2 reconocido internacionalmente al finalizar'
+            ],
+            outcomes: 'Al finalizar, discutirás cómodamente tus experiencias y planes, manejarás conversaciones extendidas sobre temas familiares y te comunicarás eficazmente en la mayoría de las situaciones de viaje y sociales con hablantes de inglés.',
+            programDetails: '¡De elemental a comunicador seguro en 90-100 horas guiadas y tareas para aprendizaje fuera del aula!'
+          },
+          {
+            id: 'independent-mastery',
+            level: 'Dominio Independiente del Inglés (B1)',
+            description: 'Exprésate claramente sobre cualquier tema familiar',
+            topics: [
+              'Expresión de Opiniones - Articula puntos de vista, justifica decisiones y participa en debates de manera efectiva',
+              'Resolución de Problemas - Maneja quejas, negocia soluciones y gestiona situaciones inesperadas',
+              'Habilidades Académicas - Escribe ensayos estructurados, analiza textos y presenta hallazgos de investigación',
+              'Avance Profesional - Lidera reuniones, realiza presentaciones y entrevista con confianza',
+              'Gramática Compleja - Domina el discurso indirecto, la voz pasiva y las formas condicionales avanzadas',
+              'Vocabulario Especializado - Aprende más de 2,500 palabras incluyendo términos comerciales, académicos y técnicos',
+              'Comprensión de Medios - Comprende noticias, documentales y materiales auténticos de forma independiente',
+              'Escritura Creativa - Produce historias, cartas formales y textos persuasivos con estilo',
+              'Certificación Oficial - Recibe un certificado CEFR B1 reconocido internacionalmente al finalizar'
+            ],
+            outcomes: 'Al finalizar, expresarás opiniones con confianza, manejarás situaciones inesperadas en el extranjero, participarás activamente en discusiones laborales y articularás ideas complejas sobre temas que te interesan.',
+            programDetails: '¡De hablante intermedio a comunicador autónomo en 150-200 horas guiadas y tareas para aprendizaje fuera del aula!'
+          },
+          {
+            id: 'advanced-fluency',
+            level: 'Fluidez Avanzada en Inglés (B2)',
+            description: 'Comunícate con confianza y precisión similares a las de un nativo',
+            topics: [
+              'Discurso Avanzado - Discute conceptos abstractos, analiza temas complejos y debate con sofisticación',
+              'Excelencia Profesional - Lidera equipos internacionales, negocia contratos y presenta a ejecutivos senior',
+              'Dominio Académico - Escribe trabajos de investigación, análisis críticos e informes completos',
+              'Fluidez Cultural - Comprende el humor, los modismos y las referencias culturales sutiles de forma natural',
+              'Gramática Sofisticada - Perfecciona estructuras avanzadas, variaciones estilísticas y conciencia de registro',
+              'Vocabulario Extenso - Domina más de 4,000 palabras incluyendo expresiones matizadas y lenguaje académico',
+              'Comprensión a Nivel Nativo - Sigue el habla rápida, discusiones técnicas y obras literarias',
+              'Comunicación Persuasiva - Elabora argumentos convincentes, presentaciones influyentes y correspondencia profesional',
+              'Certificación Oficial - Recibe un certificado CEFR B2 reconocido internacionalmente al finalizar'
+            ],
+            outcomes: 'Al finalizar, participarás con fluidez en discusiones complejas, destacarás en entornos profesionales, comprenderás contenido matizado y comunicarás ideas sofisticadas con precisión y fluidez natural.',
+            programDetails: '¡De intermedio-alto a hablante casi nativo en 150-200 horas guiadas y tareas para aprendizaje fuera del aula!'
+          },
+          {
+            id: 'expert-proficiency',
+            level: 'Competencia Experta en Inglés (C1)',
+            description: 'Alcanza elocuencia y precisión a nivel profesional',
+            topics: [
+              'Comunicación Ejecutiva - Lidera discusiones de junta, da discursos principales e influye en partes interesadas senior',
+              'Excelencia Académica - Realiza investigaciones, escribe disertaciones y participa en discursos académicos',
+              'Pensamiento Estratégico - Analiza escenarios complejos, sintetiza información y presenta recomendaciones estratégicas',
+              'Liderazgo Intercultural - Navega entornos de negocios internacionales y sensibilidades culturales con pericia',
+              'Gramática Magistral - Emplea estructuras sofisticadas con precisión perfecta y conciencia estilística',
+              'Vocabulario Profesional - Domina más de 6,000 palabras incluyendo terminología especializada y distinciones sutiles',
+              'Análisis Crítico - Evalúa textos complejos, medios y argumentos con profundidad y perspicacia',
+              'Escritura Avanzada - Crea documentos de calidad de publicación, propuestas e informes analíticos',
+              'Certificación Oficial - Recibe un certificado CEFR C1 reconocido internacionalmente al finalizar'
+            ],
+            outcomes: 'Al finalizar, te comunicarás con fluidez de hablante nativo, liderarás negociaciones complejas, analizarás textos sofisticados y te expresarás con notable precisión y estilo natural en cualquier contexto profesional o académico.',
+            programDetails: '¡De hablante avanzado a dominio a nivel nativo en 200-300 horas guiadas y tareas para aprendizaje fuera del aula!'
+          },
+          {
+            id: 'native-mastery',
+            level: 'Dominio Nativo del Inglés (C2)',
+            description: 'Alcanza la cima de la pericia en el idioma inglés',
+            topics: [
+              'Discurso Intelectual - Participa en debates filosóficos, crítica literaria y discusiones académicas de alto nivel',
+              'Liderazgo Global - Navega las negociaciones internacionales más complejas y comunicaciones diplomáticas',
+              'Maestría Creativa - Escribe con expresión artística, humor y técnicas estilísticas sofisticadas',
+              'Distinción Profesional - Destaca en roles que requieren habilidades lingüísticas excepcionales: interpretación, traducción, edición',
+              'Gramática Impecable - Demuestra un dominio intuitivo de todas las sutilezas gramaticales y matices estilísticos',
+              'Vocabulario Completo - Domina más de 8,000 palabras con plena comprensión de connotaciones y registro',
+              'Apreciación Literaria - Analiza y aprecia literatura, poesía y textos culturales complejos',
+              'Escritura Autorizada - Produce contenido a nivel de experto: artículos académicos, publicaciones profesionales, obras creativas',
+              'Certificación Oficial - Recibe un certificado CEFR C2 reconocido internacionalmente al finalizar'
+            ],
+            outcomes: 'Al finalizar, poseerás competencia de hablante nativo, destacarás en las situaciones profesionales más exigentes, crearás contenido original con estilo artístico y demostrarás un dominio completo del inglés en todas sus formas y registros.',
+            programDetails: '¡De hablante experto a dominio a nivel nativo en 300-500 horas guiadas y tareas para aprendizaje fuera del aula!'
+          }
+        ]
       },
       pricing: {
         title: 'Inversión en Desarrollo Profesional',
@@ -1580,14 +1745,93 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
         communication: 'Comunicación vía LinkedIn, correo y WhatsApp',
         careerFocused: 'Enfoque en avance profesional',
         industryMaterials: 'Materiales específicos incluidos',
-        options: []
+        options: [
+          {
+            id: 'executive-coaching',
+            title: 'Coaching Ejecutivo',
+            price: '$85',
+            unit: 'por sesión',
+            features: [
+              'Instrucción ejecutiva uno a uno',
+              'Currículo personalizado para tu industria',
+              'Horarios flexibles para profesionales ocupados',
+              'Estrategia de avance profesional incluida',
+              'Evaluaciones de comunicación empresarial',
+              'Coaching de presentación y oratoria',
+              'Etiqueta de negocios internacional'
+            ],
+            popular: true,
+            description: 'Coaching premium para ejecutivos y profesionales senior'
+          },
+          {
+            id: 'professional-group',
+            title: 'Grupo Profesional',
+            price: '$45',
+            unit: 'por sesión',
+            features: [
+              'Grupos pequeños de 2-4 profesionales',
+              'Currículo enfocado en la industria',
+              'Aprendizaje entre pares y networking',
+              'Evaluaciones de progreso regulares',
+              'Discusiones de casos de estudio de negocios',
+              'Materiales y recursos incluidos'
+            ],
+            popular: false,
+            description: 'Aprendizaje colaborativo con colegas profesionales'
+          },
+          {
+            id: 'corporate-training',
+            title: 'Capacitación Corporativa',
+            price: 'Personalizado',
+            unit: 'precio',
+            features: [
+              'Capacitación de equipos en sitio o virtual',
+              'Personalizado para las necesidades de la empresa',
+              'Escalable para cualquier tamaño de equipo',
+              'Medición e informes de ROI',
+              'Seguimiento del progreso de los empleados',
+              'Integración con sistemas de RRHH',
+              'Soporte y recursos continuos'
+            ],
+            popular: false,
+            description: 'Soluciones de capacitación integrales para organizaciones'
+          }
+        ]
       },
       testimonials: {
         title: 'Historias de Éxito',
-        description: 'Profesionales que han avanzado sus carreras.',
+        description: 'Escucha de otros que han avanzado su Ingles por medio de nuestra programas.',
         startButton: 'Comenzar Viaje',
-        list: []
-      },
+        list: [
+          {
+            id: 1,
+            name: 'Even',
+            role: 'A2',
+            company: 'Tech Startup',
+            content: 'Mr. McDonald me ayudó comprender y entender este idioma del inglés, entiendo y puedo escribir a ese idioma mejor que antes. Me gusta las clases de Mr. McDonald.',
+            achievement: 'Promovido a Gerente de Marketing',
+            image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'
+          },
+          {
+            id: 2,
+            name: 'Carlos Mendez',
+            role: 'Ingeniero de Software - Progreso de A2 a B2',
+            company: 'Fortune 500',
+            content: 'La combinación de instrucción de inglés con enfoque en tecnología fue perfecta para mi carrera en desarrollo de software. Ahora lidero equipos de desarrollo internacionales.',
+            achievement: 'Líder de Equipo Internacional',
+            image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'
+          },
+          {
+            id: 3,
+            name: 'Ana Gutierrez',
+            role: 'Administradora Educativa - Nivel C1',
+            company: 'Distrito Escolar',
+            content: 'Aprender de un educador con experiencia de MBA fue invaluable. Kirby entiende tanto las necesidades de aprendizaje de idiomas como las de avance profesional.',
+            achievement: 'Puesto de Liderazgo de Distrito',
+            image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'
+          }
+        ]
+           },
       cta: {
         title: '¿Listo para Avanzar?',
         description: 'Programas MBA para lograr objetivos profesionales.',

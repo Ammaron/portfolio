@@ -86,6 +86,58 @@ h1, h2, h3, h4, h5, h6 {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Mobile-specific hero fixes */
+@media (max-width: 768px) {
+  /* Target hero section on all pages */
+  .hero-authority {
+    background: linear-gradient(135deg, #0f172a, #1e293b, #2563eb) !important;
+    color: white !important;
+  }
+  
+  .hero-authority * {
+    color: white !important;
+  }
+  
+  .hero-authority .gradient-text-authority,
+  .hero-authority .gradient-text-warm,
+  .hero-authority .gradient-text-accent,
+  .hero-authority .gradient-text-primary {
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+    background: none !important;
+  }
+
+  /* Only target the specific sections on the English Classes page */
+  .english-classes-page .english-classes-value-section {
+    background: linear-gradient(135deg, #0f172a, #1e293b, #2563eb) !important;
+    color: white !important;
+  }
+  
+  .english-classes-page .english-classes-value-section * {
+    color: white !important;
+  }
+  
+  .english-classes-page .english-classes-value-section .authority-card {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    backdrop-filter: blur(20px) !important;
+  }
+  
+  .english-classes-page .english-classes-value-section .authority-card h3,
+  .english-classes-page .english-classes-value-section .authority-card p {
+    color: white !important;
+  }
+  
+  .english-classes-page .english-classes-value-section .gradient-text-authority,
+  .english-classes-page .english-classes-value-section .gradient-text-warm,
+  .english-classes-page .english-classes-value-section .gradient-text-accent,
+  .english-classes-page .english-classes-value-section .gradient-text-primary {
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+    background: none !important;
+  }
+}
+
 /* Floating Elements */
 .floating-element {
   position: absolute;

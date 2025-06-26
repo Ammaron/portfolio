@@ -19,20 +19,38 @@
   transform: rotateY(0deg) !important;
 }
 
-/* Step 3: TRIGGER THE FLIP - Both hover and click support */
-.card-flip-authority:hover .card-flip-inner-authority,
+/* Step 3: TRIGGER THE FLIP - Hover for desktop, click class for mobile */
 .card-flip-inner-authority.flipped {
   transform: rotateY(180deg) !important;
 }
 
-/* For mobile devices, disable hover and use click only */
+/* Desktop hover behavior */
+@media (hover: hover) and (pointer: fine) {
+  .card-flip-authority:hover .card-flip-inner-authority {
+    transform: rotateY(180deg) !important;
+  }
+}
+
+/* Mobile/touch devices - disable hover and use only click */
 @media (hover: none) and (pointer: coarse) {
   .card-flip-authority:hover .card-flip-inner-authority {
     transform: rotateY(0deg) !important;
   }
   
+  /* Ensure click state works on mobile */
   .card-flip-inner-authority.flipped {
     transform: rotateY(180deg) !important;
+  }
+  
+  /* Add touch feedback */
+  .card-flip-authority {
+    -webkit-tap-highlight-color: rgba(37, 99, 235, 0.1) !important;
+    touch-action: manipulation !important;
+  }
+  
+  .card-flip-authority:active {
+    transform: scale(0.98) !important;
+    transition: transform 0.1s ease !important;
   }
 }
 
@@ -181,13 +199,93 @@
 /* Mobile-specific enhancements */
 @media (max-width: 768px) {
   .card-flip-authority {
-    /* Add visual feedback for mobile tap */
-    -webkit-tap-highlight-color: rgba(37, 99, 235, 0.1);
+    /* Improve touch interaction */
+    -webkit-tap-highlight-color: rgba(37, 99, 235, 0.1) !important;
+    touch-action: manipulation !important;
+    user-select: none !important;
+    /* Make cards taller on mobile to accommodate more content */
+    height: 520px !important;
   }
   
   .card-flip-authority:active {
     transform: scale(0.98) !important;
     transition: transform 0.1s ease !important;
+  }
+  
+  /* Ensure proper z-index stacking on mobile */
+  .card-flip-front-authority {
+    z-index: 2 !important;
+  }
+  
+  .card-flip-back-authority {
+    z-index: 1 !important;
+    /* Adjust padding for mobile */
+    padding: 1rem !important;
+  }
+  
+  .card-flip-inner-authority.flipped .card-flip-front-authority {
+    z-index: 1 !important;
+  }
+  
+  .card-flip-inner-authority.flipped .card-flip-back-authority {
+    z-index: 2 !important;
+  }
+  
+  /* Mobile-specific back card content adjustments */
+  .card-flip-back-authority > div:first-child {
+    height: calc(100% - 80px) !important;
+    overflow-y: auto !important;
+    padding-right: 0.5rem !important;
+  }
+  
+  .card-flip-back-authority > div:last-child {
+    bottom: 1rem !important;
+    left: 1rem !important;
+    right: 1rem !important;
+  }
+  
+  /* Allow more content to show on mobile */
+  .card-flip-back-authority .space-y-3,
+  .card-flip-back-authority .space-y-2 {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  
+  /* Adjust text sizes for better mobile readability */
+  .card-flip-back-authority h3 {
+    font-size: 1rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .card-flip-back-authority p {
+    font-size: 0.8rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .card-flip-back-authority .space-y-3 > div,
+  .card-flip-back-authority .space-y-2 > div {
+    font-size: 0.75rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+  
+  .card-flip-back-authority ul {
+    margin-bottom: 1rem !important;
+  }
+  
+  .card-flip-back-authority li {
+    margin-bottom: 0.25rem !important;
+  }
+  
+  .card-flip-back-authority li span {
+    font-size: 0.75rem !important;
+  }
+  
+  /* Make buttons smaller on mobile */
+  .card-flip-back-authority a,
+  .card-flip-back-authority button {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.8rem !important;
+    min-width: 120px !important;
   }
 }
 

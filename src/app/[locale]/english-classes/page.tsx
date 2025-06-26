@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useI18n } from '@/i18n/i18n-context';
-import { AirplaneTakeoffIcon, BriefcaseIcon, UserSoundIcon } from "@phosphor-icons/react";
+import { AirplaneTakeoffIcon, BriefcaseIcon, UserSoundIcon, QuotesIcon } from "@phosphor-icons/react";
 
 interface ClassLevel {
   id: string;
@@ -104,8 +104,11 @@ export default function EnglishClassesPage() {
     }
   };
   
-  // Handle card flip toggle for mobile
-  const handleCardClick = (cardId: string) => {
+  // Handle card flip toggle for mobile with better touch support
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>, cardId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     setFlippedCards(prev => {
       const newSet = new Set(prev);
       if (newSet.has(cardId)) {
@@ -153,9 +156,11 @@ function getClassImage(classId: string): string {
   const testimonials = tRaw('classes', 'testimonials.list') as Testimonial[] || [];
   
   return (
-    <div className="min-h-screen pt-20">
+    <div className="min-h-screen pt-20 english-classes-page">
       {/* Hero Section */}
-      <section className="hero-authority relative text-white section-padding-authority">
+      <section 
+        className="hero-authority relative text-white section-padding-authority"
+      >
         {/* Floating Elements */}
         <div className="floating-element floating-element-1"></div>
         <div className="floating-element floating-element-2"></div>
@@ -206,7 +211,9 @@ function getClassImage(classId: string): string {
       </section>
       
       {/* Professional Value Proposition */}
-      <section className="section-padding-authority bg-gray-50">
+      <section 
+        className="section-padding-authority bg-gray-50 english-classes-value-section"
+      >
         <div className="container-authority">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
@@ -292,7 +299,7 @@ function getClassImage(classId: string): string {
               
               <div className="grid lg:grid-cols-2 gap-8">
                 {classes.map((classItem: ClassLevel, index: number) => (
-                  <div key={classItem.id} className="card-flip-authority animate-fade-in-up cursor-pointer" style={{ animationDelay: `${index * 0.1}s` }} onClick={() => handleCardClick(classItem.id)}>
+                  <div key={classItem.id} className="card-flip-authority animate-fade-in-up cursor-pointer" style={{ animationDelay: `${index * 0.1}s` }} onClick={(e) => handleCardClick(e, classItem.id)}>
                     <div className={`card-flip-inner-authority ${flippedCards.has(classItem.id) ? 'flipped' : ''}`}>
                       {/* Card Front */}
                       <div className="card-flip-front-authority authority-card bg-white overflow-hidden">
@@ -516,7 +523,7 @@ function getClassImage(classId: string): string {
                 <h2 className="text-section-title-authority mb-6 gradient-text-authority">
                   {t('classes', 'testimonials.title')}
                 </h2>
-                <p className="text-xl text-gray-600 leading-relaxed">
+                <p className="text-xl text-gray-200 leading-relaxed">
                   {t('classes', 'testimonials.description')}
                 </p>
               </div>
@@ -525,7 +532,7 @@ function getClassImage(classId: string): string {
                 {testimonials.map((testimonial: Testimonial, index: number) => (
                   <div key={testimonial.id} className="authority-card p-8 animate-fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
                     <div className="flex items-center mb-6">
-                      <div className="relative w-16 h-16 rounded-full overflow-hidden mr-4">
+                      {/* <div className="relative w-16 h-16 rounded-full overflow-hidden mr-4">
                         <Image
                           src={testimonial.image || 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'}
                           alt={testimonial.name}
@@ -533,29 +540,26 @@ function getClassImage(classId: string): string {
                           className="object-cover"
                           sizes="64px"
                         />
-                      </div>
+                      </div> */}
                       <div>
                         <h3 className="font-bold text-gray-900">{testimonial.name}</h3>
                         <p className="text-sm text-primary font-medium">{testimonial.role}</p>
-                        <p className="text-xs text-gray-500">{testimonial.company}</p>
                       </div>
                     </div>
                     
                     <div className="relative mb-6">
-                      <svg className="absolute top-0 left-0 w-8 h-8 text-primary/20 -translate-x-2 -translate-y-2" fill="currentColor" viewBox="0 0 32 32">
-                        <path d="M10 8c-2.2 0-4 1.8-4 4v10h10V12h-6c0-1.1 0.9-2 2-2h2V8h-4zm12 0c-2.2 0-4 1.8-4 4v10h-10V12h6c0-1.1-.9-2-2-2h-2V8h4z"></path>
-                      </svg>
+                      <QuotesIcon className="absolute top-0 left-0 w-8 h-8 text-primary/20 -translate-x-2 -translate-y-2" />
                       <p className="italic text-gray-700 leading-relaxed pl-6">{testimonial.content}</p>
                     </div>
                     
-                    <div className="bg-gradient-to-r from-success/10 to-primary/10 p-4 rounded-lg">
+                    {/* <div className="bg-gradient-to-r from-success/10 to-primary/10 p-4 rounded-lg">
                       <div className="flex items-center">
                         <svg className="w-5 h-5 text-success mr-2" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
                         </svg>
                         <span className="text-sm font-semibold text-gray-900">Achievement: {testimonial.achievement}</span>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 ))}
               </div>
