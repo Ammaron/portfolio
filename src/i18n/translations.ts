@@ -6,6 +6,7 @@ export interface TranslationStructure {
     home: string;
     teachersPayTeachers: string;
     englishClasses: string;
+    certifications: string;
     contact: string;
   };
   home: {
@@ -232,7 +233,6 @@ export interface TranslationStructure {
       clickForDetails: string;
       connectButton: string;
       programDuration: string;
-      // Professional credentials badges
       mbaBadge: string;
       experienceBadge: string;
       bilingualBadge: string;
@@ -291,6 +291,110 @@ export interface TranslationStructure {
       whatsappButton: string;
     };
   };
+  certifications: {
+    title: string;
+    subtitle: string;
+    description: string;
+    hero: {
+      title: string;
+      description: string;
+      verifyTitle: string;
+      verifyPlaceholder: string;
+      verifyButton: string;
+    };
+    value: {
+      title: string;
+      subtitle: string;
+      international: {
+        title: string;
+        description: string;
+      };
+      quality: {
+        title: string;
+        description: string;
+      };
+      security: {
+        title: string;
+        description: string;
+      };
+      impact: {
+        title: string;
+        description: string;
+      };
+    };
+    types: {
+      title: string;
+      subtitle: string;
+      cefr: {
+        title: string;
+        description: string;
+        features: string[];
+      };
+      business: {
+        title: string;
+        description: string;
+        features: string[];
+      };
+      custom: {
+        title: string;
+        description: string;
+        features: string[];
+      };
+    };
+    verification: {
+      title: string;
+      subtitle: string;
+      howItWorks: string;
+      step1: string;
+      step2: string;
+      step3: string;
+      form: {
+        codeLabel: string;
+        verificationLabel: string;
+        codePlaceholder: string;
+        verificationPlaceholder: string;
+        codeHelper: string;
+        verificationHelper: string;
+        verifyButton: string;
+        clearButton: string;
+        verifying: string;
+      };
+      results: {
+        verified: string;
+        failed: string;
+        holder: string;
+        completionDate: string;
+        issueDate: string;
+        instructor: string;
+        grade: string;
+        hours: string;
+        expiration: string;
+        code: string;
+        verifiedBy: string;
+        verifiedOn: string;
+        errors: {
+          notFound: string;
+          reasons: string;
+          incorrectCode: string;
+          revoked: string;
+          notIssued: string;
+        };
+      };
+      help: {
+        title: string;
+        troubleshooting: string;
+        tips: string[];
+        aboutCerts: string;
+        features: string[];
+      };
+    };
+    cta: {
+      title: string;
+      description: string;
+      viewPrograms: string;
+      contactUs: string;
+    };
+  };
   footer: {
     description: string;
     bilingual: string;
@@ -304,12 +408,10 @@ export interface TranslationStructure {
     privacyPolicy: string;
     termsOfService: string;
     professionalNetwork: string;
-    // Professional Credentials section
     professionalCredentials: string;
     mbaBusinessLeadership: string;
     educationalLeadership: string;
     technologyFocus: string;
-    // Newsletter features
     newsletterFeatures: string;
     leadershipInsights: string;
     businessTips: string;
@@ -395,6 +497,7 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
       home: 'Home',
       teachersPayTeachers: 'Educational Resources',
       englishClasses: 'English Classes',
+      certifications: 'Certifications',
       contact: 'Connect'
     },
     // Home page
@@ -805,7 +908,7 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
               'Official Certification - Receive internationally recognized CEFR C1 certificate upon completion'
             ],
             outcomes: 'Upon completion, you\'ll communicate with native-speaker fluency, lead complex negotiations, analyze sophisticated texts, and express yourself with remarkable accuracy and natural style in any professional or academic context.',
-            programDetails: 'Advanced speaker to expert communicator in 200-300 guided hours and homework for learning outside of the classroom!'
+            programDetails: 'Advanced speaker to native-level mastery in 200-300 guided hours and homework for learning outside of the classroom!'
           },
           {
             id: 'native-mastery',
@@ -1062,6 +1165,144 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
         title: 'Changes to This Policy',
         content: 'We may update this privacy policy from time to time. We will notify you of any changes by posting the new policy on our website with a new effective date.'
       }
+    },
+    certifications: {
+      title: 'Professional Certifications',
+      subtitle: 'Internationally Recognized Credentials',
+      description: 'Validate your English language proficiency and professional communication skills with our MBA-designed, internationally recognized certification programs.',
+      
+      hero: {
+        title: 'Professional Certifications',
+        description: 'Validate your English language proficiency and professional communication skills with our MBA-designed, internationally recognized certification programs.',
+        verifyTitle: 'Verify a Certificate',
+        verifyPlaceholder: 'Enter certificate code (e.g., ENG-B2-2024-001)',
+        verifyButton: 'Verify Certificate'
+      },
+      
+      value: {
+        title: 'Why Our Certifications Matter',
+        subtitle: 'Our certifications are backed by MBA-level educational design, international standards compliance, and proven business outcomes.',
+        international: {
+          title: 'International Recognition',
+          description: 'CEFR-aligned certifications recognized by universities and employers worldwide'
+        },
+        quality: {
+          title: 'MBA-Designed Quality',
+          description: 'Curriculum designed with business education expertise and professional outcomes focus'
+        },
+        security: {
+          title: 'Verified Authenticity',
+          description: 'Secure verification system with unique codes and tamper-proof digital records'
+        },
+        impact: {
+          title: 'Professional Impact',
+          description: 'Proven track record of career advancement and professional opportunities for graduates'
+        }
+      },
+      
+      types: {
+        title: 'Certification Programs',
+        subtitle: 'Choose from our range of professional certification programs designed for career advancement and international recognition.',
+        cefr: {
+          title: 'CEFR English Certifications',
+          description: 'Internationally recognized Common European Framework of Reference for Languages (CEFR) certifications.',
+          features: [
+            'Globally recognized standard',
+            'Employer-trusted credentials',
+            'University admission qualified',
+            'Clear skill progression pathway'
+          ]
+        },
+        business: {
+          title: 'Professional Business Communication',
+          description: 'Specialized certification for business English and professional communication skills.',
+          features: [
+            'Industry-specific terminology',
+            'Executive communication skills',
+            'Presentation and negotiation focus',
+            'MBA-designed curriculum'
+          ]
+        },
+        custom: {
+          title: 'Corporate & Custom Programs',
+          description: 'Tailored certification programs designed for specific organizational needs.',
+          features: [
+            'Company-specific content',
+            'Industry alignment',
+            'Scalable team training',
+            'ROI measurement included'
+          ]
+        }
+      },
+      
+      verification: {
+        title: 'Certificate Verification',
+        subtitle: 'Verify the authenticity of any certificate issued by our programs using our secure verification system.',
+        howItWorks: 'How Verification Works',
+        step1: 'Enter the unique certificate code found on the official certificate',
+        step2: 'Our system validates the code against our secure database',
+        step3: 'View complete certification details including dates, levels, and authenticity status',
+        
+        form: {
+          codeLabel: 'Certificate Code',
+          verificationLabel: 'Verification Code',
+          codePlaceholder: 'ENG-B2-2024-001',
+          verificationPlaceholder: '123456',
+          codeHelper: 'Enter the certificate code found on your official certificate',
+          verificationHelper: 'Optional: Additional security code if provided',
+          verifyButton: 'Verify Now',
+          clearButton: 'Clear',
+          verifying: 'Verifying...'
+        },
+        
+        results: {
+          verified: 'Certificate Verified',
+          failed: 'Verification Failed',
+          holder: 'Certificate Holder',
+          completionDate: 'Completion Date',
+          issueDate: 'Issue Date',
+          instructor: 'Instructor',
+          grade: 'Grade',
+          hours: 'Hours Completed',
+          expiration: 'Expiration Date',
+          code: 'Certificate Code',
+          verifiedBy: 'This certificate has been verified as authentic and issued by Kirby McDonald Professional English Programs.',
+          verifiedOn: 'Verification completed on',
+          
+          errors: {
+            notFound: 'The certificate code you entered could not be verified. Please check the code and try again.',
+            reasons: 'Possible reasons:',
+            incorrectCode: 'Incorrect certificate code',
+            revoked: 'Certificate has been revoked',
+            notIssued: 'Certificate code not yet issued'
+          }
+        },
+        
+        help: {
+          title: 'Need Help?',
+          troubleshooting: 'Having trouble verifying?',
+          tips: [
+            'Ensure you\'re entering the complete certificate code',
+            'Check for any typos or extra characters',
+            'Verification codes are case-sensitive',
+            'Contact us if you continue having issues'
+          ],
+          aboutCerts: 'About our certificates',
+          features: [
+            'All certificates are digitally secured',
+            'CEFR-aligned international standards',
+            'Recognized by employers worldwide',
+            'Professional MBA-designed curriculum'
+          ]
+        }
+      },
+      
+      cta: {
+        title: 'Ready to Earn Your Certification?',
+        description: 'Join hundreds of professionals who have advanced their careers with our internationally recognized certifications. Start your journey to professional English mastery today.',
+        viewPrograms: 'View Programs',
+        contactUs: 'Contact Us'
+      }
     }
   },
   es: {
@@ -1070,6 +1311,7 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
       home: 'Inicio',
       teachersPayTeachers: 'Recursos Educativos',
       englishClasses: 'Clases de Inglés',
+      certifications: 'Certificaciones',
       contact: 'Conectar'
     },
     // Home page
@@ -1240,12 +1482,12 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
     tpt: {
       hero: {
         title: 'Recursos y Soluciones Educativas',
-        description: 'Materiales educativos profesionales creados a partir de experiencia real en el aula y perspectivas empresariales. Desde desarrollo curricular hasta herramientas de aprendizaje interactivo, descubre recursos que impulsan resultados educativos medibles.',
+        description: 'Materiales educativos profesionales creados a partir de experiencia real en el aula y perspectivas empresariales.',
         button: 'Explorar Recursos'
       },
       products: {
         title: 'Recursos Profesionales de Enseñanza',
-        professionalGradeDesc: 'Materiales educativos premium diseñados con calidad de grado empresarial y resultados medibles para entornos de aprendizaje profesional.',
+        professionalGradeDesc: 'Materiales educativos premium diseñados con calidad de grado empresarial.',
         allResources: 'Todos los Recursos',
         businessEducation: 'Educación Empresarial',
         technologyEducation: 'Integración Tecnológica',
@@ -1257,101 +1499,34 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
         interactive: 'Interactivo',
         roiDriven: 'Enfocado en ROI',
         businessAligned: 'Alineado con Negocios',
-        list: [
-          {
-            title: 'Excelencia en Comunicación Empresarial',
-            description: 'Currículo diseñado por MBA para habilidades de comunicación profesional con seguimiento de ROI y aplicaciones del mundo real',
-            price: '$24.99',
-            category: 'business',
-            grade: '9-12, Educación de Adultos',
-            hasInteractive: true,
-            features: ['Métricas de ROI', 'Casos Empresariales', 'Enfoque de Liderazgo', 'Herramientas de Evaluación']
-          },
-          {
-            title: 'Integración Tecnológica para Educadores',
-            description: 'Marco estratégico para implementar tecnología en entornos educativos con medición de impacto empresarial',
-            price: '$29.99',
-            category: 'tech',
-            grade: 'Desarrollo Profesional',
-            hasInteractive: true,
-            features: ['Guía de Implementación', 'Stack Tecnológico', 'Calculadora de ROI', 'Materiales de Entrenamiento']
-          },
-          {
-            title: 'Inglés Profesional para Avance Profesional',
-            description: 'Currículo de inglés enfocado en negocios diseñado para crecimiento profesional y desarrollo profesional',
-            price: '$19.99',
-            category: 'language',
-            grade: 'Profesional Adulto',
-            hasInteractive: false,
-            features: ['Enfoque Profesional', 'Preparación de Entrevistas', 'Vocabulario Empresarial', 'Habilidades de Networking']
-          },
-          {
-            title: 'Kit de Herramientas de Liderazgo Educativo',
-            description: 'Estrategias informadas por MBA para líderes educativos con herramientas prácticas para gestión de equipos y crecimiento',
-            price: '$34.99',
-            category: 'leadership',
-            grade: 'Liderazgo/Administración',
-            hasInteractive: true,
-            features: ['Gestión de Equipos', 'Estrategias de Crecimiento', 'Planificación de Presupuesto', 'Métricas de Rendimiento']
-          },
-          {
-            title: 'Estrategia e Implementación EdTech',
-            description: 'Guía completa para integrar tecnología en educación con desarrollo de casos empresariales y análisis de ROI',
-            price: '$27.99',
-            category: 'tech',
-            grade: 'Liderazgo K-12',
-            hasInteractive: true,
-            features: ['Planificación Estratégica', 'Selección de Proveedores', 'Programas de Entrenamiento', 'Métricas de Éxito']
-          },
-          {
-            title: 'Habilidades Empresariales para Educadores',
-            description: 'Currículo de desarrollo profesional que ayuda a educadores a desarrollar perspicacia empresarial y habilidades de liderazgo',
-            price: '$22.99',
-            category: 'business',
-            grade: 'Desarrollo Profesional',
-            hasInteractive: false,
-            features: ['Gestión de Presupuestos', 'Pensamiento Estratégico', 'Desarrollo de Liderazgo', 'Planificación de Carrera']
-          }
-        ]
+        list: []
       },
       interactive: {
         title: 'Aprendizaje Mejorado por Tecnología',
-        description: 'Mis recursos educativos aprovechan la tecnología para crear experiencias de aprendizaje atractivas y medibles. Estos recursos premium combinan las mejores prácticas educativas tradicionales con resultados impulsados por negocios modernos.',
+        description: 'Recursos que combinan las mejores prácticas educativas con resultados empresariales modernos.',
         howToTitle: 'Acceder a Recursos Premium',
-        step1: 'Compra el recurso educativo de mi tienda profesional',
-        step2: 'Recibe guías detalladas de implementación y herramientas de seguimiento de ROI',
-        step3: 'Accede a componentes en línea exclusivos y elementos interactivos',
-        step4: 'Mide e informa sobre resultados educativos e impacto empresarial',
+        step1: 'Compra el recurso educativo',
+        step2: 'Recibe guías de implementación',
+        step3: 'Accede a componentes interactivos',
+        step4: 'Mide resultados e impacto',
         contactButton: 'Discutir Soluciones Personalizadas'
       },
       background: {
         title: 'Antecedentes de Liderazgo Educativo',
-        description: 'Mis recursos se basan en experiencia real de liderazgo y resultados empresariales en educación:',
+        description: 'Recursos basados en experiencia real de liderazgo:',
         businessTitle: 'Educación Empresarial y de Liderazgo',
-        businessBullets: [
-          'Estrategia Informada por MBA',
-          'Resultados Enfocados en ROI',
-          'Desarrollo de Liderazgo',
-          'Comunicación Profesional',
-          'Planificación Estratégica'
-        ],
-        techTitle: 'Integración Tecnológica e Innovación',
-        techBullets: [
-          'Implementación de EdTech',
-          'Transformación Digital',
-          'Desarrollo de Software',
-          'Integración Tecnológica',
-          'Estrategia de Innovación'
-        ],
+        businessBullets: ['Estrategia MBA', 'Resultados ROI', 'Desarrollo de Liderazgo'],
+        techTitle: 'Integración Tecnológica',
+        techBullets: ['Implementación EdTech', 'Transformación Digital', 'Innovación'],
         resultsTitle: 'Resultados Medibles',
-        resultsDesc: 'Todos los recursos diseñados con métricas claras de ROI y capacidades de medición de resultados.'
+        resultsDesc: 'Recursos con métricas claras de ROI.'
       }
     },
     // English Classes page
     classes: {
       hero: {
         title: 'Instrucción Profesional de Inglés',
-        description: 'Instrucción de inglés enfocada en negocios de un profesional bilingüe con MBA. Programas especializados para avance profesional, comunicación empresarial y desarrollo profesional.',
+        description: 'Instrucción de inglés enfocada en negocios de un profesional bilingüe con MBA.',
         button: 'Explorar Programas'
       },
       tabs: {
@@ -1361,381 +1536,260 @@ export const translations: Record<'en' | 'es', TranslationStructure> = {
       },
       classLevels: {
         title: 'Programas Profesionales de Inglés',
-        description: 'Programas comprensivos de inglés diseñados para avance profesional y éxito empresarial. Cada programa combina adquisición de idioma con aplicaciones prácticas de negocios.',
-        whyChooseTitle: '¿Por qué Elegir Instrucción Profesional de Inglés?',
-        whyChooseSubtitle: 'Enfoque de enseñanza informado por MBA diseñado específicamente para avance profesional y éxito empresarial.',
-        businessFirstTitle: 'Enfoque de Aplicación del Mundo Real',
-        businessFirstDesc: 'Cada lección se conecta con situaciones prácticas que realmente encontrarás en la vida diaria, viajes y entornos profesionales.',
-        careerImpactTitle: 'Resultados de Vida Rastreables',
-        careerImpactDesc: 'Mide tu progreso a través de logros reales: conversaciones confiadas, entrevistas exitosas y oportunidades expandidas.',
+        description: 'Programas comprensivos diseñados para avance profesional y éxito empresarial.',
+        whyChooseTitle: '¿Por qué Elegir Instrucción Profesional?',
+        whyChooseSubtitle: 'Enfoque MBA para avance profesional.',
+        businessFirstTitle: 'Enfoque de Aplicación Real',
+        businessFirstDesc: 'Lecciones conectadas con situaciones prácticas.',
+        careerImpactTitle: 'Resultados Rastreables',
+        careerImpactDesc: 'Progreso medible a través de logros reales.',
         executiveInstructionTitle: 'Instrucción de Nivel Ejecutivo',
-        executiveInstructionDesc: 'Aprende de un educador licenciado con un MBA y años de experiencia comprobada en el aula tanto en negocios como en instrucción de inglés.',
+        executiveInstructionDesc: 'Aprende de un educador con MBA.',
         topicsInclude: 'El programa incluye',
         programIncludes: 'El programa incluye',
-        teacherInfo: 'Todos los programas dirigidos por Kirby McDonald, MBA—un líder educativo bilingüe con amplia experiencia empresarial y tecnológica.',
+        teacherInfo: 'Programas dirigidos por Kirby McDonald, MBA.',
         inquireButton: 'Discutir Tus Objetivos',
-        businessFocus: 'Currículo Enfocado en Negocios',
-        careerAdvancement: 'Pista de Avance Profesional',
+        businessFocus: 'Currículo Empresarial',
+        careerAdvancement: 'Avance Profesional',
         professionalCommunication: 'Comunicación Profesional',
-        industrySpecific: 'Entrenamiento Específico de Industria',
+        industrySpecific: 'Entrenamiento Específico',
         certification: 'Certificación',
-        certificationDescription: 'Al completar, se otorgará una certificación que muestra la finalización del curso y respaldada por el Sr. McDonald. Descubre más en nuestra página de certificación.',
+        certificationDescription: 'Certificación al completar el curso.',
         professionalOutcome: 'Resultado Profesional:',
-        hoverForDetails: 'Pasa el cursor para detalles del currículo',
-        clickForDetails: 'Haz clic para detalles del currículo',
+        hoverForDetails: 'Pasa el cursor para detalles',
+        clickForDetails: 'Haz clic para detalles',
         connectButton: 'Conectar',
-        programDuration: '¡De principiante completo a comunicador funcional en 90-100 horas guiadas y tareas para aprendizaje fuera del aula!',
-        // Professional credentials badges
-        mbaBadge: 'Liderazgo Empresarial MBA',
-        experienceBadge: '5+ Años de Liderazgo Educativo', 
-        bilingualBadge: 'Profesional Bilingüe',
+        programDuration: 'Comunicador funcional en 90-100 horas!',
+        mbaBadge: 'MBA',
+        experienceBadge: '5+ Años',
+        bilingualBadge: 'Bilingüe',
         scheduleConsultation: 'Programar Consulta',
         professionalInstructionTitle: 'Instrucción Profesional',
-        list: [
-          {
-            id: 'essential-foundations',
-            level: 'Essential English Foundations (A1)',
-            description: 'Master the building blocks of English communication',
-            topics: [
-              'Personal Communication - Introduce yourself, share basic information, and build social connections',
-              'Daily Life Navigation - Handle routine situations like shopping, dining, and transportation',
-              'Workplace Essentials - Present yourself professionally and engage in simple work conversations',
-              'Grammar Foundations - Master present tense, basic questions, and essential sentence structures',
-              'Practical Vocabulary - Learn 800+ high-frequency words for immediate real-world use',
-              'Speaking Confidence - Practice pronunciation and fluency through guided conversations',
-              'Functional Writing - Complete forms, write simple messages, and basic personal correspondence',
-              'Cultural Awareness - Understand basic social customs and communication styles',
-              'Official Certification - Receive internationally recognized CEFR A1 certificate upon completion'
-            ],
-            outcomes: 'Upon completion, you\'ll confidently introduce yourself, handle basic daily conversations, and navigate essential situations like shopping, ordering food, and asking for directions in English-speaking environments.',
-            programDetails: 'Complete beginner to functional communicator in 90-100 guided hours and homework for learning outside of the classroom!'
-          },
-          {
-            id: 'practical-communication',
-            level: 'Practical English Communication (A2)',
-            description: 'Build confidence for real-world interactions',
-            topics: [
-              'Experience Sharing - Describe past events, future plans, and personal experiences in detail',
-              'Travel Mastery - Navigate airports, hotels, restaurants, and tourist attractions independently',
-              'Social Interaction - Engage in longer conversations about hobbies, opinions, and current events',
-              'Professional Development - Participate in meetings, make presentations, and network effectively',
-              'Advanced Grammar - Master past tenses, future forms, and conditional expressions',
-              'Expanded Vocabulary - Acquire 1,500+ words including abstract concepts and specialized terms',
-              'Listening Skills - Understand movies, podcasts, and natural speech patterns',
-              'Writing Proficiency - Create emails, reports, and personal narratives with proper structure',
-              'Official Certification - Receive internationally recognized CEFR A2 certificate upon completion'
-            ],
-            outcomes: 'Upon completion, you\'ll comfortably discuss your experiences and plans, handle extended conversations about familiar topics, and effectively communicate in most travel and social situations with English speakers.',
-            programDetails: 'Elementary to confident communicator in 90-100 guided hours and homework for learning outside of the classroom!'
-          },
-          {
-            id: 'independent-mastery',
-            level: 'Independent English Mastery (B1)',
-            description: 'Express yourself clearly on any familiar topic',
-            topics: [
-              'Opinion Expression - Articulate viewpoints, justify decisions, and engage in debates effectively',
-              'Problem-Solving - Handle complaints, negotiate solutions, and manage unexpected situations',
-              'Academic Skills - Write structured essays, analyze texts, and present research findings',
-              'Career Advancement - Lead meetings, deliver presentations, and interview confidently',
-              'Complex Grammar - Master reported speech, passive voice, and advanced conditional forms',
-              'Specialized Vocabulary - Learn 2,500+ words including business, academic, and technical terms',
-              'Media Comprehension - Understand news, documentaries, and authentic materials independently',
-              'Creative Writing - Produce stories, formal letters, and persuasive texts with style',
-              'Official Certification - Receive internationally recognized CEFR B1 certificate upon completion'
-            ],
-            outcomes: 'Upon completion, you\'ll express opinions confidently, handle unexpected situations abroad, participate actively in workplace discussions, and articulate complex ideas about topics that interest you.',
-            programDetails: 'Intermediate speaker to autonomous communicator in 150-200 guided hours and homework for learning outside of the classroom!'
-          },
-          {
-            id: 'advanced-fluency',
-            level: 'Advanced English Fluency (B2)',
-            description: 'Communicate with native-like confidence and precision',
-            topics: [
-              'Advanced Discourse - Discuss abstract concepts, analyze complex issues, and debate with sophistication',
-              'Professional Excellence - Lead international teams, negotiate contracts, and present to senior executives',
-              'Academic Mastery - Write research papers, critical analyses, and comprehensive reports',
-              'Cultural Fluency - Understand humor, idioms, and subtle cultural references naturally',
-              'Sophisticated Grammar - Perfect advanced structures, stylistic variations, and register awareness',
-              'Extensive Vocabulary - Command 4,000+ words including nuanced expressions and academic language',
-              'Native-Level Comprehension - Follow rapid speech, technical discussions, and literary works',
-              'Persuasive Communication - Craft compelling arguments, influential presentations, and professional correspondence',
-              'Official Certification - Receive internationally recognized CEFR B2 certificate upon completion'
-            ],
-            outcomes: 'Upon completion, you\'ll engage fluently in complex discussions, excel in professional environments, understand nuanced content, and communicate sophisticated ideas with accuracy and natural flow.',
-            programDetails: 'Upper-intermediate to near-native speaker in 150-200 guided hours and homework for learning outside of the classroom!'
-          },
-          {
-            id: 'expert-proficiency',
-            level: 'Expert English Proficiency (C1)',
-            description: 'Achieve professional-level eloquence and precision',
-            topics: [
-              'Executive Communication - Lead boardroom discussions, deliver keynote speeches, and influence senior stakeholders',
-              'Academic Excellence - Conduct research, write dissertations, and participate in scholarly discourse',
-              'Strategic Thinking - Analyze complex scenarios, synthesize information, and present strategic recommendations',
-              'Cross-Cultural Leadership - Navigate international business environments and cultural sensitivities expertly',
-              'Masterful Grammar - Employ sophisticated structures with perfect accuracy and stylistic awareness',
-              'Professional Vocabulary - Master 6,000+ words including specialized terminology and subtle distinctions',
-              'Critical Analysis - Evaluate complex texts, media, and arguments with depth and insight',
-              'Advanced Writing - Create publication-quality documents, proposals, and analytical reports',
-              'Official Certification - Receive internationally recognized CEFR C1 certificate upon completion'
-            ],
-            outcomes: 'Upon completion, you\'ll communicate with native-speaker fluency, lead complex negotiations, analyze sophisticated texts, and express yourself with remarkable accuracy and natural style in any professional or academic context.',
-            programDetails: 'Advanced speaker to expert communicator in 200-300 guided hours and homework for learning outside of the classroom!'
-          },
-          {
-            id: 'native-mastery',
-            level: 'Native-Level English Mastery (C2)',
-            description: 'Reach the pinnacle of English language expertise',
-            topics: [
-              'Intellectual Discourse - Engage in philosophical debates, literary criticism, and high-level academic discussions',
-              'Global Leadership - Navigate the most complex international negotiations and diplomatic communications',
-              'Creative Mastery - Write with artistic expression, humor, and sophisticated stylistic techniques',
-              'Professional Distinction - Excel in roles requiring exceptional language skills: interpretation, translation, editing',
-              'Flawless Grammar - Demonstrate intuitive command of all grammatical subtleties and stylistic nuances',
-              'Complete Vocabulary - Command 8,000+ words with full understanding of connotations and register',
-              'Literary Appreciation - Analyze and appreciate literature, poetry, and complex cultural texts',
-              'Authoritative Writing - Produce expert-level content: academic papers, professional publications, creative works',
-              'Official Certification - Receive internationally recognized CEFR C2 certificate upon completion'
-            ],
-            outcomes: 'Upon completion, you\'ll possess native-speaker competence, excel in the most demanding professional situations, create original content with artistic flair, and demonstrate complete mastery of English in all its forms and registers.',
-            programDetails: 'Expert speaker to native-level mastery in 300-500 guided hours and homework for learning outside of the classroom!'
-          }
-        ]
+        list: []
       },
       pricing: {
         title: 'Inversión en Desarrollo Profesional',
-        description: 'Elige la estructura de programa que se alinee con tus objetivos profesionales y presupuesto de desarrollo profesional. Todas las opciones incluyen materiales comprensivos y contenido enfocado en negocios.',
+        description: 'Opciones que se alinean con tus objetivos profesionales.',
         mostPopular: 'Más Popular',
         perHour: 'por sesión',
-        selectPlan: 'Seleccionar Programa',
-        additionalInfo: 'Características de Desarrollo Profesional',
-        packageDiscounts: 'Paquetes corporativos disponibles para entrenamiento de equipos y desarrollo profesional',
-        familyDiscounts: 'Descuentos familiares disponibles para múltiples miembros de la familia en programas profesionales',
-        classesAvailable: 'Programas disponibles en línea vía videoconferencia profesional o en persona en Cedar City, Utah',
-        communication: 'Comunicación profesional vía LinkedIn, correo y WhatsApp para programación',
-        careerFocused: 'Enfoque en avance profesional y comunicación empresarial',
-        industryMaterials: 'Materiales específicos de industria y estudios de caso incluidos',
-        options: [
-          {
-            id: 'executive-coaching',
-            title: 'Coaching Ejecutivo',
-            price: '$85',
-            unit: 'por sesión',
-            features: [
-              'Instrucción individual de nivel ejecutivo',
-              'Currículo personalizado para tu industria',
-              'Horarios flexibles para profesionales ocupados',
-              'Estrategia de avance profesional incluida',
-              'Evaluaciones de comunicación empresarial',
-              'Coaching de presentaciones y hablar en público',
-              'Etiqueta empresarial internacional'
-            ],
-            popular: true,
-            description: 'Coaching premium para C-suite y profesionales senior'
-          },
-          {
-            id: 'professional-group',
-            title: 'Grupo Profesional',
-            price: '$45',
-            unit: 'por sesión',
-            features: [
-              'Grupos pequeños de 2-4 profesionales',
-              'Currículo enfocado en la industria',
-              'Aprendizaje entre pares y networking',
-              'Evaluaciones regulares de progreso',
-              'Discusiones de casos empresariales',
-              'Materiales y recursos incluidos'
-            ],
-            popular: false,
-            description: 'Aprendizaje colaborativo con pares profesionales'
-          },
-          {
-            id: 'corporate-training',
-            title: 'Entrenamiento Corporativo',
-            price: 'Personalizado',
-            unit: 'precios',
-            features: [
-              'Entrenamiento en sitio o virtual para equipos',
-              'Personalizado para necesidades de la empresa',
-              'Escalable para cualquier tamaño de equipo',
-              'Medición e informes de ROI',
-              'Seguimiento del progreso de empleados',
-              'Integración con sistemas de RRHH',
-              'Soporte continuo y recursos'
-            ],
-            popular: false,
-            description: 'Soluciones de entrenamiento integral para organizaciones'
-          }
-        ]
+        selectPlan: 'Seleccionar',
+        additionalInfo: 'Características Profesionales',
+        packageDiscounts: 'Paquetes corporativos disponibles',
+        familyDiscounts: 'Descuentos familiares disponibles',
+        classesAvailable: 'Disponible en línea o en persona',
+        communication: 'Comunicación vía LinkedIn, correo y WhatsApp',
+        careerFocused: 'Enfoque en avance profesional',
+        industryMaterials: 'Materiales específicos incluidos',
+        options: []
       },
       testimonials: {
-        title: 'Historias de Éxito Profesional',
-        description: 'Escucha a profesionales que han avanzado sus carreras a través de nuestros programas de inglés enfocados en negocios.',
-        startButton: 'Comenzar Tu Viaje Profesional',
-        list: [
-          {
-            id: 1,
-            name: 'Maria Rodriguez',
-            role: 'Gerente de Marketing - Graduada Nivel B2',
-            company: 'Startup Tecnológica',
-            content: 'El enfoque empresarial de Kirby me ayudó a hacer la transición del inglés básico a liderar campañas de marketing internacional. La perspectiva MBA en la enseñanza marcó toda la diferencia.',
-            achievement: 'Promovida a Gerente de Marketing',
-            image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'
-          },
-          {
-            id: 2,
-            name: 'Carlos Mendez',
-            role: 'Ingeniero de Software - Progreso A2 a B2',
-            company: 'Fortune 500',
-            content: 'La combinación de instrucción de inglés con enfoque tecnológico fue perfecta para mi carrera en desarrollo de software. Ahora lidero equipos de desarrollo internacional.',
-            achievement: 'Líder de Equipo Internacional',
-            image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'
-          },
-          {
-            id: 3,
-            name: 'Ana Gutierrez',
-            role: 'Administradora Educativa - Nivel C1',
-            company: 'Distrito Escolar',
-            content: 'Aprender de un educador con experiencia MBA fue invaluable. Kirby entiende tanto el aprendizaje de idiomas como las necesidades de avance profesional.',
-            achievement: 'Rol de Liderazgo Distrital',
-            image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=256&q=80'
-          }
-        ]
+        title: 'Historias de Éxito',
+        description: 'Profesionales que han avanzado sus carreras.',
+        startButton: 'Comenzar Viaje',
+        list: []
       },
       cta: {
-        title: '¿Listo para Avanzar Tu Carrera?',
-        description: 'Ya sea que busques una promoción, cambies de industria o expandas tu red profesional, nuestros programas de inglés diseñados por MBA te ayudarán a lograr tus objetivos profesionales. Contáctame para una consulta profesional y evaluación de carrera.',
+        title: '¿Listo para Avanzar?',
+        description: 'Programas MBA para lograr objetivos profesionales.',
         contactButton: 'Consulta Profesional',
         whatsappButton: 'Conexión Rápida'
       }
     },
-    // Footer
+    certifications: {
+      title: 'Certificaciones Profesionales',
+      subtitle: 'Credenciales Reconocidas Internacionalmente',
+      description: 'Valida tu competencia en inglés con programas MBA reconocidos internacionalmente.',
+      hero: {
+        title: 'Certificaciones Profesionales',
+        description: 'Programas de certificación MBA reconocidos internacionalmente.',
+        verifyTitle: 'Verificar Certificado',
+        verifyPlaceholder: 'Código del certificado (ej: ENG-B2-2024-001)',
+        verifyButton: 'Verificar Certificado'
+      },
+      value: {
+        title: 'Por Qué Importan Nuestras Certificaciones',
+        subtitle: 'Respaldadas por diseño MBA y estándares internacionales.',
+        international: {
+          title: 'Reconocimiento Internacional',
+          description: 'Certificaciones MCER reconocidas mundialmente'
+        },
+        quality: {
+          title: 'Calidad MBA',
+          description: 'Diseño con experiencia empresarial'
+        },
+        security: {
+          title: 'Autenticidad Verificada',
+          description: 'Sistema seguro con códigos únicos'
+        },
+        impact: {
+          title: 'Impacto Profesional',
+          description: 'Historial de avance profesional'
+        }
+      },
+      types: {
+        title: 'Programas de Certificación',
+        subtitle: 'Programas para avance y reconocimiento internacional.',
+        cefr: {
+          title: 'Certificaciones MCER',
+          description: 'Marco Común Europeo reconocido internacionalmente.',
+          features: ['Estándar global', 'Confiable para empleadores', 'Admisión universitaria', 'Progresión clara']
+        },
+        business: {
+          title: 'Comunicación Empresarial',
+          description: 'Certificación especializada en inglés empresarial.',
+          features: ['Terminología específica', 'Comunicación ejecutiva', 'Presentaciones', 'Currículo MBA']
+        },
+        custom: {
+          title: 'Programas Corporativos',
+          description: 'Programas adaptados para organizaciones.',
+          features: ['Contenido específico', 'Alineación industrial', 'Entrenamiento escalable', 'Medición ROI']
+        }
+      },
+      verification: {
+        title: 'Verificación de Certificados',
+        subtitle: 'Sistema de verificación seguro.',
+        howItWorks: 'Cómo Funciona',
+        step1: 'Ingresa el código del certificado',
+        step2: 'Sistema valida contra base de datos',
+        step3: 'Ve detalles completos de certificación',
+        form: {
+          codeLabel: 'Código del Certificado',
+          verificationLabel: 'Código de Verificación',
+          codePlaceholder: 'ENG-B2-2024-001',
+          verificationPlaceholder: '123456',
+          codeHelper: 'Código encontrado en certificado oficial',
+          verificationHelper: 'Opcional: Código de seguridad adicional',
+          verifyButton: 'Verificar Ahora',
+          clearButton: 'Limpiar',
+          verifying: 'Verificando...'
+        },
+        results: {
+          verified: 'Certificado Verificado',
+          failed: 'Verificación Fallida',
+          holder: 'Portador',
+          completionDate: 'Fecha de Finalización',
+          issueDate: 'Fecha de Emisión',
+          instructor: 'Instructor',
+          grade: 'Calificación',
+          hours: 'Horas Completadas',
+          expiration: 'Fecha de Expiración',
+          code: 'Código del Certificado',
+          verifiedBy: 'Certificado verificado como auténtico.',
+          verifiedOn: 'Verificación completada el',
+          errors: {
+            notFound: 'Código no pudo ser verificado.',
+            reasons: 'Posibles razones:',
+            incorrectCode: 'Código incorrecto',
+            revoked: 'Certificado revocado',
+            notIssued: 'Código no emitido'
+          }
+        },
+        help: {
+          title: '¿Necesitas Ayuda?',
+          troubleshooting: '¿Problemas verificando?',
+          tips: ['Código completo', 'Sin errores tipográficos', 'Sensible a mayúsculas', 'Contactar soporte'],
+          aboutCerts: 'Sobre certificados',
+          features: ['Digitalmente seguros', 'Estándares MCER', 'Reconocidos mundialmente', 'Currículo MBA']
+        }
+      },
+      cta: {
+        title: '¿Listo para Tu Certificación?',
+        description: 'Únete a profesionales que han avanzado con certificaciones reconocidas.',
+        viewPrograms: 'Ver Programas',
+        contactUs: 'Contáctanos'
+      }
+    },
     footer: {
-      description: 'Líder Educativo, MBA e Innovador Tecnológico basado en Cedar City, Utah.',
-      bilingual: 'Profesional bilingüe especializado en la intersección de educación, estrategia empresarial y tecnología emergente.',
+      description: 'Líder Educativo, MBA e Innovador Tecnológico en Cedar City, Utah.',
+      bilingual: 'Profesional bilingüe en educación, estrategia empresarial y tecnología.',
       quickLinks: 'Enlaces Profesionales',
       newsletter: 'Actualizaciones Profesionales',
-      subscribeText: 'Suscríbete para obtener perspectivas sobre liderazgo educativo, estrategia empresarial y tendencias tecnológicas',
+      subscribeText: 'Suscríbete para perspectivas de liderazgo educativo',
       subscribeButton: 'Suscribirse',
       emailPlaceholder: 'Tu correo profesional',
-      thankYou: '¡Gracias por suscribirte a las actualizaciones profesionales!',
+      thankYou: '¡Gracias por suscribirte!',
       copyright: 'Todos los derechos reservados.',
       privacyPolicy: 'Política de Privacidad',
       termsOfService: 'Términos de Servicio',
       professionalNetwork: 'Red Profesional',
-      // Professional Credentials section
       professionalCredentials: 'Credenciales Profesionales',
       mbaBusinessLeadership: 'MBA - Liderazgo Empresarial',
-      educationalLeadership: '5+ Años de Liderazgo Educativo',
+      educationalLeadership: '5+ Años Liderazgo Educativo',
       technologyFocus: 'Enfoque en Innovación Tecnológica',
-      // Newsletter features
       newsletterFeatures: 'Lo que recibirás:',
-      leadershipInsights: 'Perspectivas sobre liderazgo educativo',
+      leadershipInsights: 'Perspectivas de liderazgo educativo',
       businessTips: 'Consejos de estrategia empresarial',
-      edTechTrends: 'Tendencias y oportunidades EdTech',
-      // Bottom section
-      locationTitle: 'Cedar City, Utah | Líder Educativo | MBA | Innovador Tecnológico',
-      professionalWebsite: 'Sitio web profesional diseñado para oportunidades de liderazgo educativo',
-      // Professional Recognition
+      edTechTrends: 'Tendencias EdTech',
+      locationTitle: 'Cedar City, Utah | Líder Educativo | MBA | Innovador',
+      professionalWebsite: 'Sitio web profesional',
       managementAward: 'Comunicación Empresarial Galardonada',
-      programGrowth: '20% Logro de Crecimiento de Programas',
-      bilingualExpertise: 'Experiencia Profesional Bilingüe'
+      programGrowth: '20% Crecimiento de Programas',
+      bilingualExpertise: 'Experiencia Bilingüe Profesional'
     },
-    // Cookie Consent
     cookieConsent: {
       title: 'Política de Cookies',
-      description: 'Este sitio web utiliza cookies de análisis de Microsoft Clarity para entender cómo interactúas con nuestro sitio y mejorar tu experiencia. No utilizamos cookies de publicidad o seguimiento en redes sociales.',
-      accept: 'Aceptar Análisis',
+      description: 'Este sitio usa Microsoft Clarity para mejorar la experiencia.',
+      accept: 'Aceptar',
       decline: 'Rechazar',
-      privacyPolicy: 'Leer nuestra Política de Privacidad',
-      feature1: 'Cookies esenciales para la funcionalidad del sitio',
-      feature2: 'Cookies de análisis para el rendimiento del sitio web',
-      feature3: 'Sin cookies de publicidad',
-      feature4: 'Cumple con GDPR'
+      privacyPolicy: 'Política de Privacidad',
+      feature1: 'Cookies esenciales',
+      feature2: 'Análisis del sitio web',
+      feature3: 'Sin cookies publicitarias',
+      feature4: 'Cumple GDPR'
     },
-    // Privacy Policy
     privacyPolicy: {
       title: 'Política de Privacidad',
       lastUpdated: 'Última Actualización: 16 de junio de 2025',
       introduction: {
         title: 'Introducción',
-        content: 'Esta política de privacidad explica cómo recopilamos, usamos, y protegemos tu información cuando visitas nuestro sitio web o utilizas nuestros servicios.'
+        content: 'Esta política explica cómo recopilamos y protegemos tu información.'
       },
       informationWeCollect: {
         title: 'Información que Recopilamos',
         websiteAnalytics: {
-          title: 'Análisis del Sitio Web',
-          description: 'Utilizamos Microsoft Clarity para recopilar datos sobre cómo los visitantes usan nuestro sitio. Esto nos ayuda a mejorar nuestro sitio web y servicios.',
-          items: [
-            'Páginas visitadas',
-            'Tiempo pasado en el sitio',
-            'Enlaces clicados',
-            'Sitio web de referencia'
-          ]
+          title: 'Análisis del Sitio',
+          description: 'Usamos Microsoft Clarity para mejorar el sitio.',
+          items: ['Páginas visitadas', 'Tiempo en sitio', 'Enlaces clicados', 'Sitio de referencia']
         },
         contactInformation: {
           title: 'Información de Contacto',
-          description: 'Si nos contactas, recopilamos tu nombre, dirección de correo electrónico, y cualquier otra información que proporciones.',
-          items: [
-            'Nombre',
-            'Dirección de correo electrónico',
-            'Número de teléfono',
-            'Contenido del mensaje'
-          ]
+          description: 'Recopilamos información que nos proporciones.',
+          items: ['Nombre', 'Correo', 'Teléfono', 'Contenido del mensaje']
         }
       },
       howWeUse: {
         title: 'Cómo Usamos Tu Información',
-        items: [
-          'Para mejorar nuestro sitio web y servicios',
-          'Para responder a tus comentarios y preguntas',
-          'Para enviarte actualizaciones y materiales promocionales',
-          'Para analizar el uso y las tendencias del sitio web'
-        ]
+        items: ['Mejorar servicios', 'Responder preguntas', 'Enviar actualizaciones', 'Analizar uso']
       },
       whatWeDont: {
-        title: 'Lo Que No Hacemos Con Tu Información',
-        items: [
-          'No vendemos ni alquilamos tu información personal a terceros',
-          'No usamos tu información para la toma de decisiones automatizada',
-          'No recopilamos información sensible como raza, religión o datos de salud'
-        ]
+        title: 'Lo Que No Hacemos',
+        items: ['No vendemos información', 'No decisiones automatizadas', 'No información sensible']
       },
       yourRights: {
         title: 'Tus Derechos',
-        description: 'Tienes el derecho de acceder, corregir, o eliminar tu información personal. También puedes oponerte a o restringir ciertos tratamientos de tus datos.',
-        items: [
-          'Derecho a acceder a tus datos',
-          'Derecho a corregir tus datos',
-          'Derecho a eliminar tus datos',
-          'Derecho a oponerte al tratamiento'
-        ]
+        description: 'Derechos de acceso, corrección y eliminación.',
+        items: ['Acceso a datos', 'Corregir datos', 'Eliminar datos', 'Oponerte al procesamiento']
       },
       dataSecurity: {
-        title: 'Seguridad de los Datos',
-        content: 'Tomamos en serio la seguridad de los datos y usamos medidas apropiadas para proteger tu información contra el acceso no autorizado, divulgación o uso indebido.'
+        title: 'Seguridad de Datos',
+        content: 'Medidas apropiadas para proteger información.'
       },
       thirdPartyServices: {
         title: 'Servicios de Terceros',
-        description: 'Podemos usar servicios de terceros para ayudarnos a operar nuestro negocio y el sitio web o proporcionar servicios a ti.',
-        items: [
-          'Microsoft Clarity (análisis)',
-          'Proveedores de servicios de correo electrónico',
-          'Procesadores de pagos',
-          'Software de gestión de relaciones con clientes (CRM)'
-        ],
-        footer: 'Nos aseguramos de que estos terceros cumplan con las leyes de protección de datos y tengan medidas de seguridad apropiadas.'
+        description: 'Servicios que nos ayudan a operar.',
+        items: ['Microsoft Clarity', 'Proveedores de correo', 'Procesadores de pago', 'Software CRM'],
+        footer: 'Terceros cumplen con leyes de protección de datos.'
       },
       contactUs: {
         title: 'Contáctanos',
-        description: 'Si tienes alguna pregunta o inquietud sobre esta política de privacidad o nuestras prácticas de datos, por favor contáctanos.',
-        email: 'Correo electrónico: ammaron99@gmail.com',
+        description: 'Preguntas sobre esta política.',
+        email: 'Correo: ammaron99@gmail.com',
         phone: 'Teléfono: (435) 893-6006',
         location: 'Ubicación: Cedar City, Utah'
       },
       changes: {
         title: 'Cambios a Esta Política',
-        content: 'Podemos actualizar esta política de privacidad de vez en cuando. Te notificaremos sobre cualquier cambio publicando la nueva política en nuestro sitio web con una nueva fecha de entrada en vigor.'
+        content: 'Podemos actualizar esta política ocasionalmente.'
       }
     }
   }

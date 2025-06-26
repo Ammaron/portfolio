@@ -99,7 +99,7 @@ export default function Navbar() {
 
   const navLinks = [
     { name: t('nav', 'home'), href: '/' },
-    // { name: t('nav', 'teachersPayTeachers'), href: '/teachers-pay-teachers' },
+    { name: t('nav', 'certifications'), href: '/certifications' },
     { name: t('nav', 'englishClasses'), href: '/english-classes' },
   ];
 
