@@ -87,7 +87,7 @@ export default function HomePage() {
   };
 
   const handleEmailClick = () => {
-    window.open('mailto:ammaron99@gmail.com', '_blank');
+    window.open('mailto:kirby@mrmcdonald.org', '_blank');
   };
 
   const handlePhoneClick = () => {
@@ -374,7 +374,7 @@ export default function HomePage() {
       </section>
 
       {/* About/Experience Section */}
-      <section id="about" className="section-padding-authority bg-background">
+      <section id="about" className="section-padding-authority bg-gradient-to-br from-slate-900 via-gray-900 to-blue-700 text-white">
         <div className="container-authority">
           <div className="text-center mb-16">
             <h2 className="text-section-title-authority mb-6 gradient-text-authority">
@@ -556,7 +556,7 @@ export default function HomePage() {
                   <MailboxIcon size={40} className="text-black" />
                 </div>
                 <h3 className="text-lg font-bold mb-2">{t('home', 'contact.email')}</h3>
-                <p className="text-primary font-medium">ammaron99@gmail.com</p>
+                <p className="text-primary font-medium">kirby@mrmcdonald.org</p>
               </div>
               
               <div
@@ -598,6 +598,12 @@ export default function HomePage() {
             
             {/* Contact Form */}
             <div className="authority-card p-8 lg:p-12">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold gradient-text-authority mb-2">
+                  {t('home', 'contact.contactFormHeader')}
+                </h3>
+                <div className="w-16 h-0.5 bg-gradient-primary mx-auto"></div>
+              </div>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>

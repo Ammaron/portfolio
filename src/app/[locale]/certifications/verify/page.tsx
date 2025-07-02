@@ -416,7 +416,7 @@ export default function CertificateVerificationPage() {
             </div>
             <div className="text-center mt-6">
               <a 
-                href="mailto:ammaron99@gmail.com" 
+                href="mailto:kirby@mrmcdonald.org" 
                 className="btn-authority btn-secondary-authority"
               >
                 Contact Support

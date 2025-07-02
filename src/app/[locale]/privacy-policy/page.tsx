@@ -117,7 +117,7 @@ export default function PrivacyPolicy() {
                   {t('privacyPolicy', 'contactUs.description')}
                 </p>
                 <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
-                  <p className="text-gray-700 mb-2"><strong>Email:</strong> ammaron99@gmail.com</p>
+                  <p className="text-gray-700 mb-2"><strong>Email:</strong> kirby@mrmcdonald.org</p>
                   <p className="text-gray-700 mb-2"><strong>Phone:</strong> (435) 893-6006</p>
                   <p className="text-gray-700"><strong>Location:</strong> Cedar City, Utah</p>
                 </div>

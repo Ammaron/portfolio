@@ -130,7 +130,7 @@ export default function RootLayout({
               "url": "https://mrmcdonald.org",
               "sameAs": [
                 "https://linkedin.com/in/ammaron",
-                "https://wa.me/4358936006"
+                "https://wa.me/51904975329"
               ],
               "address": {
                 "@type": "PostalAddress",
@@ -138,7 +138,7 @@ export default function RootLayout({
                 "addressRegion": "Utah",
                 "addressCountry": "United States"
               },
-              "email": "ammaron99@gmail.com",
+              "email": "kirby@mrmcdonald.org",
               "telephone": "+1-435-893-6006",
               "knowsLanguage": ["English", "Spanish"],
               "alumniOf": [

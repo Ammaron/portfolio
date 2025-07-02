@@ -40,7 +40,7 @@ export const sendEmail = async (params: EmailParams): Promise<{ success: boolean
         subject: params.subject,
         message: params.message,
         to_name: 'Kirby McDonald',
-        to_email: 'ammaron99@gmail.com',
+        to_email: 'kirby@mrmcdonald.org',
         reply_to: params.from_email,
       },
       EMAILJS_CONFIG.PUBLIC_KEY

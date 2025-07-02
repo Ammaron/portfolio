@@ -220,7 +220,7 @@ export default function TeachersPayTeachersPage() {
       </section>
       
       {/* Interactive Resources Section */}
-      <section className="section-padding-authority bg-background">
+      <section className="section-padding-authority bg-gradient-to-br from-slate-900 via-gray-900 to-blue-900 text-white">
         <div className="container-authority">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">

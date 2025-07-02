@@ -104,6 +104,23 @@ export default function EnglishClassesPage() {
     }
   };
   
+  // Handle navigation to testimonials/success stories section
+  const handleSuccessStoriesClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    
+    // Set active tab to testimonials
+    setActiveTab('testimonials');
+    
+    // Scroll to the tabs section after a brief delay to allow tab switch
+    setTimeout(() => {
+      const tabsSection = document.querySelector('.section-padding-authority.bg-gradient-to-br.from-slate-900');
+      if (tabsSection) {
+        const offsetTop = (tabsSection as HTMLElement).offsetTop - 100;
+        smoothScrollTo(offsetTop, 1000);
+      }
+    }, 100);
+  };
+  
   // Handle card flip toggle for mobile with better touch support
   const handleCardClick = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>, cardId: string) => {
     e.preventDefault();
@@ -194,17 +211,15 @@ function getClassImage(classId: string): string {
                 </svg>
                 {t('classes', 'hero.button')}
               </Link>
-              <a 
-                href="https://calendly.com/your-link" 
-                target="_blank"
-                rel="noopener noreferrer"
+              <button 
+                onClick={handleSuccessStoriesClick}
                 className="btn-authority btn-secondary-authority text-lg px-8 py-4 border-white text-white hover:bg-white hover:text-primary"
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 {t('classes', 'classLevels.scheduleConsultation')}
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -257,12 +272,31 @@ function getClassImage(classId: string): string {
                 </p>
               </div>
             </div>
+            
+            {/* Fun - Wide Card */}
+            <div className="mt-12">
+              <div className="authority-card text-center p-8 bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-100">
+                <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+                  <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-3xl flex items-center justify-center flex-shrink-0">
+                    <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div className="text-center md:text-left">
+                    <h3 className="text-3xl font-bold mb-4 gradient-text-authority">{t('classes', 'classLevels.funTitle')}</h3>
+                    <p className="text-gray-700 leading-relaxed text-lg max-w-4xl">
+                      {t('classes', 'classLevels.funDesc')}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
       
       {/* Tabs Navigation */}
-      <section className="section-padding-authority bg-background">
+      <section className="section-padding-authority bg-gradient-to-br from-slate-900 via-gray-900 to-blue-900 text-white">
         <div className="container-authority">
           <div className="flex justify-center border-b border-gray-200 mb-16">
             <button 
@@ -543,12 +577,12 @@ function getClassImage(classId: string): string {
                       </div> */}
                       <div>
                         <h3 className="font-bold text-gray-900">{testimonial.name}</h3>
-                        <p className="text-sm text-primary font-medium">{testimonial.role}</p>
+                        <p className="text-sm text-gray-800 font-medium">{testimonial.role}</p>
                       </div>
                     </div>
                     
                     <div className="relative mb-6">
-                      <QuotesIcon className="absolute top-0 left-0 w-8 h-8 text-primary/20 -translate-x-2 -translate-y-2" />
+                      <QuotesIcon className="absolute top-0 left-0 w-8 h-8 text-gray-600 -translate-x-2 -translate-y-2" />
                       <p className="italic text-gray-700 leading-relaxed pl-6">{testimonial.content}</p>
                     </div>
                     
@@ -576,10 +610,9 @@ function getClassImage(classId: string): string {
             </div>
           )}
         </div>
-      </section>
       
       {/* Professional CTA Section */}
-      <section className="section-padding-authority bg-gradient-to-br from-primary/5 to-secondary/5">
+      {/* <section className="section-padding-authority bg-gradient-to-br from-primary/5 to-secondary/5">
         <div className="container-authority">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-section-title-authority mb-6 gradient-text-authority">
@@ -613,7 +646,9 @@ function getClassImage(classId: string): string {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
+            </section>
+
     </div>
   );
 }

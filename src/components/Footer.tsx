@@ -65,7 +65,7 @@ export default function Footer() {
               </a>
               
               <a 
-                href="mailto:ammaron99@gmail.com" 
+                href="mailto:kirby@mrmcdonald.org" 
                 className="group w-12 h-12 bg-gradient-warm rounded-xl flex items-center justify-center hover:scale-110 transition-all duration-300 hover:shadow-lg hover:shadow-warm/25"
                 aria-label="Professional Email Contact"
               >
@@ -76,7 +76,7 @@ export default function Footer() {
               </a>
               
               <a 
-                href="https://wa.me/4358936006" 
+                href="https://wa.me/51904975329" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="group w-12 h-12 bg-gradient-accent rounded-xl flex items-center justify-center hover:scale-110 transition-all duration-300 hover:shadow-lg hover:shadow-accent/25"

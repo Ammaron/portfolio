@@ -6,7 +6,7 @@ interface ContactWidgetProps {
 }
 
 export default function ContactWidget({ 
-  whatsappNumber = "904975329", 
+  whatsappNumber = "51904975329", 
   linkedinUrl = "https://linkedin.com/in/ammaron" 
 }: ContactWidgetProps) {
   return (

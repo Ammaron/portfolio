@@ -155,7 +155,7 @@ export default function CertificationsPage() {
       </section>
 
       {/* Certification Types */}
-      <section className="section-padding-authority bg-background">
+      <section className="section-padding-authority bg-gradient-to-br from-slate-900 via-gray-900 to-blue-700 text-white">
         <div className="container-authority">
           <div className="text-center mb-16">
             <h2 className="text-section-title-authority mb-6 gradient-text-authority">
