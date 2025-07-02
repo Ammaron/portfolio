@@ -122,7 +122,7 @@ export default function EnglishClassesPage() {
   };
   
   // Handle card flip toggle for mobile with better touch support
-  const handleCardClick = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>, cardId: string) => {
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>, cardId: string) => {
     e.preventDefault();
     e.stopPropagation();
     
@@ -136,7 +136,42 @@ export default function EnglishClassesPage() {
       return newSet;
     });
   };
+
+  // Separate touch handler for mobile devices
+  const handleCardTouch = (e: React.TouchEvent<HTMLDivElement>, cardId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Only handle single touch and ensure it's a tap, not a scroll
+    if (e.changedTouches.length === 1) {
+      setFlippedCards(prev => {
+        const newSet = new Set(prev);
+        if (newSet.has(cardId)) {
+          newSet.delete(cardId);
+        } else {
+          newSet.add(cardId);
+        }
+        return newSet;
+      });
+    }
+  };
   
+  // Handle keyboard interaction for accessibility
+  const handleCardKeyDown = (e: React.KeyboardEvent<HTMLDivElement>, cardId: string) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      setFlippedCards(prev => {
+        const newSet = new Set(prev);
+        if (newSet.has(cardId)) {
+          newSet.delete(cardId);
+        } else {
+          newSet.add(cardId);
+        }
+        return newSet;
+      });
+    }
+  };
+
 // Helper function to get appropriate image for each class
 function getClassImage(classId: string): string {
   const imageMap: Record<string, string> = {
@@ -333,7 +368,21 @@ function getClassImage(classId: string): string {
               
               <div className="grid lg:grid-cols-2 gap-8">
                 {classes.map((classItem: ClassLevel, index: number) => (
-                  <div key={classItem.id} className="card-flip-authority animate-fade-in-up cursor-pointer" style={{ animationDelay: `${index * 0.1}s` }} onClick={(e) => handleCardClick(e, classItem.id)}>
+                  <div 
+                    key={classItem.id} 
+                    className="card-flip-authority animate-fade-in-up cursor-pointer" 
+                    style={{ 
+                      animationDelay: `${index * 0.1}s`,
+                      touchAction: 'manipulation',
+                      WebkitTapHighlightColor: 'transparent'
+                    }} 
+                    onClick={(e) => handleCardClick(e, classItem.id)}
+                    onTouchEnd={(e) => handleCardTouch(e, classItem.id)}
+                    onKeyDown={(e) => handleCardKeyDown(e, classItem.id)} // Add keyboard handler
+                    tabIndex={0}
+                    role="button"
+                    aria-label={`Click to view details for ${classItem.level}`}
+                  >
                     <div className={`card-flip-inner-authority ${flippedCards.has(classItem.id) ? 'flipped' : ''}`}>
                       {/* Card Front */}
                       <div className="card-flip-front-authority authority-card bg-white overflow-hidden">
