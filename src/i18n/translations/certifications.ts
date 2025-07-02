@@ -247,23 +247,23 @@ export const certificationsTranslations: Record<'en' | 'es', CertificationsTrans
     certifications: {
       title: 'Certificaciones Profesionales',
       subtitle: 'Credenciales Reconocidas Internacionalmente',
-      description: 'Valida tu competencia en inglés con programas MBA reconocidos internacionalmente.',
+      description: 'Valida tu competencia en inglés con programas Maestria en Administracion de Negocios reconocidos internacionalmente.',
       hero: {
         title: 'Certificaciones Profesionales',
-        description: 'Programas de certificación MBA reconocidos internacionalmente.',
+        description: 'Programas de certificación Maestria en Administracion de Negocios reconocidos internacionalmente.',
         verifyTitle: 'Verificar Certificado',
         verifyPlaceholder: 'Código del certificado (ej: ENG-B2-2024-001)',
         verifyButton: 'Verificar Certificado'
       },
       value: {
         title: 'Por Qué Importan Nuestras Certificaciones',
-        subtitle: 'Respaldadas por diseño MBA y estándares internacionales.',
+        subtitle: 'Respaldadas por diseño Maestria en Administracion de Negocios y estándares internacionales.',
         international: {
           title: 'Reconocimiento Internacional',
           description: 'Certificaciones MCER reconocidas mundialmente'
         },
         quality: {
-          title: 'Calidad MBA',
+          title: 'Calidad Maestria en Administracion de Negocios',
           description: 'Diseño con experiencia empresarial'
         },
         security: {
@@ -286,7 +286,7 @@ export const certificationsTranslations: Record<'en' | 'es', CertificationsTrans
         business: {
           title: 'Comunicación Empresarial',
           description: 'Certificación especializada en inglés empresarial.',
-          features: ['Terminología específica', 'Comunicación ejecutiva', 'Presentaciones', 'Currículo MBA']
+          features: ['Terminología específica', 'Comunicación ejecutiva', 'Presentaciones', 'Currículo Maestria en Administracion de Negocios']
         },
         custom: {
           title: 'Programas Corporativos',
@@ -347,7 +347,7 @@ export const certificationsTranslations: Record<'en' | 'es', CertificationsTrans
             'Todos los certificados están asegurados digitalmente',
             'Estándares internacionales MCER',
             'Reconocidos por empleadores mundialmente',
-            'Currículo profesional diseñado por MBA'
+            'Currículo profesional diseñado por Maestria en Administracion de Negocios'
           ]
         }
       },

@@ -368,7 +368,7 @@ export const classesTranslations: Record<'en' | 'es', ClassesTranslations> = {
     classes: {
       hero: {
         title: 'Instrucción Profesional de Inglés',
-        description: 'Instrucción de inglés enfocada en negocios de un profesional bilingüe con MBA.',
+        description: 'Instrucción de inglés enfocada en negocios de un profesional bilingüe con Maestria en Administracion de Negocios.',
         button: 'Conectemos'
       },
       tabs: {
@@ -380,18 +380,18 @@ export const classesTranslations: Record<'en' | 'es', ClassesTranslations> = {
         title: 'Programas Profesionales de Inglés',
         description: 'Programas comprensivos diseñados para avance profesional y éxito empresarial.',
         whyChooseTitle: '¿Por qué Elegir Instrucción Profesional?',
-        whyChooseSubtitle: 'Enfoque MBA para avance profesional.',
+        whyChooseSubtitle: 'Enfoque Maestria en Administracion de Negocios para avance profesional.',
         businessFirstTitle: 'Enfoque de Aplicación Real',
         businessFirstDesc: 'Lecciones conectadas con situaciones prácticas.',
         careerImpactTitle: 'Resultados Medibles',
         careerImpactDesc: 'Mide tu progreso através de logros reales.',
         executiveInstructionTitle: 'Instrucción Ejecutiva',
-        executiveInstructionDesc: 'Aprende de un educador con MBA.',
+        executiveInstructionDesc: 'Aprende de un educador con Maestria en Administracion de Negocios.',
         funTitle: 'Aprendizaje Atractivo',
         funDesc: 'Enfoque interactivo y personalizado.',
         topicsInclude: 'El programa incluye',
         programIncludes: 'El Programa Incluye',
-        teacherInfo: 'Todos los programas dirigidos por Kirby McDonald, MBA.',
+        teacherInfo: 'Todos los programas dirigidos por Kirby McDonald, Maestria en Administracion de Negocios.',
         inquireButton: 'Discutir Objetivos',
         businessFocus: 'Currículo Empresarial',
         careerAdvancement: 'Enfoque en avance profesional',
@@ -404,7 +404,7 @@ export const classesTranslations: Record<'en' | 'es', ClassesTranslations> = {
         clickForDetails: 'Haz clic para detalles',
         connectButton: 'Conectar',
         programDuration: 'Comunicador funcional en 90-100 horas!',
-        mbaBadge: 'MBA',
+        mbaBadge: 'Maestria en Administracion de Negocios',
         experienceBadge: '5+ Años',
         bilingualBadge: 'Bilingüe',
         scheduleConsultation: 'Historias de Éxito Profesional',
@@ -622,7 +622,7 @@ export const classesTranslations: Record<'en' | 'es', ClassesTranslations> = {
       },
       cta: {
         title: '¿Listo para Avanzar?',
-        description: 'Programas MBA para lograr objetivos profesionales.',
+        description: 'Programas Maestria en Administracion de Negocios para lograr objetivos profesionales.',
         contactButton: 'Consulta Profesional',
         whatsappButton: 'Conexión Rápida'
       }

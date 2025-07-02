@@ -306,8 +306,8 @@ export const homeTranslations: Record<'en' | 'es', HomeTranslations> = {
     home: {
       hero: {
         title: 'Kirby McDonald',
-        subtitle: 'Líder Educativo | MBA | Innovador Tecnológico',
-        description: 'Líder educativo con MBA, más de 5 años de experiencia en el aula, perspicacia empresarial comprobada y experiencia tecnológica emergente. Conectando educación, estrategia empresarial e innovación para impulsar resultados significativos.',
+        subtitle: 'Líder Educativo | Maestria en Administracion de Negocios | Innovador Tecnológico',
+        description: 'Líder educativo con Maestria en Administracion de Negocios, más de 5 años de experiencia en el aula, perspicacia empresarial comprobada y experiencia tecnológica emergente. Conectando educación, estrategia empresarial e innovación para impulsar resultados significativos.',
         contactButton: 'Conectemos',
         classesButton: 'Clases de Inglés',
         scrollHint: 'Desplázate para explorar',
@@ -322,7 +322,7 @@ export const homeTranslations: Record<'en' | 'es', HomeTranslations> = {
           description: 'Experiencia profunda en el aula con desarrollo curricular, gestión de maestros y resultados estudiantiles comprobados en demografías diversas.'
         },
         businessLeader: {
-          title: 'Estrategia Impulsada por MBA',
+          title: 'Estrategia Impulsada por Maestria en Administracion de Negocios',
           description: 'Educación empresarial avanzada con enfoque en operaciones, liderazgo y crecimiento estratégico. Rendimiento galardonado en gestión y comunicación.'
         },
         techInnovator: {
@@ -333,7 +333,7 @@ export const homeTranslations: Record<'en' | 'es', HomeTranslations> = {
       about: {
         title: 'Liderazgo a Través de la Innovación',
         subtitle: 'Donde la Educación se Encuentra con la Estrategia Empresarial',
-        paragraph1: 'Como líder educativo con MBA, aporto una combinación única de experiencia en el aula, estrategia empresarial y visión tecnológica. Con más de cinco años de experiencia educativa práctica y resultados comprobados—incluyendo un aumento del 20% en la inscripción de programas—entiendo cómo escalar el impacto educativo a través del pensamiento estratégico.',
+        paragraph1: 'Como líder educativo con Maestria en Administracion de Negocios, aporto una combinación única de experiencia en el aula, estrategia empresarial y visión tecnológica. Con más de cinco años de experiencia educativa práctica y resultados comprobados—incluyendo un aumento del 20% en la inscripción de programas—entiendo cómo escalar el impacto educativo a través del pensamiento estratégico.',
         paragraph2: 'Actualmente estudiando desarrollo de software para mantenerme a la vanguardia de las tendencias de tecnología educativa, soy el puente entre la educación tradicional y las soluciones empresariales innovadoras. Mi experiencia bilingüe (inglés/español) y experiencia en liderazgo gestionando maestros y desarrollando currículos me posiciona de manera única en el panorama EdTech en evolución.',
         tabExperience: 'Experiencia de Liderazgo',
         tabEducation: 'Educación y Credenciales',
@@ -378,7 +378,7 @@ export const homeTranslations: Record<'en' | 'es', HomeTranslations> = {
         },
         education: {
           mba: {
-            title: 'Maestría en Administración de Empresas (MBA)',
+            title: 'Maestría en Administración de Negocios',
             institution: 'Southern Utah University',
             period: '2023 - 2025 (En Progreso)',
             description: 'Enfoque en Liderazgo Estratégico, Gestión de Operaciones e Integración de Tecnología Educativa'
@@ -419,7 +419,7 @@ export const homeTranslations: Record<'en' | 'es', HomeTranslations> = {
           }
         },
         skills: [
-          'Estrategia MBA',
+          'Estrategia Maestria en Administracion de Negocios',
           'Liderazgo Educativo',
           'Desarrollo Curricular',
           'Desarrollo Empresarial',
@@ -430,7 +430,7 @@ export const homeTranslations: Record<'en' | 'es', HomeTranslations> = {
           'Análisis de Datos',
           'Desarrollo de Software'
         ],
-        mbaCredential: 'MBA',
+        mbaCredential: 'Maestria en Administracion de Negocios',
         businessLeadership: 'Liderazgo Empresarial',
         yearsLeading: '5+',
         yearsLeadingLabel: 'Años Liderando'

@@ -190,7 +190,7 @@ export const tptTranslations: Record<'en' | 'es', TptTranslations> = {
         list: [
           {
             title: 'Excelencia en Comunicación Empresarial',
-            description: 'Currículo diseñado por MBA para habilidades de comunicación profesional con seguimiento de ROI y aplicaciones del mundo real',
+            description: 'Currículo diseñado por Maestria en Administracion de Negocios para habilidades de comunicación profesional con seguimiento de ROI y aplicaciones del mundo real',
             price: '$24.99',
             category: 'business',
             grade: '9-12, Ed. Adultos',
@@ -217,7 +217,7 @@ export const tptTranslations: Record<'en' | 'es', TptTranslations> = {
           },
           {
             title: 'Kit de Herramientas de Liderazgo Educativo',
-            description: 'Estrategias informadas por MBA para líderes educativos con herramientas prácticas para la gestión de equipos y el crecimiento',
+            description: 'Estrategias informadas por Maestria en Administracion de Negocios para líderes educativos con herramientas prácticas para la gestión de equipos y el crecimiento',
             price: '$34.99',
             category: 'leadership',
             grade: 'Liderazgo/Admin',
@@ -258,7 +258,7 @@ export const tptTranslations: Record<'en' | 'es', TptTranslations> = {
         title: 'Antecedentes de Liderazgo Educativo',
         description: 'Recursos basados en experiencia real de liderazgo:',
         businessTitle: 'Educación Empresarial y de Liderazgo',
-        businessBullets: ['Estrategia MBA', 'Resultados ROI', 'Desarrollo de Liderazgo'],
+        businessBullets: ['Estrategia Maestria en Administracion de Negocios', 'Resultados ROI', 'Desarrollo de Liderazgo'],
         techTitle: 'Integración Tecnológica',
         techBullets: ['Implementación EdTech', 'Transformación Digital', 'Innovación'],
         resultsTitle: 'Resultados Medibles',
