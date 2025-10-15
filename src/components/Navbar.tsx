@@ -116,7 +116,7 @@ export default function Navbar() {
           {/* Logo Section - Better Spacing */}
           <div className="flex items-center">
             <Image 
-              src="/logo.png" 
+              src="/logo.webp" 
               alt="Mr. McDonald Logo" 
               width={48} 
               height={48} 

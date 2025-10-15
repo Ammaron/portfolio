@@ -262,7 +262,7 @@ export default function HomePage() {
               <div className="relative">
                 <div className="glass-authority w-80 h-80 lg:w-96 lg:h-96 rounded-3xl overflow-hidden animate-gentle-glow relative">
                   <Image 
-                    src="/images/profile1.jpg" 
+                    src="/images/profile1.webp" 
                     alt="Kirby McDonald - Educational Leader with MBA"
                     fill
                     className="object-cover"
