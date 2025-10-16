@@ -83,14 +83,14 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0f172a;
+    --background: #1e293b;
     --foreground: #f8fafc;
     --text-primary: #f8fafc;
     --text-secondary: #cbd5e1;
     --text-muted: #94a3b8;
     --text-on-dark: #1e293b;
-    --gray-light: var(--gray-800);
-    --gray: var(--gray-700);
+    --gray-light: var(--gray-700);
+    --gray: var(--gray-600);
     --gray-dark: var(--gray-200);
   }
 }

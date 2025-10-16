@@ -6,6 +6,7 @@
 @import "../styles/components/card-flip.css";
 @import "../styles/components/contact-widget.css";
 @import "../styles/components/ui-components.css";
+@import "../styles/components/blog-post.css";
 
 * {
   box-sizing: border-box;

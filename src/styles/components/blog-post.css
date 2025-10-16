@@ -1,0 +1,372 @@
+/* Blog Post Typography & Reading Experience */
+
+/* Smooth font rendering for better readability */
+.prose {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Light mode colors */
+.blog-content {
+  color: rgb(31, 41, 55) !important;
+}
+
+.blog-content p,
+.blog-content li,
+.blog-content h1,
+.blog-content h2,
+.blog-content h3,
+.blog-content h4,
+.blog-content h5,
+.blog-content h6,
+.blog-content blockquote,
+.blog-content td,
+.blog-content th,
+.blog-content span,
+.blog-content div {
+  color: rgb(31, 41, 55) !important;
+}
+
+/* Dark mode text color - WHITE for maximum readability */
+.dark .blog-content,
+.dark .blog-content p,
+.dark .blog-content li,
+.dark .blog-content span:not(.blog-content a span):not(.blog-content code span),
+.dark .blog-content div,
+.dark .blog-content blockquote,
+.dark .blog-content td,
+.dark .blog-content th {
+  color: rgb(255, 255, 255) !important;
+}
+
+.dark .blog-content h1,
+.dark .blog-content h2,
+.dark .blog-content h3,
+.dark .blog-content h4,
+.dark .blog-content h5,
+.dark .blog-content h6 {
+  color: rgb(255, 255, 255) !important;
+}
+
+/* Keep links and code with their specific colors */
+.dark .blog-content a {
+  color: rgb(96, 165, 250) !important;
+}
+
+.dark .blog-content code:not(pre code) {
+  color: rgb(244, 114, 182) !important;
+}
+
+.dark .blog-content pre code {
+  color: rgb(229, 231, 235) !important;
+}
+
+/* Decorative elements before headings */
+.prose h2::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 1.5rem;
+  background: linear-gradient(180deg, rgb(37, 99, 235), rgb(147, 51, 234));
+  border-radius: 2px;
+  margin-right: 1rem;
+  vertical-align: middle;
+  margin-bottom: 0.25rem;
+}
+
+.prose h3::before {
+  content: '▸';
+  color: rgb(37, 99, 235);
+  margin-right: 0.5rem;
+  font-weight: bold;
+}
+
+/* Optimal line length for reading - enforced */
+.prose p,
+.prose li,
+.prose blockquote {
+  max-width: 65ch; /* 65 characters max per line */
+}
+
+/* Enhanced paragraph spacing */
+.prose p + p {
+  margin-top: 1.75em;
+}
+
+/* Drop cap enhancement for first paragraph */
+.prose > p:first-of-type::first-letter {
+  font-size: 4.5rem;
+  line-height: 0.8;
+  float: left;
+  margin-right: 0.1em;
+  margin-top: 0.1em;
+  font-weight: 700;
+}
+
+/* Pull quotes for emphasis */
+.prose blockquote p:first-of-type::before {
+  content: '"';
+  font-size: 3rem;
+  line-height: 0;
+  margin-right: 0.25rem;
+  vertical-align: -0.4em;
+  color: rgb(37, 99, 235);
+  opacity: 0.5;
+}
+
+/* Enhanced code blocks with better contrast */
+.prose pre {
+  padding: 1.5rem;
+  overflow-x: auto;
+  line-height: 1.7;
+  tab-size: 2;
+  position: relative;
+}
+
+.prose pre::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, rgb(37, 99, 235), rgb(147, 51, 234), rgb(236, 72, 153));
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: 0.9em;
+  border: none;
+}
+
+/* Inline code distinction */
+.prose :not(pre) > code {
+  font-size: 0.9em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Image captions */
+.prose img + em {
+  display: block;
+  text-align: center;
+  font-size: 0.875rem;
+  color: rgb(107, 114, 128);
+  margin-top: -1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Table improvements */
+.prose table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.prose thead {
+  border-bottom: 2px solid rgb(229, 231, 235);
+}
+
+.prose tbody tr {
+  border-bottom: 1px solid rgb(243, 244, 246);
+}
+
+.prose th,
+.prose td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+/* List improvements */
+.prose ul > li::marker {
+  color: rgb(37, 99, 235);
+  font-weight: bold;
+}
+
+.prose ol > li::marker {
+  color: rgb(37, 99, 235);
+  font-weight: bold;
+}
+
+/* Smooth scroll for anchor links */
+.prose [id] {
+  scroll-margin-top: 100px;
+}
+
+/* Link underline animation */
+.prose a {
+  text-decoration: none;
+  background-image: linear-gradient(transparent, transparent), linear-gradient(rgb(37, 99, 235), rgb(37, 99, 235));
+  background-size: 0 2px, 0 2px;
+  background-position: 0 100%, 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.3s ease;
+}
+
+.prose a:hover {
+  background-size: 100% 2px, 100% 2px;
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .prose img + em {
+    color: rgb(156, 163, 175);
+  }
+  
+  .prose thead {
+    border-bottom-color: rgb(55, 65, 81);
+  }
+  
+  .prose tbody tr {
+    border-bottom-color: rgb(31, 41, 55);
+  }
+  
+  .prose a {
+    background-image: linear-gradient(transparent, transparent), linear-gradient(rgb(96, 165, 250), rgb(96, 165, 250));
+  }
+}
+
+/* Print styles for better printing */
+@media print {
+  .prose {
+    max-width: 100%;
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+  
+  .prose pre,
+  .prose blockquote {
+    page-break-inside: avoid;
+  }
+  
+  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    page-break-after: avoid;
+  }
+  
+  .prose img {
+    max-width: 100%;
+    page-break-inside: avoid;
+  }
+}
+
+/* Focus states for accessibility */
+.prose a:focus-visible {
+  outline: 2px solid rgb(37, 99, 235);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Selection highlight */
+.prose ::selection {
+  background-color: rgba(37, 99, 235, 0.2);
+}
+
+/* Responsive typography adjustments */
+@media (max-width: 640px) {
+  .prose > p:first-of-type::first-letter {
+    font-size: 3rem;
+  }
+  
+  .prose {
+    font-size: 1rem;
+  }
+  
+  .prose pre {
+    padding: 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Custom callout boxes - can be used in MDX */
+.callout {
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin: 2rem 0;
+  border-left: 4px solid;
+  background-size: 24px 24px;
+}
+
+.callout-info {
+  background-color: rgb(239, 246, 255);
+  border-color: rgb(59, 130, 246);
+  color: rgb(30, 64, 175);
+}
+
+.callout-warning {
+  background-color: rgb(254, 252, 232);
+  border-color: rgb(251, 191, 36);
+  color: rgb(146, 64, 14);
+}
+
+.callout-success {
+  background-color: rgb(240, 253, 244);
+  border-color: rgb(34, 197, 94);
+  color: rgb(22, 101, 52);
+}
+
+.callout-error {
+  background-color: rgb(254, 242, 242);
+  border-color: rgb(239, 68, 68);
+  color: rgb(153, 27, 27);
+}
+
+.dark .callout-info {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: rgb(147, 197, 253);
+}
+
+.dark .callout-warning {
+  background-color: rgba(251, 191, 36, 0.1);
+  color: rgb(253, 224, 71);
+}
+
+.dark .callout-success {
+  background-color: rgba(34, 197, 94, 0.1);
+  color: rgb(134, 239, 172);
+}
+
+.dark .callout-error {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: rgb(252, 165, 165);
+}
+
+/* Pull quotes - larger emphasized quotes */
+.pull-quote {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  padding: 2rem;
+  margin: 3rem 0;
+  position: relative;
+  font-style: italic;
+  color: rgb(37, 99, 235);
+}
+
+.pull-quote::before {
+  content: '"';
+  font-size: 6rem;
+  position: absolute;
+  top: -1rem;
+  left: 1rem;
+  opacity: 0.1;
+  font-family: Georgia, serif;
+}
+
+.dark .pull-quote {
+  color: rgb(147, 197, 253);
+}
+
+/* Reading progress indicator could be added here */
+.blog-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, rgb(37, 99, 235), rgb(168, 85, 247));
+  z-index: 9999;
+  transition: width 0.1s ease;
+}

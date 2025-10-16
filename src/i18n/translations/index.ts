@@ -6,6 +6,10 @@ import { TptTranslations, tptTranslations } from './tpt';
 import { CertificationsTranslations, certificationsTranslations } from './certifications';
 import { LegalTranslations, legalTranslations } from './legal';
 import { FooterTranslations, footerTranslations } from './footer';
+import { blog } from './blog';
+
+// Blog translations type
+export type BlogTranslations = typeof blog.en;
 
 // Combined interface for all translations
 export interface TranslationStructure 
@@ -15,7 +19,8 @@ export interface TranslationStructure
           TptTranslations,
           CertificationsTranslations,
           LegalTranslations,
-          FooterTranslations {}
+          FooterTranslations,
+          BlogTranslations {}
 
 // Function to merge all translation objects
 function mergeTranslations(locale: 'en' | 'es'): TranslationStructure {
@@ -26,7 +31,8 @@ function mergeTranslations(locale: 'en' | 'es'): TranslationStructure {
     ...tptTranslations[locale],
     ...certificationsTranslations[locale],
     ...legalTranslations[locale],
-    ...footerTranslations[locale]
+    ...footerTranslations[locale],
+    ...blog[locale]
   };
 }
 
@@ -44,5 +50,6 @@ export {
   tptTranslations,
   certificationsTranslations,
   legalTranslations,
-  footerTranslations
+  footerTranslations,
+  blog
 };

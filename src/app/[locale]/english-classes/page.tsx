@@ -331,7 +331,7 @@ function getClassImage(classId: string): string {
       </section>
       
       {/* Tabs Navigation */}
-      <section className="section-padding-authority bg-gradient-to-br from-slate-900 via-gray-900 to-blue-900 text-white">
+      <section className="section-padding-authority bg-gradient-to-br from-gray-100 via-gray-50 to-blue-50 dark:from-gray-800 dark:via-gray-750 dark:to-gray-800 text-gray-900 dark:text-white">
         <div className="container-authority">
           <div className="flex justify-center border-b border-gray-200 mb-16">
             <button 
