@@ -7,12 +7,13 @@ import { CertificationsTranslations, certificationsTranslations } from './certif
 import { LegalTranslations, legalTranslations } from './legal';
 import { FooterTranslations, footerTranslations } from './footer';
 import { blog } from './blog';
+import { PlacementTestTranslations, placementTestTranslations } from './placement-test';
 
 // Blog translations type
 export type BlogTranslations = typeof blog.en;
 
 // Combined interface for all translations
-export interface TranslationStructure 
+export interface TranslationStructure
   extends CommonTranslations,
           HomeTranslations,
           ClassesTranslations,
@@ -20,7 +21,8 @@ export interface TranslationStructure
           CertificationsTranslations,
           LegalTranslations,
           FooterTranslations,
-          BlogTranslations {}
+          BlogTranslations,
+          PlacementTestTranslations {}
 
 // Function to merge all translation objects
 function mergeTranslations(locale: 'en' | 'es'): TranslationStructure {
@@ -32,7 +34,8 @@ function mergeTranslations(locale: 'en' | 'es'): TranslationStructure {
     ...certificationsTranslations[locale],
     ...legalTranslations[locale],
     ...footerTranslations[locale],
-    ...blog[locale]
+    ...blog[locale],
+    ...placementTestTranslations[locale]
   };
 }
 
@@ -51,5 +54,6 @@ export {
   certificationsTranslations,
   legalTranslations,
   footerTranslations,
-  blog
+  blog,
+  placementTestTranslations
 };
