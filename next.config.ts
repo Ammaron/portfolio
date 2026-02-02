@@ -1,12 +1,7 @@
 import type { NextConfig } from "next";
 import createMDX from '@next/mdx';
-import rehypeHighlight from 'rehype-highlight';
-import rehypeSlug from 'rehype-slug';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import remarkGfm from 'remark-gfm';
 
 const nextConfig: NextConfig = {
-  // Remove the i18n config - it's for pages directory only
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   images: {
     remotePatterns: [
@@ -22,11 +17,11 @@ const nextConfig: NextConfig = {
 
 const withMDX = createMDX({
   options: {
-    remarkPlugins: [remarkGfm],
+    remarkPlugins: ['remark-gfm'],
     rehypePlugins: [
-      rehypeHighlight,
-      rehypeSlug,
-      [rehypeAutolinkHeadings, { behavior: 'wrap' }]
+      'rehype-highlight',
+      'rehype-slug',
+      ['rehype-autolink-headings', { behavior: 'wrap' }]
     ],
   },
 });

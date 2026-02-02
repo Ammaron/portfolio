@@ -107,24 +107,24 @@ export default function QuestionBankPage() {
 
   const getSkillColor = (skill: string) => {
     const colors: Record<string, string> = {
-      reading: 'bg-blue-100 text-blue-700',
-      listening: 'bg-purple-100 text-purple-700',
-      writing: 'bg-amber-100 text-amber-700',
-      speaking: 'bg-pink-100 text-pink-700'
+      reading: 'bg-blue-500/20 text-blue-400 border border-blue-500/30',
+      listening: 'bg-purple-500/20 text-purple-400 border border-purple-500/30',
+      writing: 'bg-amber-500/20 text-amber-400 border border-amber-500/30',
+      speaking: 'bg-pink-500/20 text-pink-400 border border-pink-500/30'
     };
-    return colors[skill] || 'bg-gray-100 text-gray-700';
+    return colors[skill] || 'bg-gray-500/20 text-gray-400 border border-gray-500/30';
   };
 
   const getLevelColor = (level: string) => {
     const colors: Record<string, string> = {
-      A1: 'bg-emerald-100 text-emerald-700',
-      A2: 'bg-teal-100 text-teal-700',
-      B1: 'bg-blue-100 text-blue-700',
-      B2: 'bg-indigo-100 text-indigo-700',
-      C1: 'bg-purple-100 text-purple-700',
-      C2: 'bg-amber-100 text-amber-700'
+      A1: 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30',
+      A2: 'bg-teal-500/20 text-teal-400 border border-teal-500/30',
+      B1: 'bg-blue-500/20 text-blue-400 border border-blue-500/30',
+      B2: 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30',
+      C1: 'bg-purple-500/20 text-purple-400 border border-purple-500/30',
+      C2: 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
     };
-    return colors[level] || 'bg-gray-100 text-gray-700';
+    return colors[level] || 'bg-gray-500/20 text-gray-400 border border-gray-500/30';
   };
 
   return (
@@ -170,7 +170,7 @@ export default function QuestionBankPage() {
             <select
               value={filters.skill}
               onChange={(e) => setFilters({ ...filters, skill: e.target.value })}
-              className="px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm"
+              className="px-3 py-2 border border-slate-600 rounded-lg bg-slate-700 text-white text-sm cursor-pointer"
             >
               <option value="">All Skills</option>
               <option value="reading">Reading</option>
@@ -182,7 +182,7 @@ export default function QuestionBankPage() {
             <select
               value={filters.level}
               onChange={(e) => setFilters({ ...filters, level: e.target.value })}
-              className="px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm"
+              className="px-3 py-2 border border-slate-600 rounded-lg bg-slate-700 text-white text-sm cursor-pointer"
             >
               <option value="">All Levels</option>
               <option value="A1">A1</option>
@@ -196,7 +196,7 @@ export default function QuestionBankPage() {
             <select
               value={filters.type}
               onChange={(e) => setFilters({ ...filters, type: e.target.value })}
-              className="px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm"
+              className="px-3 py-2 border border-slate-600 rounded-lg bg-slate-700 text-white text-sm cursor-pointer"
             >
               <option value="">All Types</option>
               <option value="mcq">Multiple Choice</option>
@@ -214,12 +214,12 @@ export default function QuestionBankPage() {
                   placeholder="Search questions..."
                   value={filters.search}
                   onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg bg-white text-sm"
+                  className="w-full pl-10 pr-4 py-2 border border-slate-600 rounded-lg bg-slate-700 text-white placeholder-gray-400 text-sm"
                 />
               </div>
             </div>
 
-            <span className="text-sm text-gray-500">{total} questions</span>
+            <span className="text-sm text-gray-300">{total} questions</span>
           </div>
         </div>
 
@@ -237,21 +237,21 @@ export default function QuestionBankPage() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Code</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Skill</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Level</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Type</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Question</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Points</th>
-                    <th className="text-right py-3 px-4 text-sm font-medium text-gray-500">Actions</th>
+                  <tr className="border-b border-slate-600">
+                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-300">Code</th>
+                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-300">Skill</th>
+                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-300">Level</th>
+                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-300">Type</th>
+                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-300">Question</th>
+                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-300">Points</th>
+                    <th className="text-right py-3 px-4 text-sm font-medium text-gray-300">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className="divide-y divide-slate-600/50">
                   {questions.map((q) => (
-                    <tr key={q.id} className="hover:bg-gray-50">
+                    <tr key={q.id} className="hover:bg-slate-700/50">
                       <td className="py-3 px-4">
-                        <code className="text-xs bg-gray-100 px-2 py-1 rounded">
+                        <code className="text-xs bg-slate-700 text-gray-200 px-2 py-1 rounded">
                           {q.question_code}
                         </code>
                       </td>
@@ -265,25 +265,25 @@ export default function QuestionBankPage() {
                           {q.cefr_level}
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-sm text-gray-500">
+                      <td className="py-3 px-4 text-sm text-gray-300">
                         {q.question_type.replace('_', ' ')}
                       </td>
-                      <td className="py-3 px-4 text-sm text-gray-700 max-w-xs truncate">
+                      <td className="py-3 px-4 text-sm text-gray-200 max-w-xs truncate">
                         {q.question_text}
                       </td>
-                      <td className="py-3 px-4 text-sm text-gray-500">
+                      <td className="py-3 px-4 text-sm text-gray-300">
                         {q.max_points}
                       </td>
                       <td className="py-3 px-4 text-right">
                         <button
                           onClick={() => { setEditingQuestion(q); setShowForm(true); }}
-                          className="p-2 hover:bg-gray-100 rounded-lg text-gray-600"
+                          className="p-2 hover:bg-slate-600 rounded-lg text-gray-400 hover:text-white cursor-pointer"
                         >
                           <PencilSimple size={18} />
                         </button>
                         <button
                           onClick={() => deleteQuestion(q.id)}
-                          className="p-2 hover:bg-red-50 rounded-lg text-red-600"
+                          className="p-2 hover:bg-red-900/30 rounded-lg text-red-400 hover:text-red-300 cursor-pointer"
                         >
                           <Trash size={18} />
                         </button>
@@ -371,13 +371,13 @@ function QuestionFormModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="authority-card max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
+    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+      <div className="bg-slate-800 border border-slate-600/30 rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-900">
+          <h2 className="text-xl font-bold text-white">
             {question ? 'Edit Question' : 'Add Question'}
           </h2>
-          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg">
+          <button onClick={onClose} className="p-2 hover:bg-slate-700 rounded-lg text-gray-400 hover:text-white cursor-pointer">
             <X size={20} />
           </button>
         </div>
@@ -385,26 +385,26 @@ function QuestionFormModal({
         <div className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Question Code *
               </label>
               <input
                 type="text"
                 value={formData.question_code}
                 onChange={(e) => setFormData({ ...formData, question_code: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 placeholder="e.g., R-B1-001"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Max Points
               </label>
               <input
                 type="number"
                 value={formData.max_points}
                 onChange={(e) => setFormData({ ...formData, max_points: parseInt(e.target.value) || 1 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 min="1"
               />
             </div>
@@ -412,13 +412,13 @@ function QuestionFormModal({
 
           <div className="grid md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Skill *
               </label>
               <select
                 value={formData.skill_type}
                 onChange={(e) => setFormData({ ...formData, skill_type: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 cursor-pointer"
               >
                 <option value="reading">Reading</option>
                 <option value="listening">Listening</option>
@@ -427,13 +427,13 @@ function QuestionFormModal({
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 CEFR Level *
               </label>
               <select
                 value={formData.cefr_level}
                 onChange={(e) => setFormData({ ...formData, cefr_level: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 cursor-pointer"
               >
                 <option value="A1">A1</option>
                 <option value="A2">A2</option>
@@ -444,13 +444,13 @@ function QuestionFormModal({
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 Question Type *
               </label>
               <select
                 value={formData.question_type}
                 onChange={(e) => setFormData({ ...formData, question_type: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 cursor-pointer"
               >
                 <option value="mcq">Multiple Choice</option>
                 <option value="true_false">True/False</option>
@@ -462,26 +462,26 @@ function QuestionFormModal({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-300 mb-1">
               Question Text *
             </label>
             <textarea
               value={formData.question_text}
               onChange={(e) => setFormData({ ...formData, question_text: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+              className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               rows={3}
             />
           </div>
 
           {formData.question_type === 'mcq' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Answer Options
               </label>
               <div className="space-y-2">
                 {formData.options.map((option, index) => (
                   <div key={option.id} className="flex items-center gap-2">
-                    <span className="w-8 text-center font-medium text-gray-500">{option.id}</span>
+                    <span className="w-8 text-center font-medium text-gray-400">{option.id}</span>
                     <input
                       type="text"
                       value={option.text}
@@ -490,7 +490,7 @@ function QuestionFormModal({
                         newOptions[index] = { ...option, text: e.target.value };
                         setFormData({ ...formData, options: newOptions });
                       }}
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
+                      className="flex-1 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                       placeholder={`Option ${option.id}`}
                     />
                   </div>
@@ -500,29 +500,29 @@ function QuestionFormModal({
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-300 mb-1">
               Correct Answer *
             </label>
             <input
               type="text"
               value={formData.correct_answer}
               onChange={(e) => setFormData({ ...formData, correct_answer: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+              className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               placeholder={formData.question_type === 'mcq' ? 'e.g., A' : 'Enter correct answer'}
             />
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
+          <div className="flex justify-end gap-3 pt-4 border-t border-slate-600">
             <button
               onClick={onClose}
-              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="px-4 py-2 border border-slate-500 text-gray-300 rounded-lg hover:bg-slate-700 transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="btn-authority btn-primary-authority"
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 cursor-pointer"
             >
               {isSaving ? 'Saving...' : 'Save Question'}
             </button>

@@ -88,26 +88,7 @@ export async function POST(
       pointsEarned = isCorrect ? question.max_points : 0;
     }
 
-    // Save the answer
-    const savedAnswer = await saveAnswer({
-      session_id: id,
-      question_id: question.id,
-      student_answer: typeof answer === 'string' ? answer : JSON.stringify(answer),
-      is_correct: isCorrect,
-      points_earned: pointsEarned,
-      max_points: question.max_points,
-      time_spent_seconds: time_spent_seconds || 0,
-      requires_review: requiresReview
-    });
-
-    if (!savedAnswer) {
-      return NextResponse.json(
-        { success: false, error: 'Failed to save answer' },
-        { status: 500 }
-      );
-    }
-
-    // Update raw scores and adaptive state for this skill
+    // Update raw scores and adaptive state for this skill (compute before DB calls)
     const rawScores = { ...session.raw_scores } as RawScores;
     const skill = question.skill_type as SkillType;
 
@@ -153,17 +134,67 @@ export async function POST(
     // Mark question as answered in order
     questionOrder[question_index].answered = true;
 
-    // Update session
-    const totalTimeSpent = session.time_spent_seconds + (time_spent_seconds || 0);
-    await updateSession(id, {
-      question_order: questionOrder,
-      raw_scores: rawScores,
-      current_question_index: question_index + 1,
-      time_spent_seconds: totalTimeSpent
-    });
-
-    // Find next unanswered question
+    // Find next unanswered question (compute before DB calls)
     const nextIndex = questionOrder.findIndex((q, i) => i > question_index && !q.answered);
+    const nextQuestionRef = nextIndex >= 0 ? questionOrder[nextIndex] : null;
+
+    // Prepare session update data
+    const totalTimeSpent = session.time_spent_seconds + (time_spent_seconds || 0);
+
+    // Run all DB operations in parallel for speed
+    const [savedAnswer, , nextQuestionData] = await Promise.all([
+      // Save the answer
+      saveAnswer({
+        session_id: id,
+        question_id: question.id,
+        student_answer: typeof answer === 'string' ? answer : JSON.stringify(answer),
+        is_correct: isCorrect,
+        points_earned: pointsEarned,
+        max_points: question.max_points,
+        time_spent_seconds: time_spent_seconds || 0,
+        requires_review: requiresReview
+      }),
+      // Update session
+      updateSession(id, {
+        question_order: questionOrder,
+        raw_scores: rawScores,
+        current_question_index: question_index + 1,
+        time_spent_seconds: totalTimeSpent
+      }),
+      // Fetch next question (if exists)
+      nextQuestionRef ? getQuestionById(nextQuestionRef.question_id) : Promise.resolve(null)
+    ]);
+
+    if (!savedAnswer) {
+      return NextResponse.json(
+        { success: false, error: 'Failed to save answer' },
+        { status: 500 }
+      );
+    }
+
+    // Build next question response
+    let nextQuestion = null;
+    if (nextQuestionData) {
+      nextQuestion = {
+        id: nextQuestionData.id,
+        question_code: nextQuestionData.question_code,
+        cefr_level: nextQuestionData.cefr_level,
+        skill_type: nextQuestionData.skill_type,
+        question_type: nextQuestionData.question_type,
+        question_text: nextQuestionData.question_text,
+        question_text_es: nextQuestionData.question_text_es,
+        passage_text: nextQuestionData.passage_text,
+        passage_text_es: nextQuestionData.passage_text_es,
+        audio_url: nextQuestionData.audio_url,
+        options: nextQuestionData.options?.map(opt => ({
+          id: opt.id,
+          text: opt.text,
+          text_es: opt.text_es
+        })),
+        max_points: nextQuestionData.max_points,
+        time_limit_seconds: nextQuestionData.time_limit_seconds
+      };
+    }
 
     return NextResponse.json({
       success: true,
@@ -171,7 +202,10 @@ export async function POST(
       is_correct: requiresReview ? null : isCorrect,
       points_earned: pointsEarned,
       next_index: nextIndex >= 0 ? nextIndex : null,
-      is_last: nextIndex < 0
+      is_last: nextIndex < 0,
+      // Include next question in response to eliminate second API call
+      next_question: nextQuestion,
+      total_questions: questionOrder.length
     });
 
   } catch (error) {

@@ -169,11 +169,11 @@ export default function PlacementTestAdminDashboard() {
   // Status badge
   const getStatusBadge = (status: string) => {
     const styles: Record<string, string> = {
-      'in_progress': 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-      'completed': 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-      'pending_review': 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
-      'reviewed': 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
-      'expired': 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-400'
+      'in_progress': 'bg-blue-500/20 text-blue-400 border border-blue-500/30',
+      'completed': 'bg-green-500/20 text-green-400 border border-green-500/30',
+      'pending_review': 'bg-amber-500/20 text-amber-400 border border-amber-500/30',
+      'reviewed': 'bg-purple-500/20 text-purple-400 border border-purple-500/30',
+      'expired': 'bg-gray-500/20 text-gray-400 border border-gray-500/30'
     };
 
     return (
@@ -291,58 +291,58 @@ export default function PlacementTestAdminDashboard() {
         {/* Stats Cards */}
         {analytics && (
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="authority-card p-6">
+            <div className="bg-slate-800/90 backdrop-blur-lg border border-slate-600/30 rounded-xl shadow-lg p-6">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
-                  <Users size={24} className="text-blue-600 dark:text-blue-400" />
+                <div className="p-3 bg-blue-500/20 rounded-xl">
+                  <Users size={24} className="text-blue-400" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-2xl font-bold text-white">
                     {analytics.totalTests}
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Total Tests</p>
+                  <p className="text-sm text-gray-300">Total Tests</p>
                 </div>
               </div>
             </div>
 
-            <div className="authority-card p-6">
+            <div className="bg-slate-800/90 backdrop-blur-lg border border-slate-600/30 rounded-xl shadow-lg p-6">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-xl">
-                  <CheckCircle size={24} className="text-green-600 dark:text-green-400" />
+                <div className="p-3 bg-green-500/20 rounded-xl">
+                  <CheckCircle size={24} className="text-green-400" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-2xl font-bold text-white">
                     {analytics.completedTests}
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Completed</p>
+                  <p className="text-sm text-gray-300">Completed</p>
                 </div>
               </div>
             </div>
 
-            <div className="authority-card p-6">
+            <div className="bg-slate-800/90 backdrop-blur-lg border border-slate-600/30 rounded-xl shadow-lg p-6">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-amber-100 dark:bg-amber-900/30 rounded-xl">
-                  <ClipboardText size={24} className="text-amber-600 dark:text-amber-400" />
+                <div className="p-3 bg-amber-500/20 rounded-xl">
+                  <ClipboardText size={24} className="text-amber-400" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-2xl font-bold text-white">
                     {analytics.pendingReview}
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Pending Review</p>
+                  <p className="text-sm text-gray-300">Pending Review</p>
                 </div>
               </div>
             </div>
 
-            <div className="authority-card p-6">
+            <div className="bg-slate-800/90 backdrop-blur-lg border border-slate-600/30 rounded-xl shadow-lg p-6">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-xl">
-                  <Clock size={24} className="text-purple-600 dark:text-purple-400" />
+                <div className="p-3 bg-purple-500/20 rounded-xl">
+                  <Clock size={24} className="text-purple-400" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-2xl font-bold text-white">
                     {analytics.averageTimeMinutes} min
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Avg. Time</p>
+                  <p className="text-sm text-gray-300">Avg. Time</p>
                 </div>
               </div>
             </div>
@@ -353,46 +353,46 @@ export default function PlacementTestAdminDashboard() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <Link
             href={`/${locale}/admin/placement-test/submissions`}
-            className="authority-card p-4 flex items-center gap-3 hover:shadow-lg transition-shadow"
+            className="bg-slate-800/90 backdrop-blur-lg border border-slate-600/30 rounded-xl shadow-lg p-4 flex items-center gap-3 hover:shadow-lg transition-shadow"
           >
-            <ClipboardText size={24} className="text-primary" />
-            <span className="font-medium text-gray-900 dark:text-white">All Submissions</span>
+            <ClipboardText size={24} className="text-blue-400" />
+            <span className="font-medium text-white">All Submissions</span>
             <CaretRight size={18} className="text-gray-400 ml-auto" />
           </Link>
 
           <Link
             href={`/${locale}/admin/placement-test/questions`}
-            className="authority-card p-4 flex items-center gap-3 hover:shadow-lg transition-shadow"
+            className="bg-slate-800/90 backdrop-blur-lg border border-slate-600/30 rounded-xl shadow-lg p-4 flex items-center gap-3 hover:shadow-lg transition-shadow"
           >
-            <Database size={24} className="text-primary" />
-            <span className="font-medium text-gray-900 dark:text-white">Question Bank</span>
+            <Database size={24} className="text-green-400" />
+            <span className="font-medium text-white">Question Bank</span>
             <CaretRight size={18} className="text-gray-400 ml-auto" />
           </Link>
 
           <Link
             href={`/${locale}/admin/placement-test/questions/import`}
-            className="authority-card p-4 flex items-center gap-3 hover:shadow-lg transition-shadow"
+            className="bg-slate-800/90 backdrop-blur-lg border border-slate-600/30 rounded-xl shadow-lg p-4 flex items-center gap-3 hover:shadow-lg transition-shadow"
           >
-            <Upload size={24} className="text-primary" />
-            <span className="font-medium text-gray-900 dark:text-white">Import Questions</span>
+            <Upload size={24} className="text-amber-400" />
+            <span className="font-medium text-white">Import Questions</span>
             <CaretRight size={18} className="text-gray-400 ml-auto" />
           </Link>
 
           <Link
             href={`/${locale}/admin/placement-test/settings`}
-            className="authority-card p-4 flex items-center gap-3 hover:shadow-lg transition-shadow"
+            className="bg-slate-800/90 backdrop-blur-lg border border-slate-600/30 rounded-xl shadow-lg p-4 flex items-center gap-3 hover:shadow-lg transition-shadow"
           >
-            <GearSix size={24} className="text-primary" />
-            <span className="font-medium text-gray-900 dark:text-white">Settings</span>
+            <GearSix size={24} className="text-purple-400" />
+            <span className="font-medium text-white">Settings</span>
             <CaretRight size={18} className="text-gray-400 ml-auto" />
           </Link>
         </div>
 
         {/* Level Distribution */}
         {analytics && (
-          <div className="authority-card p-6 mb-8">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-              <ChartBar size={20} className="text-primary" />
+          <div className="bg-slate-800/90 backdrop-blur-lg border border-slate-600/30 rounded-xl shadow-lg p-6 mb-8">
+            <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+              <ChartBar size={20} className="text-blue-400" />
               Level Distribution
             </h2>
             <div className="grid grid-cols-6 gap-4">
@@ -405,12 +405,12 @@ export default function PlacementTestAdminDashboard() {
                   <div key={level} className="text-center">
                     <div className="h-24 flex items-end justify-center mb-2">
                       <div
-                        className="w-8 bg-gradient-to-t from-primary to-secondary rounded-t"
+                        className="w-8 bg-gradient-to-t from-blue-500 to-purple-500 rounded-t"
                         style={{ height: `${Math.max(percentage, 10)}%` }}
                       />
                     </div>
-                    <p className="font-bold text-gray-900 dark:text-white">{level}</p>
-                    <p className="text-sm text-gray-500">{count}</p>
+                    <p className="font-bold text-white">{level}</p>
+                    <p className="text-sm text-gray-300">{count}</p>
                   </div>
                 );
               })}
@@ -419,14 +419,14 @@ export default function PlacementTestAdminDashboard() {
         )}
 
         {/* Recent Submissions */}
-        <div className="authority-card p-6">
+        <div className="bg-slate-800/90 backdrop-blur-lg border border-slate-600/30 rounded-xl shadow-lg p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-semibold text-white">
               Recent Submissions
             </h2>
             <Link
               href={`/${locale}/admin/placement-test/submissions`}
-              className="text-primary hover:text-primary-dark text-sm font-medium"
+              className="text-blue-400 hover:text-blue-300 text-sm font-medium"
             >
               View All
             </Link>
@@ -434,54 +434,54 @@ export default function PlacementTestAdminDashboard() {
 
           {isLoadingData ? (
             <div className="text-center py-8">
-              <Spinner size={32} className="text-primary animate-spin mx-auto" />
+              <Spinner size={32} className="text-blue-400 animate-spin mx-auto" />
             </div>
           ) : recentSessions.length === 0 ? (
-            <p className="text-center py-8 text-gray-500">No submissions yet</p>
+            <p className="text-center py-8 text-gray-400">No submissions yet</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-200 dark:border-gray-700">
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Student</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Mode</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Status</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Level</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Date</th>
-                    <th className="text-right py-3 px-4 text-sm font-medium text-gray-500">Actions</th>
+                  <tr className="border-b border-gray-600">
+                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-300">Student</th>
+                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-300">Mode</th>
+                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-300">Status</th>
+                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-300">Level</th>
+                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-300">Date</th>
+                    <th className="text-right py-3 px-4 text-sm font-medium text-gray-300">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                <tbody className="divide-y divide-gray-600">
                   {recentSessions.map((session) => (
-                    <tr key={session.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
+                    <tr key={session.id} className="hover:bg-slate-700/50">
                       <td className="py-3 px-4">
                         <div>
-                          <p className="font-medium text-gray-900 dark:text-white">
+                          <p className="font-medium text-white">
                             {session.student_name}
                           </p>
                           {session.student_email && (
-                            <p className="text-sm text-gray-500">{session.student_email}</p>
+                            <p className="text-sm text-gray-400">{session.student_email}</p>
                           )}
                         </div>
                       </td>
-                      <td className="py-3 px-4 capitalize">{session.test_mode}</td>
+                      <td className="py-3 px-4 capitalize text-gray-200">{session.test_mode}</td>
                       <td className="py-3 px-4">{getStatusBadge(session.status)}</td>
                       <td className="py-3 px-4">
                         {session.calculated_level && (
-                          <span className="px-2 py-1 bg-primary/10 text-primary rounded font-medium">
+                          <span className="px-2 py-1 bg-blue-500/20 text-blue-400 rounded font-medium">
                             {session.calculated_level}
                           </span>
                         )}
                       </td>
-                      <td className="py-3 px-4 text-sm text-gray-500">
+                      <td className="py-3 px-4 text-sm text-gray-300">
                         {formatDate(session.started_at)}
                       </td>
                       <td className="py-3 px-4 text-right">
                         <Link
                           href={`/${locale}/admin/placement-test/submissions/${session.id}`}
-                          className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg inline-flex"
+                          className="p-2 hover:bg-slate-600 rounded-lg inline-flex"
                         >
-                          <Eye size={18} className="text-gray-600 dark:text-gray-400" />
+                          <Eye size={18} className="text-gray-300" />
                         </Link>
                       </td>
                     </tr>

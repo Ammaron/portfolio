@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import {
   CheckCircle,
   Circle,
@@ -9,7 +9,8 @@ import {
   SpeakerHigh,
   Microphone,
   Stop,
-  ArrowsClockwise
+  ArrowsClockwise,
+  Keyboard
 } from '@phosphor-icons/react';
 
 interface QuestionOption {
@@ -39,6 +40,7 @@ interface QuestionRendererProps {
   onAnswer: (answer: string | string[]) => void;
   currentAnswer?: string | string[];
   disabled?: boolean;
+  onSubmit?: () => void; // For keyboard Enter to submit
 }
 
 export default function QuestionRenderer({
@@ -46,7 +48,8 @@ export default function QuestionRenderer({
   locale,
   onAnswer,
   currentAnswer,
-  disabled = false
+  disabled = false,
+  onSubmit
 }: QuestionRendererProps) {
   const [selectedOption, setSelectedOption] = useState<string | null>(
     typeof currentAnswer === 'string' ? currentAnswer : null
@@ -58,6 +61,7 @@ export default function QuestionRenderer({
     typeof currentAnswer === 'string' ? currentAnswer : ''
   );
   const [gapAnswers, setGapAnswers] = useState<Record<string, string>>({});
+  const [focusedOptionIndex, setFocusedOptionIndex] = useState<number>(-1);
 
   // Audio state
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -71,6 +75,9 @@ export default function QuestionRenderer({
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
 
+  // Input refs for gap fill
+  const gapInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
   const questionText = locale === 'es' && question.question_text_es
     ? question.question_text_es
     : question.question_text;
@@ -78,6 +85,94 @@ export default function QuestionRenderer({
   const passageText = locale === 'es' && question.passage_text_es
     ? question.passage_text_es
     : question.passage_text;
+
+  // Reset state when question changes
+  useEffect(() => {
+    setSelectedOption(typeof currentAnswer === 'string' ? currentAnswer : null);
+    setSelectedOptions(Array.isArray(currentAnswer) ? currentAnswer : []);
+    setTextAnswer(typeof currentAnswer === 'string' ? currentAnswer : '');
+    setGapAnswers({});
+    setFocusedOptionIndex(-1);
+  }, [question.id, currentAnswer]);
+
+  // Keyboard navigation
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (disabled) return;
+
+    const options = question.options || [];
+    const optionCount = question.question_type === 'true_false' ? 2 : options.length;
+
+    // Number keys for MCQ (1-9)
+    if (question.question_type === 'mcq' && e.key >= '1' && e.key <= '9') {
+      const index = parseInt(e.key) - 1;
+      if (index < options.length) {
+        handleOptionSelect(options[index].id);
+        setFocusedOptionIndex(index);
+      }
+      return;
+    }
+
+    // T/F keys for true_false
+    if (question.question_type === 'true_false') {
+      if (e.key.toLowerCase() === 't') {
+        handleOptionSelect('true');
+        setFocusedOptionIndex(0);
+        return;
+      }
+      if (e.key.toLowerCase() === 'f') {
+        handleOptionSelect('false');
+        setFocusedOptionIndex(1);
+        return;
+      }
+    }
+
+    // Arrow keys for navigation
+    if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      setFocusedOptionIndex(prev => {
+        const newIndex = prev <= 0 ? optionCount - 1 : prev - 1;
+        return newIndex;
+      });
+      return;
+    }
+
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      setFocusedOptionIndex(prev => {
+        const newIndex = prev >= optionCount - 1 ? 0 : prev + 1;
+        return newIndex;
+      });
+      return;
+    }
+
+    // Space to select focused option
+    if (e.key === ' ' && focusedOptionIndex >= 0) {
+      e.preventDefault();
+      if (question.question_type === 'true_false') {
+        handleOptionSelect(focusedOptionIndex === 0 ? 'true' : 'false');
+      } else if (question.question_type === 'mcq' && options[focusedOptionIndex]) {
+        handleOptionSelect(options[focusedOptionIndex].id);
+      }
+      return;
+    }
+
+    // Enter to submit (if answer selected)
+    if (e.key === 'Enter' && !e.shiftKey) {
+      if (question.question_type === 'gap_fill' || question.question_type === 'open_response') {
+        // Don't intercept Enter in text inputs
+        return;
+      }
+      if (selectedOption && onSubmit) {
+        e.preventDefault();
+        onSubmit();
+      }
+    }
+  }, [disabled, question, focusedOptionIndex, selectedOption, onSubmit]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleKeyDown]);
 
   // Audio controls
   const toggleAudio = () => {
@@ -170,7 +265,7 @@ export default function QuestionRenderer({
     if (disabled) return;
     const newAnswers = { ...gapAnswers, [gapId]: value };
     setGapAnswers(newAnswers);
-    onAnswer(JSON.stringify(newAnswers));
+    onAnswer(value); // For single gap, just send the value
   };
 
   const handleMatchingChange = (leftId: string, rightId: string) => {
@@ -186,7 +281,6 @@ export default function QuestionRenderer({
   // Submit recording
   useEffect(() => {
     if (recordedBlob && question.question_type === 'open_response' && question.skill_type === 'speaking') {
-      // Convert to base64 for submission
       const reader = new FileReader();
       reader.onloadend = () => {
         onAnswer(reader.result as string);
@@ -215,82 +309,138 @@ export default function QuestionRenderer({
 
   const renderMCQ = () => (
     <div className="space-y-3">
-      {question.options?.map((option) => (
-        <button
-          key={option.id}
-          onClick={() => handleOptionSelect(option.id)}
-          disabled={disabled}
-          className={`w-full p-4 text-left rounded-xl border-2 transition-all ${
-            selectedOption === option.id
-              ? 'border-primary bg-primary/5 dark:bg-primary/10'
-              : 'border-gray-200 dark:border-gray-700 hover:border-primary/50'
-          } ${disabled ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
-        >
-          <div className="flex items-center gap-3">
-            {selectedOption === option.id ? (
-              <CheckCircle size={24} weight="fill" className="text-primary flex-shrink-0" />
-            ) : (
-              <Circle size={24} className="text-gray-400 flex-shrink-0" />
-            )}
-            <span className="text-gray-800 dark:text-gray-200">
-              {locale === 'es' && option.text_es ? option.text_es : option.text}
-            </span>
-          </div>
-        </button>
-      ))}
+      {question.options?.map((option, index) => {
+        const isSelected = selectedOption === option.id;
+        const isFocused = focusedOptionIndex === index;
+
+        return (
+          <button
+            key={option.id}
+            onClick={() => {
+              handleOptionSelect(option.id);
+              setFocusedOptionIndex(index);
+            }}
+            disabled={disabled}
+            className={`w-full p-4 text-left rounded-xl border-2 transition-all duration-200 ${
+              isSelected
+                ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/30 shadow-md shadow-amber-500/20'
+                : isFocused
+                ? 'border-amber-400 bg-amber-50/50 dark:bg-amber-900/20'
+                : 'border-gray-200 dark:border-gray-600 hover:border-amber-400 hover:bg-gray-50 dark:hover:bg-gray-700/50'
+            } ${disabled ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
+          >
+            <div className="flex items-center gap-3">
+              <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
+                isSelected
+                  ? 'bg-amber-500 text-white'
+                  : 'bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300'
+              }`}>
+                {index + 1}
+              </span>
+              {isSelected ? (
+                <CheckCircle size={24} weight="fill" className="text-amber-500 flex-shrink-0" />
+              ) : (
+                <Circle size={24} className="text-gray-400 flex-shrink-0" />
+              )}
+              <span className={`flex-1 ${isSelected ? 'text-gray-900 dark:text-white font-medium' : 'text-gray-700 dark:text-gray-200'}`}>
+                {locale === 'es' && option.text_es ? option.text_es : option.text}
+              </span>
+            </div>
+          </button>
+        );
+      })}
+
+      {/* Keyboard hint */}
+      <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 mt-4 pt-2 border-t border-gray-100 dark:border-gray-700">
+        <Keyboard size={14} />
+        <span>Press 1-{question.options?.length} to select, Enter to continue</span>
+      </div>
     </div>
   );
 
   const renderTrueFalse = () => (
-    <div className="flex gap-4">
-      {['true', 'false'].map((value) => (
-        <button
-          key={value}
-          onClick={() => handleOptionSelect(value)}
-          disabled={disabled}
-          className={`flex-1 p-4 text-center rounded-xl border-2 transition-all font-medium ${
-            selectedOption === value
-              ? 'border-primary bg-primary/5 dark:bg-primary/10 text-primary'
-              : 'border-gray-200 dark:border-gray-700 hover:border-primary/50 text-gray-700 dark:text-gray-300'
-          } ${disabled ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
-        >
-          {value === 'true' ? 'True' : 'False'}
-        </button>
-      ))}
+    <div className="space-y-4">
+      <div className="flex gap-4">
+        {[
+          { value: 'true', label: 'True', key: 'T' },
+          { value: 'false', label: 'False', key: 'F' }
+        ].map((option, index) => {
+          const isSelected = selectedOption === option.value;
+          const isFocused = focusedOptionIndex === index;
+
+          return (
+            <button
+              key={option.value}
+              onClick={() => {
+                handleOptionSelect(option.value);
+                setFocusedOptionIndex(index);
+              }}
+              disabled={disabled}
+              className={`flex-1 p-5 text-center rounded-xl border-2 transition-all duration-200 font-semibold text-lg ${
+                isSelected
+                  ? option.value === 'true'
+                    ? 'border-green-500 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 shadow-md shadow-green-500/20'
+                    : 'border-red-500 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 shadow-md shadow-red-500/20'
+                  : isFocused
+                  ? 'border-amber-400 bg-amber-50/50 dark:bg-amber-900/20 text-gray-700 dark:text-gray-300'
+                  : 'border-gray-200 dark:border-gray-600 hover:border-amber-400 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50'
+              } ${disabled ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
+            >
+              <div className="flex flex-col items-center gap-2">
+                <span>{option.label}</span>
+                <kbd className="px-2 py-0.5 text-xs font-mono bg-gray-200 dark:bg-gray-600 rounded">
+                  {option.key}
+                </kbd>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Keyboard hint */}
+      <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 pt-2 border-t border-gray-100 dark:border-gray-700">
+        <Keyboard size={14} />
+        <span>Press T for True, F for False, Enter to continue</span>
+      </div>
     </div>
   );
 
   const renderGapFill = () => {
-    // Parse question text for gaps (marked with ___ or {gap1}, {gap2}, etc.)
-    const parts = questionText.split(/(\{gap\d+\}|___)/g);
-
+    // For simple gap fill, show as single input below the sentence
     return (
       <div className="space-y-4">
-        <p className="text-gray-800 dark:text-gray-200 leading-relaxed">
-          {parts.map((part, index) => {
-            if (part.match(/\{gap\d+\}/) || part === '___') {
-              const gapId = part.match(/\d+/)?.[0] || String(index);
-              return (
-                <input
-                  key={index}
-                  type="text"
-                  value={gapAnswers[gapId] || ''}
-                  onChange={(e) => handleGapChange(gapId, e.target.value)}
-                  disabled={disabled}
-                  className="inline-block mx-1 px-3 py-1 w-32 border-b-2 border-primary bg-transparent text-center focus:outline-none focus:border-primary-dark"
-                  placeholder="..."
-                />
-              );
+        <input
+          type="text"
+          value={gapAnswers['0'] || textAnswer || ''}
+          onChange={(e) => {
+            handleGapChange('0', e.target.value);
+            setTextAnswer(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && onSubmit && (gapAnswers['0'] || textAnswer)) {
+              e.preventDefault();
+              onSubmit();
             }
-            return <span key={index}>{part}</span>;
-          })}
-        </p>
+          }}
+          disabled={disabled}
+          autoFocus
+          className="w-full px-5 py-4 text-xl font-medium border-3 border-amber-400/50 rounded-xl
+                     bg-white dark:bg-gray-800 text-gray-900 dark:text-white
+                     focus:outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-500/30
+                     placeholder-gray-400 dark:placeholder-gray-400 transition-all shadow-inner"
+          placeholder="Type your answer here..."
+        />
+
+        {/* Keyboard hint */}
+        <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 pt-2 border-t border-gray-100 dark:border-gray-700">
+          <Keyboard size={14} />
+          <span>Type your answer, press Enter to continue</span>
+        </div>
       </div>
     );
   };
 
   const renderMatching = () => {
-    // Split options into left and right columns
     const options = question.options || [];
     const leftItems = options.filter((_, i) => i % 2 === 0);
     const rightItems = options.filter((_, i) => i % 2 === 1);
@@ -304,12 +454,14 @@ export default function QuestionRenderer({
             return (
               <div key={item.id} className="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
                 <div className="flex items-center justify-between">
-                  <span>{item.text}</span>
+                  <span className="text-gray-800 dark:text-gray-200">{item.text}</span>
                   <select
                     value={matchedRight || ''}
                     onChange={(e) => handleMatchingChange(item.id, e.target.value)}
                     disabled={disabled}
-                    className="ml-2 px-2 py-1 border rounded bg-white dark:bg-gray-600 text-sm"
+                    className="ml-2 px-3 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg
+                               bg-white dark:bg-gray-600 text-gray-900 dark:text-white text-sm
+                               focus:outline-none focus:border-primary"
                   >
                     <option value="">Select...</option>
                     {rightItems.map((r) => (
@@ -325,8 +477,8 @@ export default function QuestionRenderer({
           <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-2">With these:</h4>
           {rightItems.map((item) => (
             <div key={item.id} className="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
-              <span className="font-medium mr-2">{item.id}.</span>
-              {item.text}
+              <span className="font-bold mr-2 text-primary">{item.id}.</span>
+              <span className="text-gray-800 dark:text-gray-200">{item.text}</span>
             </div>
           ))}
         </div>
@@ -341,12 +493,19 @@ export default function QuestionRenderer({
         onChange={(e) => handleTextChange(e.target.value)}
         disabled={disabled}
         rows={6}
-        className="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none"
+        className="w-full p-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl
+                   focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20
+                   bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none
+                   placeholder-gray-400 dark:placeholder-gray-500 transition-all"
         placeholder="Write your answer here..."
       />
-      <p className="text-sm text-gray-500 dark:text-gray-400">
-        {textAnswer.length} characters
-      </p>
+      <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+        <span>{textAnswer.length} characters</span>
+        <div className="flex items-center gap-2 text-xs">
+          <Keyboard size={14} />
+          <span>Shift+Enter for new line</span>
+        </div>
+      </div>
     </div>
   );
 
@@ -413,11 +572,11 @@ export default function QuestionRenderer({
     <div className="space-y-6">
       {/* Passage (if any) */}
       {passageText && (
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-          <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">
+        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
+          <h4 className="text-sm font-semibold text-blue-600 dark:text-blue-400 mb-3 uppercase tracking-wide">
             Read the passage:
           </h4>
-          <p className="text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">
+          <p className="text-gray-800 dark:text-gray-100 leading-relaxed whitespace-pre-line text-base">
             {passageText}
           </p>
         </div>
@@ -425,22 +584,22 @@ export default function QuestionRenderer({
 
       {/* Audio Player (if any) */}
       {question.audio_url && (
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+        <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 border border-purple-200 dark:border-purple-800">
           <div className="flex items-center gap-4">
             <button
               onClick={toggleAudio}
-              className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary-dark transition-colors"
+              className="w-12 h-12 rounded-full bg-purple-600 text-white flex items-center justify-center hover:bg-purple-700 transition-colors"
             >
               {isPlaying ? <Pause size={24} /> : <Play size={24} />}
             </button>
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <SpeakerHigh size={18} className="text-gray-500" />
-                <span className="text-sm text-gray-600 dark:text-gray-400">Listen to the audio</span>
+                <SpeakerHigh size={18} className="text-purple-600 dark:text-purple-400" />
+                <span className="text-sm font-medium text-purple-700 dark:text-purple-300">Listen to the audio</span>
               </div>
-              <div className="h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+              <div className="h-2 bg-purple-200 dark:bg-purple-800 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-primary transition-all"
+                  className="h-full bg-purple-600 transition-all"
                   style={{ width: `${audioProgress}%` }}
                 />
               </div>
@@ -450,9 +609,13 @@ export default function QuestionRenderer({
         </div>
       )}
 
-      {/* Question Text */}
-      <div className="text-lg font-medium text-gray-900 dark:text-white">
-        {questionText}
+      {/* Question Text - Maximum Contrast */}
+      <div className="bg-gradient-to-r from-primary/10 to-secondary/10 dark:from-primary/20 dark:to-secondary/20
+                      rounded-xl p-5 border-l-4 border-primary">
+        <p className="text-xl font-bold text-gray-900 dark:text-white leading-relaxed tracking-wide"
+           style={{ textShadow: '0 0 1px rgba(0,0,0,0.1)' }}>
+          {questionText}
+        </p>
       </div>
 
       {/* Answer Area */}

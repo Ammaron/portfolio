@@ -76,13 +76,19 @@ export async function GET(
       time_limit_seconds: question.time_limit_seconds
     };
 
+    // Find the first unanswered question index for resume functionality
+    const firstUnansweredIndex = questionOrder.findIndex(q => !q.answered);
+
     return NextResponse.json({
       success: true,
       question: safeQuestion,
       index,
       total: questionOrder.length,
       skill_type: questionRef.skill_type,
-      answered: questionRef.answered
+      answered: questionRef.answered,
+      // Include session state for resume functionality
+      current_question_index: session.current_question_index,
+      first_unanswered_index: firstUnansweredIndex >= 0 ? firstUnansweredIndex : questionOrder.length
     });
 
   } catch (error) {

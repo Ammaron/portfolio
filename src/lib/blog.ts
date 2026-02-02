@@ -56,14 +56,12 @@ export function calculateReadingTime(content: string): number {
 }
 
 // Fetch all published blog posts (public)
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function getPublishedPosts(_locale: string = 'en'): Promise<BlogPost[]> {
+export async function getPublishedPosts(locale: string = 'en'): Promise<BlogPost[]> {
   const { data, error } = await supabase
     .from('blog_posts')
     .select('*')
     .eq('status', 'published')
-    .not('published_at', 'is', null)
-    .order('published_at', { ascending: false });
+    .order('created_at', { ascending: false });
 
   if (error) {
     console.error('Error fetching published posts:', error);
