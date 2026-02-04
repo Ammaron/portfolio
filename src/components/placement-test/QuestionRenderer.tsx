@@ -75,9 +75,6 @@ export default function QuestionRenderer({
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
 
-  // Input refs for gap fill
-  const gapInputRefs = useRef<(HTMLInputElement | null)[]>([]);
-
   const questionText = locale === 'es' && question.question_text_es
     ? question.question_text_es
     : question.question_text;

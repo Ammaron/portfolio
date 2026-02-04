@@ -32,21 +32,12 @@ interface Question {
   time_limit_seconds?: number;
 }
 
-interface SessionInfo {
-  id: string;
-  session_code: string;
-  test_mode: string;
-  skills_tested: string[];
-  total_questions: number;
-}
-
 export default function QuickTestPage() {
   const { locale } = useI18n();
   const router = useRouter();
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session');
 
-  const [, setSession] = useState<SessionInfo | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [currentAnswer, setCurrentAnswer] = useState<string | string[] | null>(null);

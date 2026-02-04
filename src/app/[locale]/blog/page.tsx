@@ -18,7 +18,7 @@ export default async function BlogPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const posts = await getPublishedPosts(locale);
+  const posts = await getPublishedPosts();
   const categories = await getCategories();
 
   // Featured post (first post)

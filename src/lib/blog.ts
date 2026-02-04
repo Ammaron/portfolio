@@ -56,7 +56,7 @@ export function calculateReadingTime(content: string): number {
 }
 
 // Fetch all published blog posts (public)
-export async function getPublishedPosts(locale: string = 'en'): Promise<BlogPost[]> {
+export async function getPublishedPosts(): Promise<BlogPost[]> {
   const { data, error } = await supabase
     .from('blog_posts')
     .select('*')

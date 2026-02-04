@@ -8,7 +8,6 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get('category');
     const tag = searchParams.get('tag');
     const search = searchParams.get('search');
-    const locale = searchParams.get('locale') || 'en';
 
     let posts;
 
@@ -19,7 +18,7 @@ export async function GET(request: NextRequest) {
     } else if (tag) {
       posts = await getPostsByTag(tag);
     } else {
-      posts = await getPublishedPosts(locale);
+      posts = await getPublishedPosts();
     }
 
     return NextResponse.json({

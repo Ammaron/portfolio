@@ -16,7 +16,7 @@ import 'highlight.js/styles/github-dark.css';
 
 // Generate static params for all blog posts
 export async function generateStaticParams() {
-  const posts = await getPublishedPosts('en');
+  const posts = await getPublishedPosts();
   return posts.map((post) => ({
     slug: post.slug,
   }));
