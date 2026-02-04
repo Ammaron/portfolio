@@ -74,7 +74,8 @@ export async function POST(
     }
 
     // Determine if answer is correct (for auto-scored questions)
-    const requiresReview = ['open_response'].includes(question.question_type) ||
+    // Types requiring manual review: open_response, form_filling, short_message, picture_description, interview
+    const requiresReview = ['open_response', 'form_filling', 'short_message', 'picture_description', 'interview'].includes(question.question_type) ||
                           question.skill_type === 'writing' ||
                           question.skill_type === 'speaking';
 
