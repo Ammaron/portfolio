@@ -132,6 +132,7 @@ export async function POST(request: NextRequest) {
       passage_text: body.passage_text,
       passage_text_es: body.passage_text_es,
       audio_url: body.audio_url,
+      image_url: body.image_url,
       options: body.options,
       correct_answer: body.correct_answer,
       max_points: body.max_points,

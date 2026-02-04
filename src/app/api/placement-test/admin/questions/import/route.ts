@@ -28,7 +28,7 @@ function verifyAdminToken(authHeader: string | null) {
 // Valid values for validation
 const VALID_LEVELS: CEFRLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 const VALID_SKILLS: SkillType[] = ['reading', 'listening', 'writing', 'speaking'];
-const VALID_TYPES: QuestionType[] = ['mcq', 'true_false', 'gap_fill', 'matching', 'open_response'];
+const VALID_TYPES: string[] = ['mcq', 'true_false', 'gap_fill', 'matching', 'open_response', 'form_filling', 'short_message', 'picture_description', 'interview'];
 
 // POST - Import questions from JSON data (parsed from Excel on frontend)
 export async function POST(request: NextRequest) {
@@ -131,6 +131,7 @@ export async function POST(request: NextRequest) {
         passage_text: q.passage_text || null,
         passage_text_es: q.passage_text_es || null,
         audio_url: q.audio_url || null,
+        image_url: q.image_url || null,
         options: options,
         correct_answer: String(q.correct_answer),
         max_points: Number(q.max_points) || 1,

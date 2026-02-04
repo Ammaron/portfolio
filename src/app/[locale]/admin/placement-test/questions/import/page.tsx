@@ -23,7 +23,7 @@ import * as XLSX from 'xlsx';
 // Valid values for validation
 const VALID_LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 const VALID_SKILLS = ['reading', 'listening', 'writing', 'speaking'];
-const VALID_TYPES = ['mcq', 'true_false', 'gap_fill', 'matching', 'open_response'];
+const VALID_TYPES = ['mcq', 'true_false', 'gap_fill', 'matching', 'open_response', 'form_filling', 'short_message', 'picture_description', 'interview'];
 
 interface ParsedQuestion {
   row: number;
@@ -37,6 +37,7 @@ interface ParsedQuestion {
   options?: string;
   passage_text?: string;
   audio_url?: string;
+  image_url?: string;
   errors: string[];
 }
 
@@ -60,6 +61,7 @@ export default function ImportQuestionsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
+  const [showAllRows, setShowAllRows] = useState(false);
 
   // Validate a single row
   const validateRow = (row: Record<string, unknown>, rowNum: number): ParsedQuestion => {
@@ -75,6 +77,7 @@ export default function ImportQuestionsPage() {
     const options = row.options ? String(row.options).trim() : undefined;
     const passage_text = row.passage_text ? String(row.passage_text).trim() : undefined;
     const audio_url = row.audio_url ? String(row.audio_url).trim() : undefined;
+    const image_url = row.image_url ? String(row.image_url).trim() : undefined;
 
     // Validate required fields
     if (!question_code) errors.push('Missing question_code');
@@ -104,6 +107,7 @@ export default function ImportQuestionsPage() {
       options,
       passage_text,
       audio_url,
+      image_url,
       errors
     };
   };
@@ -187,7 +191,8 @@ export default function ImportQuestionsPage() {
         max_points: 1,
         options: 'Weather|Animals|Food|Sports',
         passage_text: 'The sun is shining today. Birds are singing in the trees.',
-        audio_url: ''
+        audio_url: '',
+        image_url: ''
       },
       {
         question_code: 'L-B1-001',
@@ -199,19 +204,21 @@ export default function ImportQuestionsPage() {
         max_points: 1,
         options: '',
         passage_text: '',
-        audio_url: 'https://example.com/audio.mp3'
+        audio_url: 'https://example.com/audio.mp3',
+        image_url: ''
       },
       {
         question_code: 'W-B2-001',
         cefr_level: 'B2',
         skill_type: 'writing',
-        question_type: 'open_response',
-        question_text: 'Write a paragraph describing your favorite holiday.',
+        question_type: 'picture_description',
+        question_text: 'Describe what you see in the picture.',
         correct_answer: 'See rubric',
         max_points: 5,
         options: '',
         passage_text: '',
-        audio_url: ''
+        audio_url: '',
+        image_url: 'https://example.com/image.jpg'
       }
     ];
 
@@ -230,7 +237,8 @@ export default function ImportQuestionsPage() {
       { wch: 12 }, // max_points
       { wch: 40 }, // options
       { wch: 50 }, // passage_text
-      { wch: 30 }  // audio_url
+      { wch: 30 }, // audio_url
+      { wch: 30 }  // image_url
     ];
 
     XLSX.writeFile(workbook, 'question_import_template.xlsx');
@@ -264,7 +272,8 @@ export default function ImportQuestionsPage() {
         max_points: q.max_points || 1,
         options: q.options || null,
         passage_text: q.passage_text || null,
-        audio_url: q.audio_url || null
+        audio_url: q.audio_url || null,
+        image_url: q.image_url || null
       }));
 
       const response = await fetch('/api/placement-test/admin/questions/import', {
@@ -297,6 +306,7 @@ export default function ImportQuestionsPage() {
     setFile(null);
     setParsedData([]);
     setImportResult(null);
+    setShowAllRows(false);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -476,7 +486,7 @@ export default function ImportQuestionsPage() {
                       Preview
                     </span>
                     <span className="text-sm text-gray-400">
-                      (showing {Math.min(10, parsedData.length)} of {parsedData.length} rows)
+                      (showing {showAllRows ? parsedData.length : Math.min(10, parsedData.length)} of {parsedData.length} rows)
                     </span>
                   </div>
                   <div className="flex items-center gap-4 text-sm">
@@ -493,9 +503,9 @@ export default function ImportQuestionsPage() {
                   </div>
                 </div>
 
-                <div className="overflow-x-auto">
+                <div className={`overflow-x-auto overflow-y-auto ${showAllRows ? 'max-h-[70vh]' : 'max-h-[400px]'}`}>
                   <table className="w-full">
-                    <thead>
+                    <thead className="sticky top-0 bg-slate-800">
                       <tr className="border-b border-slate-600 bg-slate-800/50">
                         <th className="text-left py-3 px-4 text-xs font-medium text-gray-400 uppercase">Row</th>
                         <th className="text-left py-3 px-4 text-xs font-medium text-gray-400 uppercase">Code</th>
@@ -507,7 +517,7 @@ export default function ImportQuestionsPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-600/50">
-                      {parsedData.slice(0, 10).map((q) => (
+                      {(showAllRows ? parsedData : parsedData.slice(0, 10)).map((q) => (
                         <tr
                           key={q.row}
                           className={q.errors.length > 0 ? 'bg-red-900/10' : 'hover:bg-slate-700/30'}
@@ -555,8 +565,15 @@ export default function ImportQuestionsPage() {
                 </div>
 
                 {parsedData.length > 10 && (
-                  <div className="px-6 py-3 border-t border-slate-600 text-center text-sm text-gray-400">
-                    + {parsedData.length - 10} more rows not shown
+                  <div className="px-6 py-3 border-t border-slate-600 text-center">
+                    <button
+                      onClick={() => setShowAllRows(!showAllRows)}
+                      className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                    >
+                      {showAllRows
+                        ? `Show Less (first 10 rows)`
+                        : `Show All ${parsedData.length} Rows`}
+                    </button>
                   </div>
                 )}
               </div>
@@ -634,7 +651,7 @@ export default function ImportQuestionsPage() {
                 <tr>
                   <td className="py-2 px-3 font-mono text-xs">question_type</td>
                   <td className="py-2 px-3"><span className="text-green-400">Yes</span></td>
-                  <td className="py-2 px-3">mcq, true_false, gap_fill, matching, open_response</td>
+                  <td className="py-2 px-3">mcq, true_false, gap_fill, matching, open_response, form_filling, short_message, picture_description, interview</td>
                 </tr>
                 <tr>
                   <td className="py-2 px-3 font-mono text-xs">question_text</td>
@@ -665,6 +682,11 @@ export default function ImportQuestionsPage() {
                   <td className="py-2 px-3 font-mono text-xs">audio_url</td>
                   <td className="py-2 px-3"><span className="text-gray-500">No</span></td>
                   <td className="py-2 px-3">URL for listening questions</td>
+                </tr>
+                <tr>
+                  <td className="py-2 px-3 font-mono text-xs">image_url</td>
+                  <td className="py-2 px-3"><span className="text-gray-500">No</span></td>
+                  <td className="py-2 px-3">URL for picture description questions</td>
                 </tr>
               </tbody>
             </table>

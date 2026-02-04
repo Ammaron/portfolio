@@ -8,3 +8,8 @@ node_modules
 .env.production
 .env.development
 .env
+
+# Uploaded files (keep directory structure, ignore actual uploads)
+/public/uploads/audio/*
+/public/uploads/images/*
+!/public/uploads/**/.gitkeep

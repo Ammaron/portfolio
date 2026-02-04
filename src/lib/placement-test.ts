@@ -53,6 +53,7 @@ export interface PlacementQuestion {
   passage_text?: string;
   passage_text_es?: string;
   audio_url?: string;
+  image_url?: string;
   options?: QuestionOption[];
   correct_answer: string;
   max_points: number;
