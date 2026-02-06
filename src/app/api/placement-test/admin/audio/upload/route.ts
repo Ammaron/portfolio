@@ -65,11 +65,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate file size (max 10MB)
-    const maxSize = 10 * 1024 * 1024;
+    // Validate file size (max 50MB)
+    const maxSize = 50 * 1024 * 1024;
     if (file.size > maxSize) {
       return NextResponse.json(
-        { success: false, error: 'File too large. Maximum size is 10MB' },
+        { success: false, error: 'File too large. Maximum size is 50MB' },
         { status: 400 }
       );
     }
@@ -93,8 +93,8 @@ export async function POST(request: NextRequest) {
 
     await writeFile(filepath, buffer);
 
-    // Return the public URL path
-    const publicUrl = `/uploads/audio/${filename}`;
+    // Return the API URL path (served dynamically for production compatibility)
+    const publicUrl = `/api/uploads/audio/${filename}`;
 
     return NextResponse.json({
       success: true,

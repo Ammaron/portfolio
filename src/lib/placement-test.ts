@@ -19,7 +19,7 @@ export const SKILL_TYPES = ['reading', 'listening', 'writing', 'speaking'] as co
 export type SkillType = typeof SKILL_TYPES[number];
 
 // Question types
-export const QUESTION_TYPES = ['mcq', 'true_false', 'gap_fill', 'matching', 'open_response'] as const;
+export const QUESTION_TYPES = ['mcq', 'true_false', 'true_false_multi', 'gap_fill', 'matching', 'open_response'] as const;
 export type QuestionType = typeof QUESTION_TYPES[number];
 
 // Test modes
@@ -570,7 +570,8 @@ export async function getSessionAnswers(sessionId: string): Promise<PlacementAns
 
 export async function getQuestionsBySkillAndLevel(
   skill: SkillType,
-  levels?: CEFRLevel[]
+  levels?: CEFRLevel[],
+  excludeTypes?: QuestionType[]
 ): Promise<PlacementQuestion[]> {
   let query = supabaseAdmin
     .from('placement_questions')
@@ -580,6 +581,12 @@ export async function getQuestionsBySkillAndLevel(
 
   if (levels && levels.length > 0) {
     query = query.in('cefr_level', levels);
+  }
+
+  if (excludeTypes && excludeTypes.length > 0) {
+    for (const t of excludeTypes) {
+      query = query.neq('question_type', t);
+    }
   }
 
   const { data, error } = await query;

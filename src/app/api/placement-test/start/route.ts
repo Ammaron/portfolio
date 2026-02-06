@@ -57,8 +57,9 @@ export async function POST(request: NextRequest) {
     const questionsPerSkill = test_mode === 'quick' ? 10 : 12;
 
     for (const skill of skills_tested) {
-      // Get all questions for this skill
-      const questions = await getQuestionsBySkillAndLevel(skill, [...CEFR_LEVELS]);
+      // Get questions for this skill (exclude open_response for quick tests since they require manual review)
+      const excludeTypes: import('@/lib/placement-test').QuestionType[] | undefined = test_mode === 'quick' ? ['open_response'] : undefined;
+      const questions = await getQuestionsBySkillAndLevel(skill, [...CEFR_LEVELS], excludeTypes);
 
       if (questions.length === 0) {
         console.warn(`No questions found for skill: ${skill}`);

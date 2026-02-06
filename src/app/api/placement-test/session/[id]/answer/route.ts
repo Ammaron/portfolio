@@ -83,10 +83,27 @@ export async function POST(
     let pointsEarned = 0;
 
     if (!requiresReview) {
-      // Auto-score the answer
-      isCorrect = answer.toString().toLowerCase().trim() ===
-                  question.correct_answer.toLowerCase().trim();
-      pointsEarned = isCorrect ? question.max_points : 0;
+      if (question.question_type === 'true_false_multi') {
+        // Parse student answer (array of 'A:true' pairs) and correct answer
+        const studentPairs: string[] = Array.isArray(answer) ? answer : JSON.parse(answer);
+        const correctPairs = question.correct_answer.split(',').map((s: string) => s.trim().toLowerCase());
+        const studentMap = new Map(studentPairs.map((p: string) => {
+          const [id, val] = p.toLowerCase().split(':');
+          return [id, val];
+        }));
+        let correctCount = 0;
+        for (const cp of correctPairs) {
+          const [id, val] = cp.split(':');
+          if (studentMap.get(id) === val) correctCount++;
+        }
+        pointsEarned = correctCount;
+        isCorrect = correctCount === correctPairs.length;
+      } else {
+        // Auto-score the answer
+        isCorrect = answer.toString().toLowerCase().trim() ===
+                    question.correct_answer.toLowerCase().trim();
+        pointsEarned = isCorrect ? question.max_points : 0;
+      }
     }
 
     // Update raw scores and adaptive state for this skill (compute before DB calls)
@@ -112,8 +129,8 @@ export async function POST(
     if (!requiresReview && isCorrect !== undefined) {
       if (isCorrect) {
         rawScores[skill].correct++;
-        rawScores[skill].points_earned += pointsEarned;
       }
+      rawScores[skill].points_earned += pointsEarned;
 
       // Update adaptive state
       const questionDifficulty = cefrToAbility(question.cefr_level) +

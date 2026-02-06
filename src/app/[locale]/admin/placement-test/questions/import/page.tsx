@@ -358,6 +358,19 @@ export default function ImportQuestionsPage() {
                     </ul>
                   </div>
                 )}
+                {importResult.import_errors && importResult.import_errors.length > 0 && (
+                  <div className="mt-3">
+                    <p className="text-red-400 text-sm font-medium">Import Errors ({importResult.import_errors.length}):</p>
+                    <ul className="text-sm text-gray-400 mt-1 list-disc list-inside max-h-40 overflow-y-auto">
+                      {importResult.import_errors.slice(0, 10).map((err, i) => (
+                        <li key={i}>{err}</li>
+                      ))}
+                      {importResult.import_errors.length > 10 && (
+                        <li className="text-gray-500">...and {importResult.import_errors.length - 10} more</li>
+                      )}
+                    </ul>
+                  </div>
+                )}
                 <div className="mt-4 flex gap-3">
                   <Link
                     href={`/${locale}/admin/placement-test/questions`}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import {
   CheckCircle,
   Circle,
@@ -85,6 +85,20 @@ export default function QuestionRenderer({
     ? question.passage_text_es
     : question.passage_text;
 
+  // Shuffle options for MCQ questions (randomize order each time question loads)
+  // The answer is tied to option.id, so shuffling doesn't affect correctness
+  const shuffledOptions = useMemo(() => {
+    if (!question.options || question.options.length === 0) return [];
+
+    // Fisher-Yates shuffle algorithm
+    const shuffled = [...question.options];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }, [question.id, question.options]);
+
   // Reset state when question changes
   useEffect(() => {
     setSelectedOption(typeof currentAnswer === 'string' ? currentAnswer : null);
@@ -99,14 +113,13 @@ export default function QuestionRenderer({
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (disabled) return;
 
-    const options = question.options || [];
-    const optionCount = question.question_type === 'true_false' ? 2 : options.length;
+    const optionCount = question.question_type === 'true_false' ? 2 : shuffledOptions.length;
 
     // Number keys for MCQ (1-9)
     if (question.question_type === 'mcq' && e.key >= '1' && e.key <= '9') {
       const index = parseInt(e.key) - 1;
-      if (index < options.length) {
-        handleOptionSelect(options[index].id);
+      if (index < shuffledOptions.length) {
+        handleOptionSelect(shuffledOptions[index].id);
         setFocusedOptionIndex(index);
       }
       return;
@@ -122,6 +135,23 @@ export default function QuestionRenderer({
       if (e.key.toLowerCase() === 'f') {
         handleOptionSelect('false');
         setFocusedOptionIndex(1);
+        return;
+      }
+    }
+
+    // Number keys to focus statement, T/F to toggle for true_false_multi
+    if (question.question_type === 'true_false_multi' && question.options) {
+      if (e.key >= '1' && e.key <= '9') {
+        const index = parseInt(e.key) - 1;
+        if (index < question.options.length) {
+          setFocusedOptionIndex(index);
+        }
+        return;
+      }
+      if ((e.key.toLowerCase() === 't' || e.key.toLowerCase() === 'f') && focusedOptionIndex >= 0 && focusedOptionIndex < question.options.length) {
+        const opt = question.options[focusedOptionIndex];
+        const val = e.key.toLowerCase() === 't' ? 'true' : 'false';
+        handleTrueFalseMultiChange(opt.id, val);
         return;
       }
     }
@@ -150,8 +180,8 @@ export default function QuestionRenderer({
       e.preventDefault();
       if (question.question_type === 'true_false') {
         handleOptionSelect(focusedOptionIndex === 0 ? 'true' : 'false');
-      } else if (question.question_type === 'mcq' && options[focusedOptionIndex]) {
-        handleOptionSelect(options[focusedOptionIndex].id);
+      } else if (question.question_type === 'mcq' && shuffledOptions[focusedOptionIndex]) {
+        handleOptionSelect(shuffledOptions[focusedOptionIndex].id);
       }
       return;
     }
@@ -162,12 +192,17 @@ export default function QuestionRenderer({
         // Don't intercept Enter in text inputs
         return;
       }
+      if (question.question_type === 'true_false_multi' && selectedOptions.length > 0 && onSubmit) {
+        e.preventDefault();
+        onSubmit();
+        return;
+      }
       if (selectedOption && onSubmit) {
         e.preventDefault();
         onSubmit();
       }
     }
-  }, [disabled, question, focusedOptionIndex, selectedOption, onSubmit]);
+  }, [disabled, question, shuffledOptions, focusedOptionIndex, selectedOption, onSubmit]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -268,6 +303,14 @@ export default function QuestionRenderer({
     onAnswer(value); // For single gap, just send the value
   };
 
+  const handleTrueFalseMultiChange = (statementId: string, value: string) => {
+    if (disabled) return;
+    const newSelections = [...selectedOptions.filter(s => !s.startsWith(statementId + ':'))];
+    newSelections.push(`${statementId}:${value}`);
+    setSelectedOptions(newSelections);
+    onAnswer(newSelections);
+  };
+
   const handleMatchingChange = (leftId: string, rightId: string) => {
     if (disabled) return;
     const newSelections = [...selectedOptions.filter(s => !s.startsWith(leftId + ':'))];
@@ -296,6 +339,8 @@ export default function QuestionRenderer({
         return renderMCQ();
       case 'true_false':
         return renderTrueFalse();
+      case 'true_false_multi':
+        return renderTrueFalseMulti();
       case 'gap_fill':
         return renderGapFill();
       case 'matching':
@@ -317,7 +362,7 @@ export default function QuestionRenderer({
 
   const renderMCQ = () => (
     <div className="space-y-3">
-      {question.options?.map((option, index) => {
+      {shuffledOptions.map((option, index) => {
         const isSelected = selectedOption === option.id;
         const isFocused = focusedOptionIndex === index;
 
@@ -361,7 +406,7 @@ export default function QuestionRenderer({
       {/* Keyboard hint */}
       <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 mt-4 pt-2 border-t border-gray-100 dark:border-gray-700">
         <Keyboard size={14} />
-        <span>Press 1-{question.options?.length} to select, Enter to continue</span>
+        <span>Press 1-{shuffledOptions.length} to select, Enter to continue</span>
       </div>
     </div>
   );
@@ -412,6 +457,73 @@ export default function QuestionRenderer({
       </div>
     </div>
   );
+
+  const renderTrueFalseMulti = () => {
+    const statements = question.options || [];
+
+    return (
+      <div className="space-y-3">
+        {statements.map((statement, index) => {
+          const currentValue = selectedOptions.find(s => s.startsWith(statement.id + ':'))?.split(':')[1];
+          const isFocused = focusedOptionIndex === index;
+
+          return (
+            <div
+              key={statement.id}
+              className={`p-4 rounded-xl border-2 transition-all duration-200 ${
+                isFocused
+                  ? 'border-amber-400 bg-amber-50/50 dark:bg-amber-900/20'
+                  : 'border-gray-200 dark:border-gray-600'
+              }`}
+            >
+              <div className="flex items-start gap-3 mb-3">
+                <span className={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0 ${
+                  currentValue
+                    ? 'bg-amber-500 text-white'
+                    : 'bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300'
+                }`}>
+                  {index + 1}
+                </span>
+                <p className={`flex-1 text-gray-800 dark:text-gray-100 ${currentValue ? 'font-medium' : ''}`}>
+                  {locale === 'es' && statement.text_es ? statement.text_es : statement.text}
+                </p>
+              </div>
+              <div className="flex gap-3 ml-10">
+                {[
+                  { value: 'true', label: 'True' },
+                  { value: 'false', label: 'False' }
+                ].map((opt) => (
+                  <button
+                    key={opt.value}
+                    onClick={() => {
+                      handleTrueFalseMultiChange(statement.id, opt.value);
+                      setFocusedOptionIndex(index);
+                    }}
+                    disabled={disabled}
+                    className={`px-5 py-2 rounded-lg border-2 font-semibold text-sm transition-all duration-200 ${
+                      currentValue === opt.value
+                        ? opt.value === 'true'
+                          ? 'border-green-500 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 shadow-sm'
+                          : 'border-red-500 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 shadow-sm'
+                        : 'border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:border-amber-400 hover:bg-gray-50 dark:hover:bg-gray-700/50'
+                    } ${disabled ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Keyboard hint */}
+        <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 mt-4 pt-2 border-t border-gray-100 dark:border-gray-700">
+          <Keyboard size={14} />
+          <span>Press 1-{statements.length} to focus a statement, T for True, F for False, Enter to continue</span>
+        </div>
+      </div>
+    );
+  };
 
   const renderGapFill = () => {
     // For simple gap fill, show as single input below the sentence

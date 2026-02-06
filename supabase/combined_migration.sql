@@ -161,7 +161,7 @@ CREATE TABLE IF NOT EXISTS placement_questions (
   question_code VARCHAR(50) UNIQUE NOT NULL,
   cefr_level VARCHAR(2) NOT NULL CHECK (cefr_level IN ('A1', 'A2', 'B1', 'B2', 'C1', 'C2')),
   skill_type VARCHAR(20) NOT NULL CHECK (skill_type IN ('reading', 'listening', 'writing', 'speaking')),
-  question_type VARCHAR(20) NOT NULL CHECK (question_type IN ('mcq', 'true_false', 'gap_fill', 'matching', 'open_response')),
+  question_type VARCHAR(20) NOT NULL CHECK (question_type IN ('mcq', 'true_false', 'true_false_multi', 'gap_fill', 'matching', 'open_response', 'form_filling', 'short_message', 'picture_description', 'interview')),
   question_text TEXT NOT NULL,
   question_text_es TEXT,
   passage_text TEXT,

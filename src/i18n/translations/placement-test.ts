@@ -64,6 +64,7 @@ export interface PlacementTestTranslations {
       // Question Types
       selectAnswer: string;
       trueOrFalse: string;
+      trueOrFalseMulti: string;
       fillInBlank: string;
       matchItems: string;
       writeResponse: string;
@@ -387,6 +388,7 @@ export const placementTestTranslations: Record<'en' | 'es', PlacementTestTransla
         cancel: 'Cancel',
         selectAnswer: 'Select the correct answer',
         trueOrFalse: 'Is this statement true or false?',
+        trueOrFalseMulti: 'Decide if each statement is True or False',
         fillInBlank: 'Fill in the blank with the correct word or phrase',
         matchItems: 'Match the items on the left with the correct items on the right',
         writeResponse: 'Write your response in the space below',
@@ -711,6 +713,7 @@ export const placementTestTranslations: Record<'en' | 'es', PlacementTestTransla
         cancel: 'Cancelar',
         selectAnswer: 'Selecciona la respuesta correcta',
         trueOrFalse: '¿Esta afirmación es verdadera o falsa?',
+        trueOrFalseMulti: 'Decide si cada afirmación es Verdadera o Falsa',
         fillInBlank: 'Completa el espacio en blanco con la palabra o frase correcta',
         matchItems: 'Relaciona los elementos de la izquierda con los elementos correctos de la derecha',
         writeResponse: 'Escribe tu respuesta en el espacio de abajo',
