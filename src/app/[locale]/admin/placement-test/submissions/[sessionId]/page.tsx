@@ -10,14 +10,15 @@ import {
   CheckCircle,
   XCircle,
   Clock,
-  // Play,
   User,
   EnvelopeSimple,
   BookOpen,
   Headphones,
   PencilSimple,
   Microphone,
-  FloppyDisk
+  FloppyDisk,
+  Certificate,
+  Eye
 } from '@phosphor-icons/react';
 import toast from 'react-hot-toast';
 import { sendReviewCompleteEmail } from '@/lib/placement-test-email';
@@ -83,6 +84,7 @@ export default function SubmissionDetailPage({ params }: { params: Promise<{ ses
   const [answerGrades, setAnswerGrades] = useState<Record<string, { score: number; feedback: string }>>({});
   const [adminFeedback, setAdminFeedback] = useState('');
   const [adjustedLevel, setAdjustedLevel] = useState('');
+  const [certificateCode, setCertificateCode] = useState<string | null>(null);
 
   useEffect(() => {
     loadSubmission();
@@ -158,6 +160,12 @@ export default function SubmissionDetailPage({ params }: { params: Promise<{ ses
 
       if (result.success) {
         toast.success(markComplete ? 'Review completed!' : 'Progress saved');
+
+        if (markComplete && result.certificate_code) {
+          setCertificateCode(result.certificate_code);
+          toast.success(`Certificate issued: ${result.certificate_code}`);
+        }
+
         if (markComplete && session?.student_email) {
           // Send notification email to student
           const finalLevel = adjustedLevel || session.calculated_level || 'B1';
@@ -168,16 +176,22 @@ export default function SubmissionDetailPage({ params }: { params: Promise<{ ses
             session.student_email,
             session.session_code,
             finalLevel,
-            resultsUrl
+            resultsUrl,
+            result.certificate_code
           ).then(emailResult => {
             if (emailResult.success) {
               toast.success('Student notified via email');
             }
           });
 
-          router.push(`/${locale}/admin/placement-test/submissions`);
+          // Short delay so admin can see the certificate code
+          setTimeout(() => {
+            router.push(`/${locale}/admin/placement-test/submissions`);
+          }, 2000);
         } else if (markComplete) {
-          router.push(`/${locale}/admin/placement-test/submissions`);
+          setTimeout(() => {
+            router.push(`/${locale}/admin/placement-test/submissions`);
+          }, 2000);
         }
       } else {
         toast.error(result.error || 'Failed to save');
@@ -527,13 +541,67 @@ export default function SubmissionDetailPage({ params }: { params: Promise<{ ses
 
                 <button
                   onClick={() => saveProgress(true)}
-                  disabled={isSaving}
-                  className="w-full btn-authority btn-primary-authority justify-center"
+                  disabled={isSaving || session.status === 'reviewed'}
+                  className="w-full btn-authority btn-primary-authority justify-center disabled:opacity-50"
                 >
-                  <CheckCircle size={18} className="mr-2" />
-                  {isSaving ? 'Saving...' : 'Mark as Reviewed'}
+                  <Certificate size={18} className="mr-2" />
+                  {isSaving ? 'Saving...' : session.status === 'reviewed' ? 'Review Completed' : 'Complete Review & Issue Certificate'}
                 </button>
               </div>
+            </div>
+
+            {/* Certificate Status */}
+            <div className="authority-card p-6">
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <Certificate size={20} />
+                Certificate Status
+              </h3>
+              {certificateCode || session.status === 'reviewed' ? (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle size={18} weight="fill" className="text-green-500" />
+                    <span className="text-sm font-medium text-green-700 dark:text-green-400">Certificate Issued</span>
+                  </div>
+                  {certificateCode && (
+                    <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3">
+                      <p className="text-xs text-green-600 dark:text-green-400 mb-1">Certificate Code</p>
+                      <code className="text-sm font-mono font-bold text-green-800 dark:text-green-200">
+                        {certificateCode}
+                      </code>
+                    </div>
+                  )}
+                  <button
+                    onClick={async () => {
+                      try {
+                        const { generatePersonalizedCertificatePDF } = await import('@/lib/placement-test-certificate');
+                        const finalLevel = adjustedLevel || session.calculated_level || 'B1';
+                        generatePersonalizedCertificatePDF({
+                          studentName: session.student_name,
+                          level: finalLevel,
+                          skillBreakdown: (session.level_breakdown
+                            ? Object.fromEntries(
+                                Object.entries(session.level_breakdown).map(([k, v]) => [k, { level: v.level }])
+                              )
+                            : {}) as Record<string, { level: string }>,
+                          completedAt: session.completed_at || new Date().toISOString(),
+                          certificateCode: certificateCode || 'PREVIEW',
+                          issuedAt: new Date().toISOString()
+                        });
+                      } catch {
+                        toast.error('Failed to generate preview');
+                      }
+                    }}
+                    className="w-full btn-authority btn-secondary-authority justify-center text-sm"
+                  >
+                    <Eye size={16} className="mr-2" />
+                    Preview Certificate PDF
+                  </button>
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Not yet issued. Complete the review to issue a certificate.
+                </p>
+              )}
             </div>
           </div>
         </div>

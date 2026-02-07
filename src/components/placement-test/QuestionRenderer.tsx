@@ -17,6 +17,7 @@ interface QuestionOption {
   id: string;
   text: string;
   text_es?: string;
+  audio_url?: string;
 }
 
 interface Question {
@@ -85,19 +86,28 @@ export default function QuestionRenderer({
     ? question.passage_text_es
     : question.passage_text;
 
-  // Shuffle options for MCQ questions (randomize order each time question loads)
-  // The answer is tied to option.id, so shuffling doesn't affect correctness
-  const shuffledOptions = useMemo(() => {
-    if (!question.options || question.options.length === 0) return [];
-
-    // Fisher-Yates shuffle algorithm
-    const shuffled = [...question.options];
+  // Fisher-Yates shuffle helper
+  const shuffle = <T,>(arr: T[]): T[] => {
+    const shuffled = [...arr];
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;
+  };
+
+  // Shuffle options for MCQ questions (randomize order each time question loads)
+  // The answer is tied to option.id, so shuffling doesn't affect correctness
+  const shuffledOptions = useMemo(() => {
+    if (!question.options || question.options.length === 0) return [];
+    return shuffle(question.options);
   }, [question.id, question.options]);
+
+  // Shuffle statements for T/F multi (answer is keyed by statement.id, so order doesn't matter)
+  const shuffledTFMultiStatements = useMemo(() => {
+    if (question.question_type !== 'true_false_multi' || !question.options || question.options.length === 0) return [];
+    return shuffle(question.options);
+  }, [question.id, question.question_type, question.options]);
 
   // Reset state when question changes
   useEffect(() => {
@@ -140,16 +150,16 @@ export default function QuestionRenderer({
     }
 
     // Number keys to focus statement, T/F to toggle for true_false_multi
-    if (question.question_type === 'true_false_multi' && question.options) {
+    if (question.question_type === 'true_false_multi' && shuffledTFMultiStatements.length > 0) {
       if (e.key >= '1' && e.key <= '9') {
         const index = parseInt(e.key) - 1;
-        if (index < question.options.length) {
+        if (index < shuffledTFMultiStatements.length) {
           setFocusedOptionIndex(index);
         }
         return;
       }
-      if ((e.key.toLowerCase() === 't' || e.key.toLowerCase() === 'f') && focusedOptionIndex >= 0 && focusedOptionIndex < question.options.length) {
-        const opt = question.options[focusedOptionIndex];
+      if ((e.key.toLowerCase() === 't' || e.key.toLowerCase() === 'f') && focusedOptionIndex >= 0 && focusedOptionIndex < shuffledTFMultiStatements.length) {
+        const opt = shuffledTFMultiStatements[focusedOptionIndex];
         const val = e.key.toLowerCase() === 't' ? 'true' : 'false';
         handleTrueFalseMultiChange(opt.id, val);
         return;
@@ -202,7 +212,7 @@ export default function QuestionRenderer({
         onSubmit();
       }
     }
-  }, [disabled, question, shuffledOptions, focusedOptionIndex, selectedOption, onSubmit]);
+  }, [disabled, question, shuffledOptions, shuffledTFMultiStatements, focusedOptionIndex, selectedOption, onSubmit]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -459,7 +469,7 @@ export default function QuestionRenderer({
   );
 
   const renderTrueFalseMulti = () => {
-    const statements = question.options || [];
+    const statements = shuffledTFMultiStatements;
 
     return (
       <div className="space-y-3">
@@ -526,7 +536,55 @@ export default function QuestionRenderer({
   };
 
   const renderGapFill = () => {
-    // For simple gap fill, show as single input below the sentence
+    const blankPattern = /_{3,}|\[blank\]|\[___\]/gi;
+    const parts = questionText.split(blankPattern);
+    const hasInlineBlanks = parts.length > 1;
+
+    // If the question text has inline blanks (___), render them inline
+    if (hasInlineBlanks) {
+      return (
+        <div className="space-y-4">
+          <div className="text-lg leading-relaxed text-gray-800 dark:text-gray-100 whitespace-pre-wrap">
+            {parts.map((part, i) => (
+              <span key={i}>
+                {part}
+                {i < parts.length - 1 && (
+                  <input
+                    type="text"
+                    value={gapAnswers[String(i)] || (i === 0 ? textAnswer : '') || ''}
+                    onChange={(e) => {
+                      handleGapChange(String(i), e.target.value);
+                      if (i === 0) setTextAnswer(e.target.value);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && onSubmit && (gapAnswers[String(i)] || textAnswer)) {
+                        e.preventDefault();
+                        onSubmit();
+                      }
+                    }}
+                    disabled={disabled}
+                    autoFocus={i === 0}
+                    className="inline-block w-40 mx-1 px-3 py-1.5 text-lg font-medium border-b-3 border-amber-400
+                               bg-amber-50/50 dark:bg-amber-900/20 text-gray-900 dark:text-white
+                               focus:outline-none focus:border-amber-500 focus:bg-amber-50 dark:focus:bg-amber-900/30
+                               placeholder-gray-400 dark:placeholder-gray-500 transition-all rounded-md"
+                    placeholder="..."
+                  />
+                )}
+              </span>
+            ))}
+          </div>
+
+          {/* Keyboard hint */}
+          <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 pt-2 border-t border-gray-100 dark:border-gray-700">
+            <Keyboard size={14} />
+            <span>Type your answer, press Enter to continue</span>
+          </div>
+        </div>
+      );
+    }
+
+    // Fallback: simple input below the question
     return (
       <div className="space-y-4">
         <input
@@ -574,7 +632,7 @@ export default function QuestionRenderer({
             return (
               <div key={item.id} className="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-800 dark:text-gray-200">{item.text}</span>
+                  <span className="text-gray-800 dark:text-gray-200">{locale === 'es' && item.text_es ? item.text_es : item.text}</span>
                   <select
                     value={matchedRight || ''}
                     onChange={(e) => handleMatchingChange(item.id, e.target.value)}
@@ -589,6 +647,9 @@ export default function QuestionRenderer({
                     ))}
                   </select>
                 </div>
+                {item.audio_url && (
+                  <audio src={item.audio_url} controls className="w-full h-8 mt-2" />
+                )}
               </div>
             );
           })}
@@ -598,7 +659,10 @@ export default function QuestionRenderer({
           {rightItems.map((item) => (
             <div key={item.id} className="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
               <span className="font-bold mr-2 text-primary">{item.id}.</span>
-              <span className="text-gray-800 dark:text-gray-200">{item.text}</span>
+              <span className="text-gray-800 dark:text-gray-200">{locale === 'es' && item.text_es ? item.text_es : item.text}</span>
+              {item.audio_url && (
+                <audio src={item.audio_url} controls className="w-full h-8 mt-2" />
+              )}
             </div>
           ))}
         </div>
@@ -1021,14 +1085,16 @@ export default function QuestionRenderer({
         </div>
       )}
 
-      {/* Question Text - Maximum Contrast */}
-      <div className="bg-gradient-to-r from-primary/10 to-secondary/10 dark:from-primary/20 dark:to-secondary/20
-                      rounded-xl p-5 border-l-4 border-primary">
-        <p className="text-xl font-bold text-gray-900 dark:text-white leading-relaxed tracking-wide"
-           style={{ textShadow: '0 0 1px rgba(0,0,0,0.1)' }}>
-          {questionText}
-        </p>
-      </div>
+      {/* Question Text - Maximum Contrast (hidden for inline gap_fill since it's rendered with inputs) */}
+      {!(question.question_type === 'gap_fill' && /_{3,}|\[blank\]|\[___\]/gi.test(questionText)) && (
+        <div className="bg-gradient-to-r from-primary/10 to-secondary/10 dark:from-primary/20 dark:to-secondary/20
+                        rounded-xl p-5 border-l-4 border-primary">
+          <p className="text-xl font-bold text-gray-900 dark:text-white leading-relaxed tracking-wide"
+             style={{ textShadow: '0 0 1px rgba(0,0,0,0.1)' }}>
+            {questionText}
+          </p>
+        </div>
+      )}
 
       {/* Answer Area */}
       {renderQuestion()}

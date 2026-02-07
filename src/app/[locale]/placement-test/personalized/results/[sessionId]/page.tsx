@@ -19,7 +19,9 @@ import {
   CheckCircle,
   Clock,
   Copy,
-  WarningCircle
+  WarningCircle,
+  ChatCircleDots,
+  Star
 } from '@phosphor-icons/react';
 import toast from 'react-hot-toast';
 import { sendPlacementResultsEmail } from '@/lib/placement-test-email';
@@ -51,6 +53,20 @@ interface ResultsData {
   auto_scored_correct: number;
   auto_scored_total: number;
   pending_review: number;
+  certificate_issued_at?: string;
+}
+
+interface DetailedAnswer {
+  question_text: string;
+  skill_type: string;
+  question_type: string;
+  student_answer: string;
+  is_correct?: boolean;
+  points_earned: number;
+  max_points: number;
+  admin_score?: number;
+  admin_feedback?: string;
+  requires_review: boolean;
 }
 
 // Level colors
@@ -88,6 +104,8 @@ export default function ResultsPage({ params }: { params: Promise<{ sessionId: s
   const [results, setResults] = useState<ResultsData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [detailedAnswers, setDetailedAnswers] = useState<DetailedAnswer[]>([]);
+  const [certificateCode, setCertificateCode] = useState<string | null>(null);
 
   const pt = (key: string) => t('placementTest', key);
 
@@ -99,6 +117,22 @@ export default function ResultsPage({ params }: { params: Promise<{ sessionId: s
 
         if (data.success) {
           setResults(data);
+
+          // If reviewed, fetch detailed results with per-answer feedback
+          if (data.status === 'reviewed') {
+            try {
+              const detailedRes = await fetch(`/api/placement-test/results/${sessionId}/detailed`);
+              const detailedData = await detailedRes.json();
+              if (detailedData.success) {
+                setDetailedAnswers(detailedData.answers || []);
+                if (detailedData.certificate_code) {
+                  setCertificateCode(detailedData.certificate_code);
+                }
+              }
+            } catch {
+              // Non-critical: detailed feedback just won't show
+            }
+          }
         } else {
           setError(data.error || 'Failed to load results');
         }
@@ -346,13 +380,109 @@ export default function ResultsPage({ params }: { params: Promise<{ sessionId: s
           {/* Admin Feedback (if reviewed) */}
           {results.admin_feedback && (
             <div className="authority-card p-8 mb-8">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                Expert Feedback
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <Star size={24} weight="fill" className="text-amber-500" />
+                {pt('results.expertFeedback') || 'Expert Feedback'}
               </h3>
               <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-6">
                 <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">
                   {results.admin_feedback}
                 </p>
+              </div>
+            </div>
+          )}
+
+          {/* Detailed Per-Answer Feedback (only reviewed writing/speaking) */}
+          {results.status === 'reviewed' && detailedAnswers.filter(a => a.requires_review && (a.admin_score !== undefined || a.admin_feedback)).length > 0 && (
+            <div className="authority-card p-8 mb-8">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                <ChatCircleDots size={24} className="text-indigo-500" />
+                {pt('results.detailedFeedback') || 'Your Detailed Feedback'}
+              </h3>
+              <div className="space-y-6">
+                {detailedAnswers
+                  .filter(a => a.requires_review && (a.admin_score !== undefined || a.admin_feedback))
+                  .map((answer, index) => (
+                    <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-xl p-6">
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className={`px-2 py-0.5 rounded text-xs font-medium ${
+                          answer.skill_type === 'writing' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' :
+                          answer.skill_type === 'speaking' ? 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400' :
+                          'bg-gray-100 text-gray-700'
+                        }`}>
+                          {answer.skill_type === 'writing' ? <PencilSimple size={12} className="inline mr-1" /> :
+                           answer.skill_type === 'speaking' ? <Microphone size={12} className="inline mr-1" /> : null}
+                          {answer.skill_type.charAt(0).toUpperCase() + answer.skill_type.slice(1)}
+                        </span>
+                      </div>
+
+                      <p className="text-gray-700 dark:text-gray-300 font-medium mb-3">
+                        {answer.question_text}
+                      </p>
+
+                      {/* Student's answer */}
+                      <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mb-3">
+                        <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
+                          {pt('results.yourAnswer') || 'Your Answer'}
+                        </p>
+                        {answer.student_answer.startsWith('data:audio') ? (
+                          <audio controls className="w-full">
+                            <source src={answer.student_answer} />
+                          </audio>
+                        ) : (
+                          <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line text-sm">
+                            {answer.student_answer}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Score and feedback */}
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        {answer.admin_score !== undefined && (
+                          <div className="inline-flex items-center gap-2 px-3 py-2 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg border border-indigo-200 dark:border-indigo-800">
+                            <span className="text-sm font-medium text-indigo-600 dark:text-indigo-400">
+                              {pt('results.expertScore') || 'Expert Score'}:
+                            </span>
+                            <span className="font-bold text-indigo-700 dark:text-indigo-300">
+                              {answer.admin_score} / {answer.max_points}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      {answer.admin_feedback && (
+                        <div className="mt-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border-l-4 border-blue-400">
+                          <p className="text-xs font-medium text-blue-600 dark:text-blue-400 mb-1">
+                            {pt('results.expertComment') || 'Expert Comment'}
+                          </p>
+                          <p className="text-gray-700 dark:text-gray-300 text-sm">
+                            {answer.admin_feedback}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
+
+          {/* Certificate Code (if issued) */}
+          {certificateCode && (
+            <div className="authority-card p-6 mb-8">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-1">
+                    <Certificate size={16} />
+                    {pt('results.certificateCode') || 'Certificate Code'}
+                  </p>
+                  <code className="text-lg font-mono font-bold text-gray-900 dark:text-white">
+                    {certificateCode}
+                  </code>
+                </div>
+                <div className="text-sm text-green-600 dark:text-green-400 flex items-center gap-1">
+                  <CheckCircle size={16} weight="fill" />
+                  {pt('results.certificateReady') || 'Certificate Ready'}
+                </div>
               </div>
             </div>
           )}
@@ -411,10 +541,43 @@ export default function ResultsPage({ params }: { params: Promise<{ sessionId: s
 
           {/* Action Buttons */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <button className="btn-authority btn-primary-authority justify-center py-4">
-              <Certificate size={20} className="mr-2" />
-              {pt('results.downloadCertificate')}
-            </button>
+            {results.status === 'reviewed' && certificateCode ? (
+              <button
+                onClick={async () => {
+                  try {
+                    const { generatePersonalizedCertificatePDF } = await import('@/lib/placement-test-certificate');
+                    generatePersonalizedCertificatePDF({
+                      studentName: results.student_name,
+                      level: finalLevel,
+                      skillBreakdown: results.level_breakdown
+                        ? Object.fromEntries(
+                            Object.entries(results.level_breakdown).map(([k, v]) => [k, { level: v.level }])
+                          ) as Record<string, { level: string }>
+                        : {},
+                      completedAt: results.completed_at,
+                      certificateCode: certificateCode,
+                      issuedAt: results.certificate_issued_at || new Date().toISOString()
+                    });
+                    toast.success('Certificate downloaded!');
+                  } catch {
+                    toast.error('Failed to generate certificate');
+                  }
+                }}
+                className="btn-authority btn-primary-authority justify-center py-4"
+              >
+                <Certificate size={20} className="mr-2" />
+                {pt('results.downloadCertificate')}
+              </button>
+            ) : (
+              <button
+                disabled
+                className="btn-authority btn-primary-authority justify-center py-4 opacity-50 cursor-not-allowed"
+                title={results.status === 'pending_review' ? 'Certificate available after review' : 'Certificate not available'}
+              >
+                <Certificate size={20} className="mr-2" />
+                {pt('results.downloadCertificate')}
+              </button>
+            )}
 
             <button
               onClick={handleEmailResults}

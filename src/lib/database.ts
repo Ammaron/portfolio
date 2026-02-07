@@ -26,6 +26,7 @@ export interface Certificate {
   instructor_name: string;
   status: 'active' | 'expired' | 'revoked';
   verification_code: string;
+  placement_session_id?: string;
   created_at: string;
   updated_at: string;
 }
@@ -68,7 +69,8 @@ function generateCourseHash(courseType: string, level: string): string {
     'Advanced English Fluency': '4D',
     'Expert English Proficiency': '5E',
     'Native-Level English Mastery': '6F',
-    'Professional Business Communication': 'BC'
+    'Professional Business Communication': 'BC',
+    'English Placement Test - Comprehensive': 'PT'
   };
   
   // Level mapping for additional complexity

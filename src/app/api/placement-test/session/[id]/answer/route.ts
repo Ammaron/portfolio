@@ -99,9 +99,10 @@ export async function POST(
         pointsEarned = correctCount;
         isCorrect = correctCount === correctPairs.length;
       } else {
-        // Auto-score the answer
-        isCorrect = answer.toString().toLowerCase().trim() ===
-                    question.correct_answer.toLowerCase().trim();
+        // Auto-score the answer (case-insensitive, supports multiple accepted answers separated by ;)
+        const studentAnswer = answer.toString().toLowerCase().trim();
+        const acceptedAnswers = question.correct_answer.split(';').map((a: string) => a.toLowerCase().trim()).filter(Boolean);
+        isCorrect = acceptedAnswers.some((accepted: string) => accepted === studentAnswer);
         pointsEarned = isCorrect ? question.max_points : 0;
       }
     }
@@ -144,7 +145,7 @@ export async function POST(
         convergence_count: 0
       };
 
-      const newState = updateAdaptiveState(currentState, isCorrect, questionDifficulty);
+      const newState = updateAdaptiveState(currentState, isCorrect, questionDifficulty, question.max_points);
       rawScores[skill].ability_estimate = newState.ability_estimate;
       rawScores[skill].last_correct = newState.last_correct;
     }

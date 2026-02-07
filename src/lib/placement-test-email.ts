@@ -26,6 +26,7 @@ interface PlacementResultsEmailParams {
   skillBreakdown?: Record<string, { level: string }>;
   adminFeedback?: string;
   resultsUrl: string;
+  certificateCode?: string;
 }
 
 // Send placement test results email
@@ -65,7 +66,14 @@ ${params.adminFeedback ? `\nExpert Feedback:\n${params.adminFeedback}\n` : ''}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-View your full results and download your certificate:
+${params.certificateCode ? `YOUR CERTIFICATE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Your certificate is ready! You can now download it from your results page.
+Certificate Code: ${params.certificateCode}
+Verify at: mrmcdonald.org/certifications/verify
+
+` : ''}View your full results and download your certificate:
 ${params.resultsUrl}
 
 Your session code for future reference: ${params.sessionCode}
@@ -114,7 +122,8 @@ export const sendReviewCompleteEmail = async (
   studentEmail: string,
   sessionCode: string,
   calculatedLevel: string,
-  resultsUrl: string
+  resultsUrl: string,
+  certificateCode?: string
 ): Promise<{ success: boolean; message: string }> => {
   return sendPlacementResultsEmail({
     studentName,
@@ -122,7 +131,8 @@ export const sendReviewCompleteEmail = async (
     sessionCode,
     testMode: 'personalized',
     calculatedLevel,
-    resultsUrl
+    resultsUrl,
+    certificateCode
   });
 };
 

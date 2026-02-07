@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSessionById, getSessionByCode, getSessionAnswers } from '@/lib/placement-test';
+import { supabaseAdmin } from '@/lib/database';
 
 export async function GET(
   request: NextRequest,
@@ -21,7 +22,6 @@ export async function GET(
       );
     }
 
-    // Check if session is completed or reviewed
     if (session.status === 'in_progress') {
       return NextResponse.json(
         { success: false, error: 'Test is still in progress' },
@@ -32,7 +32,47 @@ export async function GET(
     // Get answers for detailed breakdown
     const answers = await getSessionAnswers(session.id);
 
-    // Build response
+    // Get questions for each answer
+    const questionIds = answers.map(a => a.question_id);
+    const { data: questions } = await supabaseAdmin
+      .from('placement_questions')
+      .select('id, question_text, skill_type, question_type, max_points')
+      .in('id', questionIds);
+
+    const questionsMap = new Map(questions?.map(q => [q.id, q]) || []);
+
+    // Build detailed answers
+    const detailedAnswers = answers.map(answer => {
+      const question = questionsMap.get(answer.question_id);
+      return {
+        question_text: question?.question_text || '',
+        skill_type: question?.skill_type || '',
+        question_type: question?.question_type || '',
+        student_answer: answer.student_answer,
+        is_correct: answer.is_correct,
+        points_earned: answer.points_earned,
+        max_points: answer.max_points,
+        admin_score: answer.admin_score,
+        admin_feedback: answer.admin_feedback,
+        requires_review: answer.requires_review
+      };
+    });
+
+    // Look up certificate from certifications table
+    let certificateIssued = false;
+    let certificateCode: string | undefined;
+
+    const { data: cert } = await supabaseAdmin
+      .from('certifications')
+      .select('certificate_code')
+      .eq('placement_session_id', session.id)
+      .maybeSingle();
+
+    if (cert) {
+      certificateIssued = true;
+      certificateCode = cert.certificate_code;
+    }
+
     const response = {
       success: true,
       session_code: session.session_code,
@@ -48,20 +88,20 @@ export async function GET(
       level_breakdown: session.level_breakdown,
       admin_feedback: session.admin_feedback,
       admin_adjusted_level: session.admin_adjusted_level,
-      certificate_issued_at: session.certificate_issued_at,
-      // Summary stats
       total_questions: answers.length,
       auto_scored_correct: answers.filter(a => a.is_correct === true).length,
       auto_scored_total: answers.filter(a => a.is_correct !== undefined).length,
-      pending_review: answers.filter(a => a.requires_review && !a.admin_score).length
+      pending_review: answers.filter(a => a.requires_review && !a.admin_score).length,
+      answers: detailedAnswers,
+      certificate_issued: certificateIssued,
+      certificate_code: certificateCode
     };
 
     return NextResponse.json(response);
-
   } catch (error) {
-    console.error('Error fetching results:', error);
+    console.error('Error fetching detailed results:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch results' },
+      { success: false, error: 'Failed to fetch detailed results' },
       { status: 500 }
     );
   }

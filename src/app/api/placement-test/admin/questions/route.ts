@@ -47,6 +47,8 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search');
     const limit = parseInt(searchParams.get('limit') || '50', 10);
     const offset = parseInt(searchParams.get('offset') || '0', 10);
+    const sortField = searchParams.get('sort') || 'cefr_level';
+    const sortOrder = searchParams.get('order') || 'asc';
 
     let query = supabaseAdmin
       .from('placement_questions')
@@ -59,8 +61,7 @@ export async function GET(request: NextRequest) {
     if (search) query = query.ilike('question_text', `%${search}%`);
 
     const { data, error, count } = await query
-      .order('cefr_level', { ascending: true })
-      .order('skill_type', { ascending: true })
+      .order(sortField, { ascending: sortOrder !== 'desc' })
       .range(offset, offset + limit - 1);
 
     if (error) {

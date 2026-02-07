@@ -8,7 +8,7 @@ import {
   RawScores,
   CEFRLevel
 } from '@/lib/placement-test';
-import { supabaseAdmin } from '@/lib/database';
+import { supabaseAdmin, createCertificate } from '@/lib/database';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key_here';
 
@@ -184,9 +184,36 @@ export async function PUT(
       await updateSession(id, sessionUpdates);
     }
 
+    // Create certificate when marking complete
+    let certificate_code: string | undefined;
+    if (mark_complete) {
+      try {
+        const finalLevel = admin_adjusted_level || session.calculated_level || 'B1';
+        const cert = await createCertificate({
+          student_name: session.student_name,
+          student_email: session.student_email || undefined,
+          course_type: 'English Placement Test - Comprehensive',
+          level: finalLevel,
+          completion_date: session.completed_at || new Date().toISOString(),
+          issue_date: new Date().toISOString().split('T')[0],
+          instructor_name: 'Kirby McDonald',
+          status: 'active' as const,
+          placement_session_id: session.id
+        });
+        certificate_code = cert.certificate_code;
+
+        // Set certificate_issued_at on session
+        await updateSession(id, { certificate_issued_at: new Date().toISOString() });
+      } catch (certError) {
+        console.error('Failed to create certificate:', certError);
+        // Don't fail the whole request if cert creation fails
+      }
+    }
+
     return NextResponse.json({
       success: true,
-      message: mark_complete ? 'Submission reviewed and completed' : 'Progress saved'
+      message: mark_complete ? 'Submission reviewed and completed' : 'Progress saved',
+      certificate_code
     });
 
   } catch (error) {

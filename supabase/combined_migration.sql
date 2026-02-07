@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS public.certifications (
     instructor_name character varying(255) DEFAULT 'Kirby McDonald'::character varying,
     status character varying(20) DEFAULT 'active'::character varying,
     verification_code character varying(6) NOT NULL,
+    placement_session_id uuid,
     created_at timestamp with time zone DEFAULT now(),
     updated_at timestamp with time zone DEFAULT now()
 );
@@ -206,6 +207,7 @@ CREATE TABLE IF NOT EXISTS placement_test_sessions (
   admin_adjusted_level VARCHAR(2),
   reviewed_by VARCHAR(255),
   reviewed_at TIMESTAMP WITH TIME ZONE,
+  certificate_issued_at TIMESTAMP WITH TIME ZONE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );

@@ -70,6 +70,7 @@ export interface QuestionOption {
   id: string;
   text: string;
   text_es?: string;
+  audio_url?: string;
   is_correct?: boolean; // For matching questions, stores match info
 }
 
@@ -115,6 +116,7 @@ export interface PlacementTestSession {
   admin_adjusted_level?: CEFRLevel;
   reviewed_by?: string;
   reviewed_at?: string;
+  certificate_issued_at?: string;
   created_at: string;
   updated_at: string;
 }
@@ -224,7 +226,8 @@ export function initializeAdaptiveState(): AdaptiveState {
 export function updateAdaptiveState(
   state: AdaptiveState,
   correct: boolean,
-  questionDifficulty: number
+  questionDifficulty: number,
+  maxPoints: number = 1
 ): AdaptiveState {
   const newState = { ...state };
   newState.questions_answered++;
@@ -235,12 +238,17 @@ export function updateAdaptiveState(
     newState.last_correct.shift();
   }
 
+  // Points weight: questions worth more points have a bigger impact on ability estimate
+  // A 1-point question = 1x, a 3-point question = ~1.5x, a 5-point question = ~1.8x
+  // Using logarithmic scaling to avoid extreme swings from high-point questions
+  const pointsWeight = 1 + Math.log2(Math.max(1, maxPoints)) * 0.25;
+
   // Calculate adjustment - decreases as test progresses
   const baseAdjustment = 0.15;
   const decayFactor = Math.max(0.3, 1 - (newState.questions_answered * 0.05));
   const difficultyBonus = Math.abs(questionDifficulty - newState.ability_estimate) * 0.5;
 
-  let adjustment = baseAdjustment * decayFactor;
+  let adjustment = baseAdjustment * decayFactor * pointsWeight;
 
   // Larger adjustment for surprising results
   if (correct && questionDifficulty > newState.ability_estimate) {

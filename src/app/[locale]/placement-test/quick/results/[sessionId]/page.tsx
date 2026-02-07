@@ -373,7 +373,22 @@ export default function ResultsPage({ params }: { params: Promise<{ sessionId: s
         {/* Action Buttons */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <button
-            onClick={() => toast('Certificate download coming soon!', { icon: '📜' })}
+            onClick={async () => {
+              try {
+                const { generateQuickCertificatePDF } = await import('@/lib/placement-test-certificate');
+                generateQuickCertificatePDF({
+                  studentName: results.student_name,
+                  level: finalLevel,
+                  skillsTested: results.skills_tested,
+                  completedAt: results.completed_at,
+                  sessionCode: results.session_code,
+                  levelBreakdown: results.level_breakdown
+                });
+                toast.success('Certificate downloaded!');
+              } catch {
+                toast.error('Failed to generate certificate');
+              }
+            }}
             className="flex items-center justify-center gap-2 px-5 py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl transition-all shadow-lg shadow-amber-500/30 hover:shadow-xl cursor-pointer"
           >
             <Certificate size={22} />

@@ -162,6 +162,14 @@ export interface PlacementTestTranslations {
       // Certificate
       certificateTitle: string;
       certificateSubtitle: string;
+      certificateReady: string;
+      certificateCode: string;
+      // Detailed feedback
+      detailedFeedback: string;
+      yourAnswer: string;
+      expertScore: string;
+      expertComment: string;
+      expertFeedback: string;
       // Level descriptions
       levelDescriptions: {
         A1: string;
@@ -234,6 +242,10 @@ export interface PlacementTestTranslations {
         adjustLevel: string;
         markComplete: string;
         saveProgress: string;
+        completeAndIssue: string;
+        certificateIssued: string;
+        previewCertificate: string;
+        certificateStatus: string;
       };
       questions: {
         title: string;
@@ -493,6 +505,13 @@ export const placementTestTranslations: Record<'en' | 'es', PlacementTestTransla
         backToHome: 'Back to Home',
         certificateTitle: 'Certificate of English Proficiency',
         certificateSubtitle: 'This certifies that the above-named individual has demonstrated English proficiency at the indicated CEFR level.',
+        certificateReady: 'Certificate Ready',
+        certificateCode: 'Certificate Code',
+        detailedFeedback: 'Your Detailed Feedback',
+        yourAnswer: 'Your Answer',
+        expertScore: 'Expert Score',
+        expertComment: 'Expert Comment',
+        expertFeedback: 'Expert Feedback',
         levelDescriptions: {
           A1: 'Beginner - Can understand and use familiar everyday expressions and very basic phrases.',
           A2: 'Elementary - Can communicate in simple and routine tasks requiring direct exchange of information.',
@@ -561,7 +580,11 @@ export const placementTestTranslations: Record<'en' | 'es', PlacementTestTransla
           feedbackPlaceholder: 'Provide feedback for the student...',
           adjustLevel: 'Adjust Level',
           markComplete: 'Mark as Reviewed',
-          saveProgress: 'Save Progress'
+          saveProgress: 'Save Progress',
+          completeAndIssue: 'Complete Review & Issue Certificate',
+          certificateIssued: 'Certificate Issued',
+          previewCertificate: 'Preview Certificate',
+          certificateStatus: 'Certificate Status'
         },
         questions: {
           title: 'Question Bank',
@@ -818,6 +841,13 @@ export const placementTestTranslations: Record<'en' | 'es', PlacementTestTransla
         backToHome: 'Volver al Inicio',
         certificateTitle: 'Certificado de Competencia en Inglés',
         certificateSubtitle: 'Este certifica que la persona mencionada ha demostrado competencia en inglés al nivel MCER indicado.',
+        certificateReady: 'Certificado Listo',
+        certificateCode: 'Código de Certificado',
+        detailedFeedback: 'Tu Retroalimentación Detallada',
+        yourAnswer: 'Tu Respuesta',
+        expertScore: 'Puntuación del Experto',
+        expertComment: 'Comentario del Experto',
+        expertFeedback: 'Retroalimentación del Experto',
         levelDescriptions: {
           A1: 'Principiante - Puede comprender y usar expresiones cotidianas familiares y frases muy básicas.',
           A2: 'Elemental - Puede comunicarse en tareas simples y rutinarias que requieren intercambio directo de información.',
@@ -886,7 +916,11 @@ export const placementTestTranslations: Record<'en' | 'es', PlacementTestTransla
           feedbackPlaceholder: 'Proporciona retroalimentación para el estudiante...',
           adjustLevel: 'Ajustar Nivel',
           markComplete: 'Marcar como Revisado',
-          saveProgress: 'Guardar Progreso'
+          saveProgress: 'Guardar Progreso',
+          completeAndIssue: 'Completar Revisión y Emitir Certificado',
+          certificateIssued: 'Certificado Emitido',
+          previewCertificate: 'Vista Previa del Certificado',
+          certificateStatus: 'Estado del Certificado'
         },
         questions: {
           title: 'Banco de Preguntas',

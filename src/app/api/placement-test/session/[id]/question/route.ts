@@ -70,7 +70,8 @@ export async function GET(
       options: question.options?.map(opt => ({
         id: opt.id,
         text: opt.text,
-        text_es: opt.text_es
+        text_es: opt.text_es,
+        ...(opt.audio_url ? { audio_url: opt.audio_url } : {})
       })),
       max_points: question.max_points,
       time_limit_seconds: question.time_limit_seconds
