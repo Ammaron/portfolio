@@ -186,6 +186,7 @@ export async function PUT(
 
     // Create certificate when marking complete
     let certificate_code: string | undefined;
+    let certificate_error: string | undefined;
     if (mark_complete) {
       try {
         const finalLevel = admin_adjusted_level || session.calculated_level || 'B1';
@@ -203,17 +204,22 @@ export async function PUT(
         certificate_code = cert.certificate_code;
 
         // Set certificate_issued_at on session
-        await updateSession(id, { certificate_issued_at: new Date().toISOString() });
+        try {
+          await updateSession(id, { certificate_issued_at: new Date().toISOString() });
+        } catch {
+          // Non-critical: session tracking update failed but certificate was created
+        }
       } catch (certError) {
         console.error('Failed to create certificate:', certError);
-        // Don't fail the whole request if cert creation fails
+        certificate_error = certError instanceof Error ? certError.message : 'Failed to create certificate';
       }
     }
 
     return NextResponse.json({
       success: true,
       message: mark_complete ? 'Submission reviewed and completed' : 'Progress saved',
-      certificate_code
+      certificate_code,
+      certificate_error
     });
 
   } catch (error) {

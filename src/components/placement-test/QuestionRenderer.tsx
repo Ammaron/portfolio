@@ -65,6 +65,7 @@ export default function QuestionRenderer({
   const [gapAnswers, setGapAnswers] = useState<Record<string, string>>({});
   const [formAnswers, setFormAnswers] = useState<Record<string, string>>({});
   const [focusedOptionIndex, setFocusedOptionIndex] = useState<number>(-1);
+  const [matchingActiveLeft, setMatchingActiveLeft] = useState<string | null>(null);
 
   // Audio state
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -109,14 +110,29 @@ export default function QuestionRenderer({
     return shuffle(question.options);
   }, [question.id, question.question_type, question.options]);
 
+  // Shuffle right-side items for matching (answer is keyed by id pairs, so order doesn't matter)
+  const shuffledMatchingRight = useMemo(() => {
+    if (question.question_type !== 'matching' || !question.options) return [];
+    return shuffle(question.options.filter((_, i) => i % 2 === 1));
+  }, [question.id, question.question_type, question.options]);
+
   // Reset state when question changes
   useEffect(() => {
     setSelectedOption(typeof currentAnswer === 'string' ? currentAnswer : null);
     setSelectedOptions(Array.isArray(currentAnswer) ? currentAnswer : []);
     setTextAnswer(typeof currentAnswer === 'string' ? currentAnswer : '');
-    setGapAnswers({});
+    // For gap fill with pipe-separated answers, restore into gapAnswers instead of clearing
+    if (question.question_type === 'gap_fill' && typeof currentAnswer === 'string' && currentAnswer.includes('|')) {
+      const answerParts = currentAnswer.split('|');
+      const restored: Record<string, string> = {};
+      answerParts.forEach((val, i) => { restored[String(i)] = val; });
+      setGapAnswers(restored);
+    } else {
+      setGapAnswers({});
+    }
     setFormAnswers({});
     setFocusedOptionIndex(-1);
+    setMatchingActiveLeft(null);
   }, [question.id, currentAnswer]);
 
   // Keyboard navigation
@@ -200,6 +216,11 @@ export default function QuestionRenderer({
     if (e.key === 'Enter' && !e.shiftKey) {
       if (question.question_type === 'gap_fill' || question.question_type === 'open_response') {
         // Don't intercept Enter in text inputs
+        return;
+      }
+      if (question.question_type === 'matching' && selectedOptions.length > 0 && onSubmit) {
+        e.preventDefault();
+        onSubmit();
         return;
       }
       if (question.question_type === 'true_false_multi' && selectedOptions.length > 0 && onSubmit) {
@@ -310,7 +331,19 @@ export default function QuestionRenderer({
     if (disabled) return;
     const newAnswers = { ...gapAnswers, [gapId]: value };
     setGapAnswers(newAnswers);
-    onAnswer(value); // For single gap, just send the value
+
+    // For inline blanks (multiple gaps), send pipe-separated answer
+    const blankPattern = /_{3,}|\[blank\]|\[___\]/gi;
+    const totalGaps = (questionText.match(blankPattern) || []).length;
+    if (totalGaps > 1) {
+      const allValues = [];
+      for (let j = 0; j < totalGaps; j++) {
+        allValues.push(newAnswers[String(j)] || '');
+      }
+      onAnswer(allValues.join('|'));
+    } else {
+      onAnswer(value);
+    }
   };
 
   const handleTrueFalseMultiChange = (statementId: string, value: string) => {
@@ -441,9 +474,7 @@ export default function QuestionRenderer({
               disabled={disabled}
               className={`flex-1 p-5 text-center rounded-xl border-2 transition-all duration-200 font-semibold text-lg ${
                 isSelected
-                  ? option.value === 'true'
-                    ? 'border-green-500 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 shadow-md shadow-green-500/20'
-                    : 'border-red-500 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 shadow-md shadow-red-500/20'
+                  ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 shadow-md shadow-amber-500/20'
                   : isFocused
                   ? 'border-amber-400 bg-amber-50/50 dark:bg-amber-900/20 text-gray-700 dark:text-gray-300'
                   : 'border-gray-200 dark:border-gray-600 hover:border-amber-400 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50'
@@ -512,9 +543,7 @@ export default function QuestionRenderer({
                     disabled={disabled}
                     className={`px-5 py-2 rounded-lg border-2 font-semibold text-sm transition-all duration-200 ${
                       currentValue === opt.value
-                        ? opt.value === 'true'
-                          ? 'border-green-500 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 shadow-sm'
-                          : 'border-red-500 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 shadow-sm'
+                        ? 'border-amber-500 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 shadow-sm'
                         : 'border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:border-amber-400 hover:bg-gray-50 dark:hover:bg-gray-700/50'
                     } ${disabled ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
                   >
@@ -551,13 +580,12 @@ export default function QuestionRenderer({
                 {i < parts.length - 1 && (
                   <input
                     type="text"
-                    value={gapAnswers[String(i)] || (i === 0 ? textAnswer : '') || ''}
+                    value={gapAnswers[String(i)] || ''}
                     onChange={(e) => {
                       handleGapChange(String(i), e.target.value);
-                      if (i === 0) setTextAnswer(e.target.value);
                     }}
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter' && onSubmit && (gapAnswers[String(i)] || textAnswer)) {
+                      if (e.key === 'Enter' && onSubmit && Object.values(gapAnswers).some(v => v.trim() !== '')) {
                         e.preventDefault();
                         onSubmit();
                       }
@@ -621,50 +649,208 @@ export default function QuestionRenderer({
   const renderMatching = () => {
     const options = question.options || [];
     const leftItems = options.filter((_, i) => i % 2 === 0);
-    const rightItems = options.filter((_, i) => i % 2 === 1);
+
+    // Color palette for matched pairs — each pair gets a unique accent
+    const pairColors = [
+      { bg: 'bg-blue-50 dark:bg-blue-500/10', border: 'border-blue-500', text: 'text-blue-700 dark:text-blue-300', badge: 'bg-blue-500', ring: 'ring-blue-400/25', glow: 'shadow-blue-500/20' },
+      { bg: 'bg-emerald-50 dark:bg-emerald-500/10', border: 'border-emerald-500', text: 'text-emerald-700 dark:text-emerald-300', badge: 'bg-emerald-500', ring: 'ring-emerald-400/25', glow: 'shadow-emerald-500/20' },
+      { bg: 'bg-violet-50 dark:bg-violet-500/10', border: 'border-violet-500', text: 'text-violet-700 dark:text-violet-300', badge: 'bg-violet-500', ring: 'ring-violet-400/25', glow: 'shadow-violet-500/20' },
+      { bg: 'bg-rose-50 dark:bg-rose-500/10', border: 'border-rose-500', text: 'text-rose-700 dark:text-rose-300', badge: 'bg-rose-500', ring: 'ring-rose-400/25', glow: 'shadow-rose-500/20' },
+      { bg: 'bg-cyan-50 dark:bg-cyan-500/10', border: 'border-cyan-500', text: 'text-cyan-700 dark:text-cyan-300', badge: 'bg-cyan-500', ring: 'ring-cyan-400/25', glow: 'shadow-cyan-500/20' },
+      { bg: 'bg-amber-50 dark:bg-amber-500/10', border: 'border-amber-500', text: 'text-amber-700 dark:text-amber-300', badge: 'bg-amber-500', ring: 'ring-amber-400/25', glow: 'shadow-amber-500/20' },
+    ];
+
+    const getMatchedRightId = (leftId: string): string | null => {
+      const match = selectedOptions.find(s => s.startsWith(leftId + ':'));
+      return match ? match.split(':')[1] : null;
+    };
+
+    const getMatchInfoForRight = (rightId: string): { leftId: string; leftIndex: number } | null => {
+      for (const sel of selectedOptions) {
+        const [lid, rid] = sel.split(':');
+        if (rid === rightId) {
+          const leftIndex = leftItems.findIndex(l => l.id === lid);
+          return { leftId: lid, leftIndex };
+        }
+      }
+      return null;
+    };
+
+    const handleLeftClick = (leftId: string) => {
+      if (disabled) return;
+      if (getMatchedRightId(leftId)) {
+        // Unmatch
+        handleMatchingChange(leftId, '');
+        setMatchingActiveLeft(null);
+      } else if (matchingActiveLeft === leftId) {
+        setMatchingActiveLeft(null);
+      } else {
+        setMatchingActiveLeft(leftId);
+      }
+    };
+
+    const handleRightClick = (rightId: string) => {
+      if (disabled) return;
+      const matchInfo = getMatchInfoForRight(rightId);
+      if (matchInfo) {
+        // Unmatch
+        handleMatchingChange(matchInfo.leftId, '');
+        return;
+      }
+      if (!matchingActiveLeft) return;
+      handleMatchingChange(matchingActiveLeft, rightId);
+      setMatchingActiveLeft(null);
+    };
+
+    const matchedCount = selectedOptions.length;
+    const totalPairs = leftItems.length;
+    const allMatched = matchedCount === totalPairs;
+
+    // Instruction text based on state
+    const instruction = allMatched
+      ? 'All pairs matched! Press Enter to continue.'
+      : matchingActiveLeft
+      ? 'Now tap a matching item on the right'
+      : 'Tap an item on the left to start matching';
 
     return (
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="space-y-3">
-          <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-2">Match these:</h4>
-          {leftItems.map((item) => {
-            const matchedRight = selectedOptions.find(s => s.startsWith(item.id + ':'))?.split(':')[1];
-            return (
-              <div key={item.id} className="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-800 dark:text-gray-200">{locale === 'es' && item.text_es ? item.text_es : item.text}</span>
-                  <select
-                    value={matchedRight || ''}
-                    onChange={(e) => handleMatchingChange(item.id, e.target.value)}
-                    disabled={disabled}
-                    className="ml-2 px-3 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg
-                               bg-white dark:bg-gray-600 text-gray-900 dark:text-white text-sm
-                               focus:outline-none focus:border-primary"
-                  >
-                    <option value="">Select...</option>
-                    {rightItems.map((r) => (
-                      <option key={r.id} value={r.id}>{r.id}</option>
-                    ))}
-                  </select>
-                </div>
-                {item.audio_url && (
-                  <audio src={item.audio_url} controls className="w-full h-8 mt-2" />
-                )}
-              </div>
-            );
-          })}
+      <div className="space-y-4">
+        {/* Status bar */}
+        <div className="flex items-center justify-between gap-3">
+          <p className={`text-sm font-medium transition-colors duration-300 ${
+            allMatched
+              ? 'text-emerald-600 dark:text-emerald-400'
+              : matchingActiveLeft
+              ? 'text-amber-600 dark:text-amber-400'
+              : 'text-gray-500 dark:text-gray-400'
+          }`}>
+            {instruction}
+          </p>
+          <span className={`text-xs font-bold tabular-nums px-3 py-1.5 rounded-full transition-all duration-300 ${
+            allMatched
+              ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300 ring-1 ring-emerald-500/30'
+              : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300'
+          }`}>
+            {matchedCount} / {totalPairs}
+          </span>
         </div>
-        <div className="space-y-3">
-          <h4 className="font-medium text-gray-700 dark:text-gray-300 mb-2">With these:</h4>
-          {rightItems.map((item) => (
-            <div key={item.id} className="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
-              <span className="font-bold mr-2 text-primary">{item.id}.</span>
-              <span className="text-gray-800 dark:text-gray-200">{locale === 'es' && item.text_es ? item.text_es : item.text}</span>
-              {item.audio_url && (
-                <audio src={item.audio_url} controls className="w-full h-8 mt-2" />
-              )}
-            </div>
-          ))}
+
+        {/* Two-column card grid */}
+        <div className="grid grid-cols-2 gap-3 md:gap-5">
+          {/* ── Left column ── */}
+          <div className="space-y-2.5">
+            <h4 className="text-[11px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 pl-1">
+              Items
+            </h4>
+            {leftItems.map((item, index) => {
+              const matchedRightId = getMatchedRightId(item.id);
+              const isActive = matchingActiveLeft === item.id;
+              const isMatched = !!matchedRightId;
+              const color = pairColors[index % pairColors.length];
+              const letter = String.fromCharCode(65 + index);
+
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleLeftClick(item.id)}
+                  disabled={disabled}
+                  className={`matching-card group w-full text-left rounded-xl border-2 transition-all duration-300 relative overflow-hidden
+                    ${isMatched
+                      ? `${color.bg} ${color.border} ring-2 ${color.ring} shadow-md ${color.glow}`
+                      : isActive
+                      ? 'border-amber-500 bg-amber-50 dark:bg-amber-500/10 shadow-lg shadow-amber-500/20 ring-2 ring-amber-400/30 -translate-y-0.5 matching-card-active'
+                      : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-500 hover:shadow-md hover:-translate-y-0.5'
+                    } ${disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
+                >
+                  {/* Matched badge */}
+                  {isMatched && (
+                    <span className={`matching-badge absolute -top-1.5 -right-1.5 w-6 h-6 ${color.badge} text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-lg z-10`}>
+                      {letter}
+                    </span>
+                  )}
+                  {/* Active indicator */}
+                  {isActive && !isMatched && (
+                    <span className="matching-badge absolute -top-1.5 -right-1.5 w-6 h-6 bg-amber-500 text-white text-sm rounded-full flex items-center justify-center shadow-lg z-10 animate-bounce">
+                      ?
+                    </span>
+                  )}
+
+                  <div className="p-3.5 flex items-start gap-3">
+                    <span className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0 transition-colors duration-300 ${
+                      isMatched ? `${color.badge} text-white` : isActive ? 'bg-amber-500 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
+                    }`}>
+                      {letter}
+                    </span>
+                    <span className={`flex-1 text-[13px] md:text-sm font-semibold leading-snug pt-0.5 transition-colors duration-300 ${
+                      isMatched ? color.text : isActive ? 'text-amber-800 dark:text-amber-200' : 'text-gray-800 dark:text-gray-200'
+                    }`}>
+                      {locale === 'es' && item.text_es ? item.text_es : item.text}
+                    </span>
+                  </div>
+                  {item.audio_url && (
+                    <div className="px-3.5 pb-3">
+                      <audio src={item.audio_url} controls className="w-full h-8" />
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* ── Right column ── */}
+          <div className="space-y-2.5">
+            <h4 className="text-[11px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 pl-1">
+              Matches
+            </h4>
+            {shuffledMatchingRight.map((item) => {
+              const matchInfo = getMatchInfoForRight(item.id);
+              const isMatched = !!matchInfo;
+              const color = isMatched ? pairColors[matchInfo!.leftIndex % pairColors.length] : null;
+              const matchLetter = isMatched ? String.fromCharCode(65 + matchInfo!.leftIndex) : null;
+              const isTarget = !isMatched && !!matchingActiveLeft;
+
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleRightClick(item.id)}
+                  disabled={disabled}
+                  className={`matching-card group w-full text-left rounded-xl border-2 transition-all duration-300 relative overflow-hidden
+                    ${isMatched && color
+                      ? `${color.bg} ${color.border} ring-2 ${color.ring} shadow-md ${color.glow}`
+                      : isTarget
+                      ? 'border-dashed border-amber-400 dark:border-amber-500 bg-amber-50/40 dark:bg-amber-500/5 hover:border-solid hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-500/10 hover:shadow-lg hover:-translate-y-0.5 matching-target'
+                      : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800'
+                    } ${disabled ? 'cursor-not-allowed opacity-60' : isTarget || isMatched ? 'cursor-pointer' : 'cursor-default'}`}
+                >
+                  {/* Matched badge */}
+                  {isMatched && color && matchLetter && (
+                    <span className={`matching-badge absolute -top-1.5 -left-1.5 w-6 h-6 ${color.badge} text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-lg z-10`}>
+                      {matchLetter}
+                    </span>
+                  )}
+
+                  <div className="p-3.5">
+                    <span className={`text-[13px] md:text-sm font-semibold leading-snug transition-colors duration-300 ${
+                      isMatched && color ? color.text : isTarget ? 'text-gray-700 dark:text-gray-200' : 'text-gray-700 dark:text-gray-300'
+                    }`}>
+                      {locale === 'es' && item.text_es ? item.text_es : item.text}
+                    </span>
+                  </div>
+                  {item.audio_url && (
+                    <div className="px-3.5 pb-3">
+                      <audio src={item.audio_url} controls className="w-full h-8" />
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Hint */}
+        <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 pt-2 border-t border-gray-100 dark:border-gray-700">
+          <Keyboard size={14} />
+          <span>Tap matched pairs to unmatch &middot; Enter to continue</span>
         </div>
       </div>
     );

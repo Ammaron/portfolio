@@ -292,14 +292,49 @@ a:focus {
   }
 }
 
-/* Admin Dashboard Dark Theme Override */
-.authority-card {
-  background: rgba(30, 41, 59, 0.95) !important;
-  border-color: rgba(148, 163, 184, 0.2) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+/* ── Matching Question Card Animations ── */
+.matching-card {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.authority-card:hover {
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
-  border-color: rgba(59, 130, 246, 0.3) !important;
+.matching-card-active {
+  animation: matchActiveGlow 1.8s ease-in-out infinite;
+}
+
+@keyframes matchActiveGlow {
+  0%, 100% { box-shadow: 0 4px 20px rgba(245, 158, 11, 0.25); }
+  50% { box-shadow: 0 8px 30px rgba(245, 158, 11, 0.45); }
+}
+
+.matching-badge {
+  animation: matchBadgePop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes matchBadgePop {
+  0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+  60% { transform: scale(1.2) rotate(5deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.matching-target {
+  animation: matchTargetPulse 2s ease-in-out infinite;
+}
+
+@keyframes matchTargetPulse {
+  0%, 100% { border-color: rgba(251, 191, 36, 0.4); }
+  50% { border-color: rgba(245, 158, 11, 0.7); }
+}
+
+/* Authority Card Dark Mode Override */
+@media (prefers-color-scheme: dark) {
+  .authority-card {
+    background: rgba(30, 41, 59, 0.95) !important;
+    border-color: rgba(148, 163, 184, 0.2) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .authority-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
+  }
 }

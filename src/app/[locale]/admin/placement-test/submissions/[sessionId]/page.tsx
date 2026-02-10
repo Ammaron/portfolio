@@ -161,6 +161,10 @@ export default function SubmissionDetailPage({ params }: { params: Promise<{ ses
       if (result.success) {
         toast.success(markComplete ? 'Review completed!' : 'Progress saved');
 
+        if (markComplete && result.certificate_error) {
+          toast.error(`Certificate failed: ${result.certificate_error}`, { duration: 8000 });
+        }
+
         if (markComplete && result.certificate_code) {
           setCertificateCode(result.certificate_code);
           toast.success(`Certificate issued: ${result.certificate_code}`);

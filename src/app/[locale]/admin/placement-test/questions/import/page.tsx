@@ -21,7 +21,7 @@ import toast from 'react-hot-toast';
 import * as XLSX from 'xlsx';
 
 // Valid values for validation
-const VALID_LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+const VALID_LEVELS = ['Pre-A1', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 const VALID_SKILLS = ['reading', 'listening', 'writing', 'speaking'];
 const VALID_TYPES = ['mcq', 'true_false', 'gap_fill', 'matching', 'open_response', 'form_filling', 'short_message', 'picture_description', 'interview'];
 
@@ -654,7 +654,7 @@ export default function ImportQuestionsPage() {
                 <tr>
                   <td className="py-2 px-3 font-mono text-xs">cefr_level</td>
                   <td className="py-2 px-3"><span className="text-green-400">Yes</span></td>
-                  <td className="py-2 px-3">A1, A2, B1, B2, C1, C2</td>
+                  <td className="py-2 px-3">Pre-A1, A1, A2, B1, B2, C1, C2</td>
                 </tr>
                 <tr>
                   <td className="py-2 px-3 font-mono text-xs">skill_type</td>

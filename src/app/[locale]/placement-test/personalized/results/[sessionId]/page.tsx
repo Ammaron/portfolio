@@ -71,6 +71,7 @@ interface DetailedAnswer {
 
 // Level colors
 const LEVEL_COLORS: Record<string, { bg: string; text: string; gradient: string }> = {
+  'Pre-A1': { bg: 'bg-gray-500', text: 'text-gray-700', gradient: 'from-gray-400 to-gray-600' },
   'A1': { bg: 'bg-emerald-500', text: 'text-emerald-700', gradient: 'from-emerald-400 to-emerald-600' },
   'A2': { bg: 'bg-teal-500', text: 'text-teal-700', gradient: 'from-teal-400 to-teal-600' },
   'B1': { bg: 'bg-blue-500', text: 'text-blue-700', gradient: 'from-blue-400 to-blue-600' },
@@ -81,6 +82,7 @@ const LEVEL_COLORS: Record<string, { bg: string; text: string; gradient: string 
 
 // Level descriptions
 const LEVEL_DESCRIPTIONS: Record<string, string> = {
+  'Pre-A1': 'Pre-Beginner - You are just starting your English learning journey. Keep practicing!',
   'A1': 'Beginner - You can understand and use familiar everyday expressions and basic phrases.',
   'A2': 'Elementary - You can communicate in simple tasks requiring direct exchange of information.',
   'B1': 'Intermediate - You can handle most situations while traveling and describe experiences.',
@@ -202,7 +204,7 @@ export default function ResultsPage({ params }: { params: Promise<{ sessionId: s
 
   const getAbilityPercentage = (level: string): number => {
     const levels: Record<string, number> = {
-      'A1': 16, 'A2': 33, 'B1': 50, 'B2': 67, 'C1': 83, 'C2': 100
+      'Pre-A1': 7, 'A1': 21, 'A2': 36, 'B1': 50, 'B2': 64, 'C1': 79, 'C2': 100
     };
     return levels[level] || 50;
   };

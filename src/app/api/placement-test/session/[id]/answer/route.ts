@@ -6,6 +6,9 @@ import {
   updateSession,
   updateAdaptiveState,
   cefrToAbility,
+  getQuestionsBySkillAndLevel,
+  selectNextQuestion,
+  CEFR_LEVELS,
   QuestionOrder,
   RawScores,
   SkillType
@@ -117,7 +120,7 @@ export async function POST(
         total: 0,
         points_earned: 0,
         max_points: 0,
-        ability_estimate: 0.5,
+        ability_estimate: 0.33,
         questions_answered: 0,
         last_correct: []
       };
@@ -148,12 +151,43 @@ export async function POST(
       const newState = updateAdaptiveState(currentState, isCorrect, questionDifficulty, question.max_points);
       rawScores[skill].ability_estimate = newState.ability_estimate;
       rawScores[skill].last_correct = newState.last_correct;
+
+      // Dynamic adaptive question selection: replace next unplayed question for this skill
+      const nextSameSkillIdx = questionOrder.findIndex(
+        (q, i) => i > question_index && !q.answered && q.skill_type === skill
+      );
+
+      if (nextSameSkillIdx >= 0) {
+        const excludeTypes = session.test_mode === 'quick' ? ['open_response' as const] : undefined;
+        const availableQuestions = await getQuestionsBySkillAndLevel(
+          skill, [...CEFR_LEVELS], excludeTypes
+        );
+
+        // Build set of answered question IDs (already answered + current)
+        const answeredIds = new Set<string>();
+        questionOrder.forEach(q => { if (q.answered) answeredIds.add(q.question_id); });
+        answeredIds.add(question.id);
+
+        const adaptiveState = {
+          ability_estimate: newState.ability_estimate,
+          questions_answered: newState.questions_answered,
+          last_correct: newState.last_correct,
+          stabilized: newState.stabilized,
+          convergence_count: newState.convergence_count
+        };
+
+        const dynamicNext = selectNextQuestion(availableQuestions, adaptiveState, answeredIds);
+        if (dynamicNext) {
+          questionOrder[nextSameSkillIdx].question_id = dynamicNext.id;
+          questionOrder[nextSameSkillIdx].cefr_level = dynamicNext.cefr_level;
+        }
+      }
     }
 
     // Mark question as answered in order
     questionOrder[question_index].answered = true;
 
-    // Find next unanswered question (compute before DB calls)
+    // Find next unanswered question (after dynamic replacement so we fetch the right question)
     const nextIndex = questionOrder.findIndex((q, i) => i > question_index && !q.answered);
     const nextQuestionRef = nextIndex >= 0 ? questionOrder[nextIndex] : null;
 

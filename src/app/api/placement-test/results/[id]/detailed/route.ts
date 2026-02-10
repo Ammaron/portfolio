@@ -62,15 +62,19 @@ export async function GET(
     let certificateIssued = false;
     let certificateCode: string | undefined;
 
-    const { data: cert } = await supabaseAdmin
-      .from('certifications')
-      .select('certificate_code')
-      .eq('placement_session_id', session.id)
-      .maybeSingle();
+    try {
+      const { data: cert } = await supabaseAdmin
+        .from('certifications')
+        .select('certificate_code')
+        .eq('placement_session_id', session.id)
+        .maybeSingle();
 
-    if (cert) {
-      certificateIssued = true;
-      certificateCode = cert.certificate_code;
+      if (cert) {
+        certificateIssued = true;
+        certificateCode = cert.certificate_code;
+      }
+    } catch {
+      // Column may not exist yet - certificate lookup is non-critical
     }
 
     const response = {

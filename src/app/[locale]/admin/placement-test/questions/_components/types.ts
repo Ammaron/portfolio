@@ -79,6 +79,7 @@ export const SKILL_TEXT_COLORS: Record<string, string> = {
 
 // Level colors (badge style)
 export const LEVEL_COLORS: Record<string, string> = {
+  'Pre-A1': 'bg-gray-500/20 text-gray-400 border border-gray-500/30',
   A1: 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30',
   A2: 'bg-teal-500/20 text-teal-400 border border-teal-500/30',
   B1: 'bg-blue-500/20 text-blue-400 border border-blue-500/30',
@@ -118,7 +119,7 @@ export function getQuestionTypeLabel(type: string): string {
 
 // Skills and levels constants
 export const SKILLS = ['reading', 'listening', 'writing', 'speaking'] as const;
-export const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const;
+export const LEVELS = ['Pre-A1', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const;
 export const QUESTION_TYPES = ['mcq', 'true_false', 'true_false_multi', 'gap_fill', 'matching', 'open_response'] as const;
 
 // --- Matching Pair Helpers ---

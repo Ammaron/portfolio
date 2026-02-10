@@ -26,7 +26,7 @@ function verifyAdminToken(authHeader: string | null) {
 }
 
 // Valid values for validation
-const VALID_LEVELS: CEFRLevel[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+const VALID_LEVELS: CEFRLevel[] = ['Pre-A1', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 const VALID_SKILLS: SkillType[] = ['reading', 'listening', 'writing', 'speaking'];
 const VALID_TYPES: string[] = ['mcq', 'true_false', 'gap_fill', 'matching', 'open_response', 'form_filling', 'short_message', 'picture_description', 'interview'];
 

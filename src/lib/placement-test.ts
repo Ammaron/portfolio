@@ -2,16 +2,16 @@
 import { supabase, supabaseAdmin } from './database';
 
 // CEFR Level Constants
-export const CEFR_LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const;
+export const CEFR_LEVELS = ['Pre-A1', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const;
 export type CEFRLevel = typeof CEFR_LEVELS[number];
 
 // Level numeric mapping (for calculations)
 export const CEFR_NUMERIC: Record<CEFRLevel, number> = {
-  'A1': 0, 'A2': 1, 'B1': 2, 'B2': 3, 'C1': 4, 'C2': 5
+  'Pre-A1': 0, 'A1': 1, 'A2': 2, 'B1': 3, 'B2': 4, 'C1': 5, 'C2': 6
 };
 
 export const NUMERIC_TO_CEFR: Record<number, CEFRLevel> = {
-  0: 'A1', 1: 'A2', 2: 'B1', 3: 'B2', 4: 'C1', 5: 'C2'
+  0: 'Pre-A1', 1: 'A1', 2: 'A2', 3: 'B1', 4: 'B2', 5: 'C1', 6: 'C2'
 };
 
 // Skill types
@@ -32,6 +32,7 @@ export type SessionStatus = typeof SESSION_STATUSES[number];
 
 // Level colors for UI
 export const LEVEL_COLORS: Record<CEFRLevel, { bg: string; text: string; border: string; gradient: string }> = {
+  'Pre-A1': { bg: 'bg-gray-100', text: 'text-gray-700', border: 'border-gray-400', gradient: 'from-gray-400 to-gray-600' },
   'A1': { bg: 'bg-emerald-100', text: 'text-emerald-700', border: 'border-emerald-400', gradient: 'from-emerald-400 to-emerald-600' },
   'A2': { bg: 'bg-teal-100', text: 'text-teal-700', border: 'border-teal-400', gradient: 'from-teal-400 to-teal-600' },
   'B1': { bg: 'bg-blue-100', text: 'text-blue-700', border: 'border-blue-400', gradient: 'from-blue-400 to-blue-600' },
@@ -187,18 +188,19 @@ export function generateSessionCode(): string {
 
 // Convert ability estimate (0-1) to CEFR level
 export function abilityToCEFR(ability: number): CEFRLevel {
-  if (ability < 0.17) return 'A1';
-  if (ability < 0.33) return 'A2';
-  if (ability < 0.50) return 'B1';
-  if (ability < 0.67) return 'B2';
-  if (ability < 0.83) return 'C1';
+  if (ability < 0.10) return 'Pre-A1';
+  if (ability < 0.25) return 'A1';
+  if (ability < 0.40) return 'A2';
+  if (ability < 0.55) return 'B1';
+  if (ability < 0.70) return 'B2';
+  if (ability < 0.85) return 'C1';
   return 'C2';
 }
 
 // Convert CEFR level to ability estimate midpoint
 export function cefrToAbility(level: CEFRLevel): number {
   const midpoints: Record<CEFRLevel, number> = {
-    'A1': 0.085, 'A2': 0.25, 'B1': 0.415, 'B2': 0.585, 'C1': 0.75, 'C2': 0.915
+    'Pre-A1': 0.05, 'A1': 0.175, 'A2': 0.325, 'B1': 0.475, 'B2': 0.625, 'C1': 0.775, 'C2': 0.925
   };
   return midpoints[level];
 }
@@ -215,7 +217,7 @@ export interface AdaptiveState {
 
 export function initializeAdaptiveState(): AdaptiveState {
   return {
-    ability_estimate: 0.5, // Start at B1 level
+    ability_estimate: 0.33, // Start at A2/B1 boundary
     questions_answered: 0,
     last_correct: [],
     stabilized: false,
@@ -380,6 +382,12 @@ function calculateConsistency(lastCorrect: boolean[]): number {
 
 function getLevelDescription(level: CEFRLevel, skill: SkillType): string {
   const descriptions: Record<CEFRLevel, Record<SkillType, string>> = {
+    'Pre-A1': {
+      reading: 'Cannot yet understand simple words or phrases',
+      listening: 'Cannot yet follow simple spoken instructions',
+      writing: 'Cannot yet write simple words or phrases',
+      speaking: 'Cannot yet produce basic spoken phrases'
+    },
     'A1': {
       reading: 'Can understand familiar names and simple sentences',
       listening: 'Can recognize familiar words in simple speech',
@@ -461,7 +469,7 @@ export async function createPlacementSession(
       total: 0,
       points_earned: 0,
       max_points: 0,
-      ability_estimate: 0.5,
+      ability_estimate: 0.33,
       questions_answered: 0,
       last_correct: []
     };
@@ -682,13 +690,13 @@ export async function getAnalytics(): Promise<{
       totalTests: 0,
       completedTests: 0,
       pendingReview: 0,
-      levelDistribution: { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 },
+      levelDistribution: { 'Pre-A1': 0, A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 },
       averageTimeMinutes: 0,
       testsByMode: { quick: 0, personalized: 0, advanced: 0 }
     };
   }
 
-  const levelDistribution: Record<CEFRLevel, number> = { A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 };
+  const levelDistribution: Record<CEFRLevel, number> = { 'Pre-A1': 0, A1: 0, A2: 0, B1: 0, B2: 0, C1: 0, C2: 0 };
   const testsByMode: Record<TestMode, number> = { quick: 0, personalized: 0, advanced: 0 };
   let totalTime = 0;
   let pendingReview = 0;

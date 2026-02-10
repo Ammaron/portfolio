@@ -395,8 +395,8 @@ export default function PlacementTestAdminDashboard() {
               <ChartBar size={20} className="text-blue-400" />
               Level Distribution
             </h2>
-            <div className="grid grid-cols-6 gap-4">
-              {['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].map((level) => {
+            <div className="grid grid-cols-7 gap-4">
+              {['Pre-A1', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'].map((level) => {
                 const count = analytics.levelDistribution[level] || 0;
                 const maxCount = Math.max(...Object.values(analytics.levelDistribution), 1);
                 const percentage = (count / maxCount) * 100;
