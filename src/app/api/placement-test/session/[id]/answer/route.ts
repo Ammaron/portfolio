@@ -101,6 +101,41 @@ export async function POST(
         }
         pointsEarned = correctCount;
         isCorrect = correctCount === correctPairs.length;
+      } else if (question.question_type === 'true_false') {
+        // Student always sends "true" or "false"
+        const studentAnswer = answer.toString().toLowerCase().trim();
+        let correctValue = question.correct_answer.toLowerCase().trim();
+
+        // Handle multi format stored on a single T/F (e.g., "A:true,B:false")
+        if (correctValue.includes(':')) {
+          const firstPair = correctValue.split(',')[0].trim();
+          const val = firstPair.split(':')[1]?.trim();
+          if (val === 'true' || val === 'false') {
+            correctValue = val;
+          }
+        }
+
+        // Handle option ID format (e.g., "A" or "B")
+        if (correctValue.length === 1 && correctValue >= 'a' && correctValue <= 'z') {
+          if (question.options && question.options.length > 0) {
+            const matchedOpt = question.options.find((opt: { id: string; text: string }) => opt.id.toLowerCase() === correctValue);
+            if (matchedOpt) {
+              const optText = matchedOpt.text.toLowerCase().trim();
+              if (optText === 'true' || optText === 'false') {
+                correctValue = optText;
+              }
+            }
+          }
+          // Fallback: standard convention A=true, B=false
+          if (correctValue.length === 1) {
+            correctValue = correctValue === 'a' ? 'true' : 'false';
+          }
+        }
+
+        // Also support semicolon-separated accepted answers
+        const acceptedAnswers = correctValue.split(';').map((a: string) => a.toLowerCase().trim()).filter(Boolean);
+        isCorrect = acceptedAnswers.some((accepted: string) => accepted === studentAnswer);
+        pointsEarned = isCorrect ? question.max_points : 0;
       } else {
         // Auto-score the answer (case-insensitive, supports multiple accepted answers separated by ;)
         const studentAnswer = answer.toString().toLowerCase().trim();

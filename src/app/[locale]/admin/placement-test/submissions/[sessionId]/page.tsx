@@ -327,52 +327,74 @@ export default function SubmissionDetailPage({ params }: { params: Promise<{ ses
                   Auto-Scored ({autoScored.length})
                 </h2>
                 <div className="space-y-4">
-                  {autoScored.map((answer, index) => (
-                    <div
-                      key={answer.id}
-                      className={`p-4 rounded-lg border ${
-                        answer.is_correct
-                          ? 'border-green-200 bg-green-50 dark:bg-green-900/10'
-                          : 'border-red-200 bg-red-50 dark:bg-red-900/10'
-                      }`}
-                    >
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-sm font-medium text-gray-500">Q{index + 1}</span>
-                          {answer.question && (
-                            <span className={`px-2 py-0.5 rounded text-xs flex items-center gap-1 ${
-                              answer.question.skill_type === 'reading' ? 'bg-blue-100 text-blue-700' :
-                              answer.question.skill_type === 'listening' ? 'bg-purple-100 text-purple-700' :
-                              'bg-gray-100 text-gray-700'
-                            }`}>
-                              {SKILL_ICONS[answer.question.skill_type]}
-                              {answer.question.skill_type}
+                  {autoScored.map((answer, index) => {
+                    const isMultiTF = answer.question?.question_type === 'true_false_multi';
+                    const hasPartialPoints = isMultiTF && !answer.is_correct && answer.points_earned > 0;
+
+                    return (
+                      <div
+                        key={answer.id}
+                        className={`p-4 rounded-lg border ${
+                          answer.is_correct
+                            ? 'border-green-200 bg-green-50 dark:bg-green-900/10'
+                            : hasPartialPoints
+                            ? 'border-amber-200 bg-amber-50 dark:bg-amber-900/10'
+                            : 'border-red-200 bg-red-50 dark:bg-red-900/10'
+                        }`}
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="text-sm font-medium text-gray-500">Q{index + 1}</span>
+                            {answer.question && (
+                              <span className={`px-2 py-0.5 rounded text-xs flex items-center gap-1 ${
+                                answer.question.skill_type === 'reading' ? 'bg-blue-100 text-blue-700' :
+                                answer.question.skill_type === 'listening' ? 'bg-purple-100 text-purple-700' :
+                                'bg-gray-100 text-gray-700'
+                              }`}>
+                                {SKILL_ICONS[answer.question.skill_type]}
+                                {answer.question.skill_type}
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {isMultiTF && (
+                              <span className={`text-xs font-medium px-2 py-0.5 rounded ${
+                                answer.is_correct
+                                  ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                                  : hasPartialPoints
+                                  ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+                                  : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                              }`}>
+                                {answer.points_earned}/{answer.max_points} pts
+                              </span>
+                            )}
+                            {answer.is_correct ? (
+                              <CheckCircle size={20} weight="fill" className="text-green-500" />
+                            ) : hasPartialPoints ? (
+                              <CheckCircle size={20} weight="fill" className="text-amber-500" />
+                            ) : (
+                              <XCircle size={20} weight="fill" className="text-red-500" />
+                            )}
+                          </div>
+                        </div>
+                        {answer.question && (
+                          <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+                            {answer.question.question_text}
+                          </p>
+                        )}
+                        <div className="flex items-center gap-4 text-sm">
+                          <span className="text-gray-500">
+                            Answer: <strong>{answer.student_answer}</strong>
+                          </span>
+                          {!answer.is_correct && answer.question && (
+                            <span className="text-green-600">
+                              Correct: <strong>{answer.question.correct_answer}</strong>
                             </span>
                           )}
                         </div>
-                        {answer.is_correct ? (
-                          <CheckCircle size={20} weight="fill" className="text-green-500" />
-                        ) : (
-                          <XCircle size={20} weight="fill" className="text-red-500" />
-                        )}
                       </div>
-                      {answer.question && (
-                        <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
-                          {answer.question.question_text}
-                        </p>
-                      )}
-                      <div className="flex items-center gap-4 text-sm">
-                        <span className="text-gray-500">
-                          Answer: <strong>{answer.student_answer}</strong>
-                        </span>
-                        {!answer.is_correct && answer.question && (
-                          <span className="text-green-600">
-                            Correct: <strong>{answer.question.correct_answer}</strong>
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}

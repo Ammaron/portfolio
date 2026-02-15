@@ -1,8 +1,10 @@
 'use client';
 
-import { PencilSimple, Copy, Trash, ArrowsClockwise, Eye } from '@phosphor-icons/react';
+import { useState } from 'react';
+import { PencilSimple, Copy, Trash, ArrowsClockwise, Eye, Play } from '@phosphor-icons/react';
 import { Question, getSkillColor, getLevelColor, getStatusColor, getQuestionTypeLabel } from './types';
 import QuestionPreview from './QuestionPreview';
+import LivePreviewModal from './LivePreviewModal';
 
 interface QuestionPreviewPanelProps {
   question: Question | null;
@@ -21,6 +23,8 @@ export default function QuestionPreviewPanel({
   onToggleStatus,
   onClose
 }: QuestionPreviewPanelProps) {
+  const [livePreviewOpen, setLivePreviewOpen] = useState(false);
+
   if (!question) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-gray-500 p-8">
@@ -68,6 +72,14 @@ export default function QuestionPreviewPanel({
       {/* Action buttons */}
       <div className="flex items-center gap-2 px-4 py-2 border-b border-slate-700/50">
         <button
+          onClick={() => setLivePreviewOpen(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors cursor-pointer"
+          title="Preview exactly as a student would see it"
+        >
+          <Play size={14} weight="fill" />
+          Live Preview
+        </button>
+        <button
           onClick={onEdit}
           className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
         >
@@ -102,6 +114,13 @@ export default function QuestionPreviewPanel({
       <div className="flex-1 overflow-y-auto p-4">
         <QuestionPreview question={question} />
       </div>
+
+      {/* Live Preview Modal */}
+      <LivePreviewModal
+        question={question}
+        open={livePreviewOpen}
+        onClose={() => setLivePreviewOpen(false)}
+      />
     </div>
   );
 }
