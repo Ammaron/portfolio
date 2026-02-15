@@ -650,6 +650,20 @@ export default function QuestionRenderer({
     const options = question.options || [];
     const leftItems = options.filter((_, i) => i % 2 === 0);
 
+    // Guard against malformed data (e.g., MCQ-format options on a matching question)
+    if (leftItems.length === 0 || shuffledMatchingRight.length === 0) {
+      return (
+        <div className="p-6 bg-red-50 dark:bg-red-900/20 rounded-xl border-2 border-dashed border-red-300 dark:border-red-700 text-center space-y-2">
+          <p className="text-red-600 dark:text-red-400 font-semibold">
+            Matching question not configured correctly
+          </p>
+          <p className="text-sm text-red-500/80 dark:text-red-400/60">
+            This question requires matching pairs with left and right items.
+          </p>
+        </div>
+      );
+    }
+
     // Color palette for matched pairs — each pair gets a unique accent
     const pairColors = [
       { bg: 'bg-blue-50 dark:bg-blue-500/10', border: 'border-blue-500', text: 'text-blue-700 dark:text-blue-300', badge: 'bg-blue-500', ring: 'ring-blue-400/25', glow: 'shadow-blue-500/20' },

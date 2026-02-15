@@ -10,7 +10,10 @@ import {
   Eye,
   CaretLeft,
   CaretRight,
-  Spinner
+  Spinner,
+  ArrowsClockwise,
+  Student,
+  ClockCountdown
 } from '@phosphor-icons/react';
 
 interface Session {
@@ -27,6 +30,39 @@ interface Session {
   completed_at?: string;
   time_spent_seconds: number;
 }
+
+const STATUS_CONFIG: Record<string, { label: string; bg: string; text: string; dot: string }> = {
+  in_progress: {
+    label: 'In Progress',
+    bg: 'bg-sky-100 dark:bg-sky-900/40',
+    text: 'text-sky-800 dark:text-sky-200',
+    dot: 'bg-sky-500',
+  },
+  completed: {
+    label: 'Completed',
+    bg: 'bg-emerald-100 dark:bg-emerald-900/40',
+    text: 'text-emerald-800 dark:text-emerald-200',
+    dot: 'bg-emerald-500',
+  },
+  pending_review: {
+    label: 'Pending Review',
+    bg: 'bg-amber-100 dark:bg-amber-900/40',
+    text: 'text-amber-800 dark:text-amber-200',
+    dot: 'bg-amber-500',
+  },
+  reviewed: {
+    label: 'Reviewed',
+    bg: 'bg-violet-100 dark:bg-violet-900/40',
+    text: 'text-violet-800 dark:text-violet-200',
+    dot: 'bg-violet-500',
+  },
+  expired: {
+    label: 'Expired',
+    bg: 'bg-slate-200 dark:bg-slate-700/60',
+    text: 'text-slate-700 dark:text-slate-300',
+    dot: 'bg-slate-400',
+  },
+};
 
 export default function SubmissionsListPage() {
   const { locale } = useI18n();
@@ -97,62 +133,59 @@ export default function SubmissionsListPage() {
 
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
-    return `${mins} min`;
-  };
-
-  const getStatusBadge = (status: string) => {
-    const styles: Record<string, string> = {
-      'in_progress': 'bg-blue-100 text-blue-700',
-      'completed': 'bg-green-100 text-green-700',
-      'pending_review': 'bg-amber-100 text-amber-700',
-      'reviewed': 'bg-purple-100 text-purple-700',
-      'expired': 'bg-gray-100 text-gray-700'
-    };
-
-    const labels: Record<string, string> = {
-      'in_progress': 'In Progress',
-      'completed': 'Completed',
-      'pending_review': 'Pending Review',
-      'reviewed': 'Reviewed',
-      'expired': 'Expired'
-    };
-
-    return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${styles[status]}`}>
-        {labels[status] || status}
-      </span>
-    );
+    return `${mins}m`;
   };
 
   const totalPages = Math.ceil(total / limit);
 
+  const filteredSessions = sessions.filter(s =>
+    !filters.search ||
+    s.student_name.toLowerCase().includes(filters.search.toLowerCase()) ||
+    s.student_email?.toLowerCase().includes(filters.search.toLowerCase())
+  );
+
   return (
-    <div className="min-h-screen pt-20 bg-gray-50 dark:bg-gray-900">
-      <div className="container-authority px-4 md:px-6 py-8">
+    <div className="min-h-screen pt-20 bg-slate-50 dark:bg-slate-950">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <Link
-              href={`/${locale}/admin/placement-test`}
-              className="text-primary hover:text-primary-dark text-sm mb-2 inline-flex items-center gap-1"
+        <div className="mb-8">
+          <Link
+            href={`/${locale}/admin/placement-test`}
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary-light transition-colors mb-3"
+          >
+            <CaretLeft size={14} weight="bold" />
+            Dashboard
+          </Link>
+
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+                Submissions
+              </h1>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+                {total} total submission{total !== 1 ? 's' : ''}
+              </p>
+            </div>
+            <button
+              onClick={() => loadSessions()}
+              className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
             >
-              <CaretLeft size={16} />
-              Back to Dashboard
-            </Link>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-              All Submissions
-            </h1>
+              <ArrowsClockwise size={16} weight="bold" />
+              Refresh
+            </button>
           </div>
-          <p className="text-gray-500">{total} total submissions</p>
         </div>
 
         {/* Filters */}
-        <div className="authority-card p-4 mb-6">
-          <div className="flex flex-wrap items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Funnel size={18} className="text-gray-400" />
-              <span className="text-sm text-gray-500">Filters:</span>
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 rounded-xl p-4 mb-6 shadow-sm">
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+              <Funnel size={16} weight="bold" />
+              <span className="text-xs font-semibold uppercase tracking-wider">Filters</span>
             </div>
+
+            <div className="h-5 w-px bg-slate-200 dark:bg-slate-700 hidden sm:block" />
 
             <select
               value={filters.status}
@@ -160,7 +193,7 @@ export default function SubmissionsListPage() {
                 setFilters({ ...filters, status: e.target.value });
                 setPage(0);
               }}
-              className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-sm"
+              className="cursor-pointer px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary/40 focus:border-primary"
             >
               <option value="">All Statuses</option>
               <option value="in_progress">In Progress</option>
@@ -176,22 +209,22 @@ export default function SubmissionsListPage() {
                 setFilters({ ...filters, mode: e.target.value });
                 setPage(0);
               }}
-              className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-sm"
+              className="cursor-pointer px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary/40 focus:border-primary"
             >
               <option value="">All Modes</option>
               <option value="quick">Quick</option>
               <option value="personalized">Personalized</option>
             </select>
 
-            <div className="flex-1 min-w-[200px]">
+            <div className="flex-1 min-w-[220px]">
               <div className="relative">
-                <MagnifyingGlass size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <MagnifyingGlass size={16} weight="bold" className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
                 <input
                   type="text"
-                  placeholder="Search by name or email..."
+                  placeholder="Search name or email..."
                   value={filters.search}
                   onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-sm"
+                  className="w-full pl-9 pr-4 py-2 text-sm text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 focus:ring-2 focus:ring-primary/40 focus:border-primary"
                 />
               </div>
             </div>
@@ -199,80 +232,103 @@ export default function SubmissionsListPage() {
         </div>
 
         {/* Table */}
-        <div className="authority-card overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 rounded-xl shadow-sm overflow-hidden">
           {isLoading ? (
-            <div className="p-8 text-center">
-              <Spinner size={32} className="text-primary animate-spin mx-auto" />
+            <div className="flex flex-col items-center justify-center py-16 gap-3">
+              <Spinner size={28} className="text-primary animate-spin" />
+              <p className="text-sm text-slate-500 dark:text-slate-400">Loading submissions...</p>
             </div>
-          ) : sessions.length === 0 ? (
-            <div className="p-8 text-center text-gray-500">
-              No submissions found
+          ) : filteredSessions.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 gap-3">
+              <Student size={40} weight="duotone" className="text-slate-300 dark:text-slate-600" />
+              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">No submissions found</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500">Try adjusting your filters</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Student</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Code</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Mode</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Status</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Level</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Duration</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-gray-500">Date</th>
-                    <th className="text-right py-3 px-4 text-sm font-medium text-gray-500">Actions</th>
+                  <tr className="border-b-2 border-slate-200 dark:border-slate-700">
+                    <th className="text-left py-3.5 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-slate-50/80 dark:bg-slate-800/50">Student</th>
+                    <th className="text-left py-3.5 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-slate-50/80 dark:bg-slate-800/50">Code</th>
+                    <th className="text-left py-3.5 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-slate-50/80 dark:bg-slate-800/50">Mode</th>
+                    <th className="text-left py-3.5 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-slate-50/80 dark:bg-slate-800/50">Status</th>
+                    <th className="text-left py-3.5 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-slate-50/80 dark:bg-slate-800/50">Level</th>
+                    <th className="text-left py-3.5 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-slate-50/80 dark:bg-slate-800/50">Time</th>
+                    <th className="text-left py-3.5 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-slate-50/80 dark:bg-slate-800/50">Date</th>
+                    <th className="text-right py-3.5 px-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-slate-50/80 dark:bg-slate-800/50"></th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                  {sessions
-                    .filter(s =>
-                      !filters.search ||
-                      s.student_name.toLowerCase().includes(filters.search.toLowerCase()) ||
-                      s.student_email?.toLowerCase().includes(filters.search.toLowerCase())
-                    )
-                    .map((session) => (
-                      <tr key={session.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
-                        <td className="py-3 px-4">
-                          <div>
-                            <p className="font-medium text-gray-900 dark:text-white">
-                              {session.student_name}
+                <tbody>
+                  {filteredSessions.map((session, idx) => {
+                    const status = STATUS_CONFIG[session.status] || STATUS_CONFIG.expired;
+                    const level = session.admin_adjusted_level || session.calculated_level;
+
+                    return (
+                      <tr
+                        key={session.id}
+                        className={`border-b border-slate-100 dark:border-slate-800 hover:bg-primary/[0.03] dark:hover:bg-primary/[0.06] transition-colors ${
+                          idx % 2 === 1 ? 'bg-slate-50/50 dark:bg-slate-800/20' : ''
+                        }`}
+                      >
+                        <td className="py-3.5 px-4">
+                          <p className="font-semibold text-sm text-slate-900 dark:text-slate-100">
+                            {session.student_name}
+                          </p>
+                          {session.student_email && (
+                            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                              {session.student_email}
                             </p>
-                            {session.student_email && (
-                              <p className="text-sm text-gray-500">{session.student_email}</p>
-                            )}
-                          </div>
+                          )}
                         </td>
-                        <td className="py-3 px-4">
-                          <code className="text-sm text-gray-600 dark:text-gray-400">
+                        <td className="py-3.5 px-4">
+                          <code className="text-xs font-mono font-semibold px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                             {session.session_code}
                           </code>
                         </td>
-                        <td className="py-3 px-4 capitalize text-sm">{session.test_mode}</td>
-                        <td className="py-3 px-4">{getStatusBadge(session.status)}</td>
-                        <td className="py-3 px-4">
-                          {(session.admin_adjusted_level || session.calculated_level) && (
-                            <span className="px-2 py-1 bg-primary/10 text-primary rounded font-medium text-sm">
-                              {session.admin_adjusted_level || session.calculated_level}
+                        <td className="py-3.5 px-4">
+                          <span className="text-sm font-medium text-slate-700 dark:text-slate-300 capitalize">
+                            {session.test_mode}
+                          </span>
+                        </td>
+                        <td className="py-3.5 px-4">
+                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${status.bg} ${status.text}`}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${status.dot}`} />
+                            {status.label}
+                          </span>
+                        </td>
+                        <td className="py-3.5 px-4">
+                          {level ? (
+                            <span className="inline-flex items-center justify-center min-w-[2.5rem] px-2 py-1 text-xs font-bold rounded-md bg-primary/10 dark:bg-primary/20 text-primary dark:text-blue-300 ring-1 ring-primary/20 dark:ring-primary/30">
+                              {level}
                             </span>
+                          ) : (
+                            <span className="text-xs text-slate-400 dark:text-slate-500">&mdash;</span>
                           )}
                         </td>
-                        <td className="py-3 px-4 text-sm text-gray-500">
-                          {formatDuration(session.time_spent_seconds)}
+                        <td className="py-3.5 px-4">
+                          <span className="inline-flex items-center gap-1 text-sm text-slate-600 dark:text-slate-300">
+                            <ClockCountdown size={13} weight="bold" className="text-slate-400 dark:text-slate-500" />
+                            {formatDuration(session.time_spent_seconds)}
+                          </span>
                         </td>
-                        <td className="py-3 px-4 text-sm text-gray-500">
-                          {formatDate(session.started_at)}
+                        <td className="py-3.5 px-4">
+                          <span className="text-sm text-slate-600 dark:text-slate-300">
+                            {formatDate(session.started_at)}
+                          </span>
                         </td>
-                        <td className="py-3 px-4 text-right">
+                        <td className="py-3.5 px-4 text-right">
                           <Link
                             href={`/${locale}/admin/placement-test/submissions/${session.id}`}
-                            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg inline-flex items-center gap-1 text-primary"
+                            className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg text-primary dark:text-blue-300 bg-primary/5 dark:bg-primary/10 hover:bg-primary/10 dark:hover:bg-primary/20 ring-1 ring-primary/10 dark:ring-primary/20 hover:ring-primary/30 transition-all"
                           >
-                            <Eye size={18} />
-                            <span className="text-sm">View</span>
+                            <Eye size={14} weight="bold" />
+                            View
                           </Link>
                         </td>
                       </tr>
-                    ))}
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -280,27 +336,27 @@ export default function SubmissionsListPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between p-4 border-t border-gray-200 dark:border-gray-700">
-              <p className="text-sm text-gray-500">
-                Showing {page * limit + 1} to {Math.min((page + 1) * limit, total)} of {total}
+            <div className="flex items-center justify-between px-4 py-3.5 border-t-2 border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/30">
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
+                {page * limit + 1}&ndash;{Math.min((page + 1) * limit, total)} of {total}
               </p>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => setPage(p => Math.max(0, p - 1))}
                   disabled={page === 0}
-                  className="p-2 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                  className="cursor-pointer p-2 rounded-lg border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white dark:hover:bg-slate-700 transition-colors"
                 >
-                  <CaretLeft size={18} />
+                  <CaretLeft size={16} weight="bold" />
                 </button>
-                <span className="text-sm text-gray-600">
-                  Page {page + 1} of {totalPages}
+                <span className="px-3 text-sm font-semibold text-slate-700 dark:text-slate-300 tabular-nums">
+                  {page + 1} / {totalPages}
                 </span>
                 <button
                   onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
                   disabled={page >= totalPages - 1}
-                  className="p-2 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                  className="cursor-pointer p-2 rounded-lg border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white dark:hover:bg-slate-700 transition-colors"
                 >
-                  <CaretRight size={18} />
+                  <CaretRight size={16} weight="bold" />
                 </button>
               </div>
             </div>

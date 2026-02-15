@@ -1,6 +1,7 @@
 'use client';
 
-import { Check, X as XIcon, ArrowRight } from '@phosphor-icons/react';
+import { Check, X as XIcon } from '@phosphor-icons/react';
+import QuestionRenderer from '@/components/placement-test/QuestionRenderer';
 import { Question } from './types';
 
 interface QuestionPreviewProps {
@@ -109,39 +110,6 @@ export default function QuestionPreview({ question }: QuestionPreviewProps) {
     );
   };
 
-  const renderMatching = () => {
-    if (!question.options || question.options.length < 2) return null;
-
-    const pairs: { left: typeof question.options[0]; right: typeof question.options[0] }[] = [];
-    for (let i = 0; i < question.options.length; i += 2) {
-      if (question.options[i] && question.options[i + 1]) {
-        pairs.push({ left: question.options[i], right: question.options[i + 1] });
-      }
-    }
-
-    return (
-      <div className="space-y-2">
-        {pairs.map((pair, i) => (
-          <div key={i} className="flex items-center gap-2">
-            <div className="flex-1 px-3 py-2 bg-slate-700/30 border border-slate-600/50 rounded-lg text-sm text-gray-300">
-              <span>{pair.left.text}</span>
-              {pair.left.audio_url && (
-                <audio src={pair.left.audio_url} controls className="w-full h-7 mt-1" />
-              )}
-            </div>
-            <ArrowRight size={16} className="text-gray-500 flex-shrink-0" />
-            <div className="flex-1 px-3 py-2 bg-green-900/15 border border-green-500/30 rounded-lg text-sm text-green-300">
-              <span>{pair.right.text}</span>
-              {pair.right.audio_url && (
-                <audio src={pair.right.audio_url} controls className="w-full h-7 mt-1" />
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  };
-
   const renderOpenResponse = () => {
     return (
       <div className="p-3 bg-slate-700/30 rounded-lg border border-slate-600/50">
@@ -150,6 +118,37 @@ export default function QuestionPreview({ question }: QuestionPreviewProps) {
       </div>
     );
   };
+
+  // For matching questions, render the actual student-facing component
+  // so admin sees exactly what the student sees
+  if (question.question_type === 'matching') {
+    return (
+      <div className="space-y-4">
+        <div className="bg-white rounded-xl p-5 shadow-inner border border-slate-600/30 overflow-hidden">
+          <QuestionRenderer
+            question={{
+              id: question.id,
+              question_code: question.question_code,
+              skill_type: question.skill_type,
+              question_type: question.question_type,
+              question_text: question.question_text,
+              passage_text: question.passage_text,
+              audio_url: question.audio_url,
+              image_url: question.image_url,
+              options: question.options,
+              max_points: question.max_points,
+            }}
+            locale="en"
+            onAnswer={() => {}}
+          />
+        </div>
+        <div className="p-3 bg-green-900/15 border border-green-500/30 rounded-lg">
+          <div className="text-xs text-green-400 mb-1 font-medium">Correct Answer</div>
+          <code className="text-xs text-green-300 break-all">{question.correct_answer}</code>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -194,7 +193,6 @@ export default function QuestionPreview({ question }: QuestionPreviewProps) {
         {question.question_type === 'true_false' && renderTrueFalse()}
         {question.question_type === 'true_false_multi' && renderTrueFalseMulti()}
         {question.question_type === 'gap_fill' && renderGapFill()}
-        {question.question_type === 'matching' && renderMatching()}
         {question.question_type === 'open_response' && renderOpenResponse()}
       </div>
     </div>
