@@ -16,6 +16,10 @@ import TrueFalseMultiEditor from './editors/TrueFalseMultiEditor';
 import GapFillEditor from './editors/GapFillEditor';
 import MatchingPairsEditor from './editors/MatchingPairsEditor';
 import OpenResponseEditor from './editors/OpenResponseEditor';
+import FormFillingEditor from './editors/FormFillingEditor';
+import ShortMessageEditor from './editors/ShortMessageEditor';
+import PictureDescriptionEditor from './editors/PictureDescriptionEditor';
+import InterviewEditor from './editors/InterviewEditor';
 import AudioUploadField from './editors/AudioUploadField';
 import ImageUploadField from './editors/ImageUploadField';
 
@@ -238,6 +242,10 @@ export default function QuestionEditPanel({
               <option value="gap_fill">Gap Fill</option>
               <option value="matching">Matching</option>
               <option value="open_response">Open Response</option>
+              <option value="form_filling">Form Filling</option>
+              <option value="short_message">Short Message</option>
+              <option value="picture_description">Picture Description</option>
+              <option value="interview">Interview / Speaking</option>
             </select>
           </div>
         </div>
@@ -300,6 +308,10 @@ export default function QuestionEditPanel({
             {formData.question_type === 'gap_fill' ? 'Gap Fill Configuration' :
              formData.question_type === 'matching' ? 'Matching Pairs' :
              formData.question_type === 'true_false_multi' ? 'Statements' :
+             formData.question_type === 'form_filling' ? 'Form Fields' :
+             formData.question_type === 'short_message' ? 'Short Message' :
+             formData.question_type === 'picture_description' ? 'Picture Description' :
+             formData.question_type === 'interview' ? 'Interview / Speaking' :
              'Answer Configuration'}
           </label>
 
@@ -344,6 +356,37 @@ export default function QuestionEditPanel({
 
           {formData.question_type === 'open_response' && (
             <OpenResponseEditor
+              correctAnswer={formData.correct_answer}
+              onCorrectAnswerChange={(answer) => setFormData({ ...formData, correct_answer: answer })}
+            />
+          )}
+
+          {formData.question_type === 'form_filling' && (
+            <FormFillingEditor
+              passageText={formData.passage_text}
+              correctAnswer={formData.correct_answer}
+              onPassageTextChange={(text) => setFormData({ ...formData, passage_text: text })}
+              onCorrectAnswerChange={(answer) => setFormData({ ...formData, correct_answer: answer })}
+              onMaxPointsChange={(points) => setFormData({ ...formData, max_points: points })}
+            />
+          )}
+
+          {formData.question_type === 'short_message' && (
+            <ShortMessageEditor
+              correctAnswer={formData.correct_answer}
+              onCorrectAnswerChange={(answer) => setFormData({ ...formData, correct_answer: answer })}
+            />
+          )}
+
+          {formData.question_type === 'picture_description' && (
+            <PictureDescriptionEditor
+              correctAnswer={formData.correct_answer}
+              onCorrectAnswerChange={(answer) => setFormData({ ...formData, correct_answer: answer })}
+            />
+          )}
+
+          {formData.question_type === 'interview' && (
+            <InterviewEditor
               correctAnswer={formData.correct_answer}
               onCorrectAnswerChange={(answer) => setFormData({ ...formData, correct_answer: answer })}
             />

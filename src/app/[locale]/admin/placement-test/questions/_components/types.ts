@@ -112,7 +112,11 @@ export function getQuestionTypeLabel(type: string): string {
     true_false_multi: 'T/F Multi',
     gap_fill: 'Gap Fill',
     matching: 'Matching',
-    open_response: 'Open'
+    open_response: 'Open',
+    form_filling: 'Form Fill',
+    short_message: 'Short Msg',
+    picture_description: 'Pic Desc',
+    interview: 'Interview'
   };
   return labels[type] || type;
 }
@@ -120,7 +124,7 @@ export function getQuestionTypeLabel(type: string): string {
 // Skills and levels constants
 export const SKILLS = ['reading', 'listening', 'writing', 'speaking'] as const;
 export const LEVELS = ['Pre-A1', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const;
-export const QUESTION_TYPES = ['mcq', 'true_false', 'true_false_multi', 'gap_fill', 'matching', 'open_response'] as const;
+export const QUESTION_TYPES = ['mcq', 'true_false', 'true_false_multi', 'gap_fill', 'matching', 'open_response', 'form_filling', 'short_message', 'picture_description', 'interview'] as const;
 
 // --- Matching Pair Helpers ---
 

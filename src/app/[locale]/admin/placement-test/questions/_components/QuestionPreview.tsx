@@ -119,8 +119,56 @@ export default function QuestionPreview({ question }: QuestionPreviewProps) {
     );
   };
 
-  // For matching questions, render the actual student-facing component
-  // so admin sees exactly what the student sees
+  const renderFormFilling = () => {
+    const lines = (question.passage_text || '').split('\n').map(l => l.trim()).filter(Boolean);
+    const title = lines[0] || 'Form';
+    const fields = lines.slice(1).map(line => line.endsWith(':') ? line.slice(0, -1) : line);
+
+    let answers: Record<string, string> = {};
+    if (question.correct_answer) {
+      try { answers = JSON.parse(question.correct_answer); } catch { /* not JSON */ }
+    }
+
+    return (
+      <div className="bg-slate-700/30 rounded-lg border border-slate-600/50 overflow-hidden">
+        <div className="bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-2.5">
+          <div className="flex items-center gap-2">
+            <span className="text-lg">📝</span>
+            <span className="text-sm font-bold text-white uppercase tracking-wide">{title}</span>
+          </div>
+        </div>
+        <div className="p-4 space-y-2.5">
+          {fields.map((field, i) => {
+            const key = field.toLowerCase().replace(/\s+/g, '_');
+            const answer = answers[key];
+            return (
+              <div key={i} className="flex items-center gap-3">
+                <span className="w-28 text-right text-xs text-gray-400 flex-shrink-0 font-medium">{field}:</span>
+                <div className={`flex-1 px-3 py-1.5 rounded border text-sm ${
+                  answer
+                    ? 'bg-green-900/20 border-green-500/40 text-green-300'
+                    : 'bg-slate-600/30 border-slate-600 text-gray-500 italic'
+                }`}>
+                  {answer || 'no expected answer'}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
+  const renderShortMessage = () => {
+    return (
+      <div className="p-3 bg-slate-700/30 rounded-lg border border-slate-600/50">
+        <div className="text-xs text-gray-400 mb-2">Sample Answer / Criteria:</div>
+        <p className="text-sm text-gray-200 whitespace-pre-wrap">{question.correct_answer}</p>
+      </div>
+    );
+  };
+
+  // For matching/form_filling/picture_description/interview, render the student-facing component
   if (question.question_type === 'matching') {
     return (
       <div className="space-y-4">
@@ -187,13 +235,19 @@ export default function QuestionPreview({ question }: QuestionPreviewProps) {
       {/* Answer section */}
       <div>
         <div className="text-xs text-gray-400 mb-2 font-medium">
-          {question.question_type === 'gap_fill' ? 'Fill in the Blanks' : 'Answer'}
+          {question.question_type === 'gap_fill' ? 'Fill in the Blanks' :
+           question.question_type === 'form_filling' ? 'Form Fields' :
+           'Answer'}
         </div>
         {question.question_type === 'mcq' && renderMCQ()}
         {question.question_type === 'true_false' && renderTrueFalse()}
         {question.question_type === 'true_false_multi' && renderTrueFalseMulti()}
         {question.question_type === 'gap_fill' && renderGapFill()}
         {question.question_type === 'open_response' && renderOpenResponse()}
+        {question.question_type === 'form_filling' && renderFormFilling()}
+        {question.question_type === 'short_message' && renderShortMessage()}
+        {question.question_type === 'picture_description' && renderOpenResponse()}
+        {question.question_type === 'interview' && renderOpenResponse()}
       </div>
     </div>
   );
