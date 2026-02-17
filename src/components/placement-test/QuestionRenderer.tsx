@@ -373,16 +373,17 @@ export default function QuestionRenderer({
     onAnswer(newSelections);
   };
 
-  // Submit recording
+  // Submit recording - covers all question types that use renderSpeaking():
+  // open_response+speaking, interview, and picture_description+speaking
   useEffect(() => {
-    if (recordedBlob && question.question_type === 'open_response' && question.skill_type === 'speaking') {
+    if (recordedBlob) {
       const reader = new FileReader();
       reader.onloadend = () => {
         onAnswer(reader.result as string);
       };
       reader.readAsDataURL(recordedBlob);
     }
-  }, [recordedBlob, question.question_type, question.skill_type, onAnswer]);
+  }, [recordedBlob, onAnswer]);
 
   // Render based on question type
   const renderQuestion = () => {
