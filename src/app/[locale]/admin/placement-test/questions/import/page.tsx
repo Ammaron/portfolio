@@ -68,7 +68,8 @@ export default function ImportQuestionsPage() {
     const errors: string[] = [];
 
     const question_code = String(row.question_code || '').trim();
-    const cefr_level = String(row.cefr_level || '').trim().toUpperCase();
+    const rawLevel = String(row.cefr_level || '').trim();
+    const cefr_level = VALID_LEVELS.find((l) => l.toLowerCase() === rawLevel.toLowerCase()) || rawLevel;
     const skill_type = String(row.skill_type || '').trim().toLowerCase();
     const question_type = String(row.question_type || '').trim().toLowerCase();
     const question_text = String(row.question_text || '').trim();
