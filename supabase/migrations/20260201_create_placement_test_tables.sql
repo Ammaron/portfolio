@@ -8,7 +8,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE IF NOT EXISTS placement_questions (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   question_code VARCHAR(50) UNIQUE NOT NULL,
-  cefr_level VARCHAR(2) NOT NULL CHECK (cefr_level IN ('A1', 'A2', 'B1', 'B2', 'C1', 'C2')),
+  cefr_level VARCHAR(6) NOT NULL CHECK (cefr_level IN ('Pre-A1', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2')),
   skill_type VARCHAR(20) NOT NULL CHECK (skill_type IN ('reading', 'listening', 'writing', 'speaking')),
   question_type VARCHAR(20) NOT NULL CHECK (question_type IN ('mcq', 'true_false', 'gap_fill', 'matching', 'open_response')),
   question_text TEXT NOT NULL,
