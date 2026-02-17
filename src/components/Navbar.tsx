@@ -101,6 +101,7 @@ export default function Navbar() {
     { name: t('nav', 'home'), href: '/' },
     { name: t('nav', 'certifications'), href: '/certifications' },
     { name: t('nav', 'englishClasses'), href: '/english-classes' },
+    { name: t('nav', 'placementTest'), href: '/placement-test' },
   ];
 
   const alternateLocaleText = locale === 'en' ? 'Español' : 'English';

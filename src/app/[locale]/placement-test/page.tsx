@@ -61,7 +61,7 @@ export default function PlacementTestLandingPage() {
               {pt('landing.subtitle')}
             </p>
 
-            <p className="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-12">
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-12">
               {pt('landing.description')}
             </p>
 
@@ -112,7 +112,7 @@ export default function PlacementTestLandingPage() {
                 {pt('modes.quick.description')}
               </p>
 
-              <div className="flex items-center gap-6 mb-6 text-sm text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-6 mb-6 text-sm text-gray-600 dark:text-gray-400">
                 <div className="flex items-center gap-2">
                   <Clock size={18} />
                   <span>{pt('modes.quick.duration')}</span>
@@ -162,7 +162,7 @@ export default function PlacementTestLandingPage() {
                 {pt('modes.personalized.description')}
               </p>
 
-              <div className="flex items-center gap-6 mb-6 text-sm text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-6 mb-6 text-sm text-gray-600 dark:text-gray-400">
                 <div className="flex items-center gap-2">
                   <Clock size={18} />
                   <span>{pt('modes.personalized.duration')}</span>
@@ -227,8 +227,8 @@ export default function PlacementTestLandingPage() {
                   </td>
                   <td className="px-6 py-4 text-center">
                     <div className="flex items-center justify-center gap-2">
-                      <BookOpen size={18} className="text-gray-400" />
-                      <Headphones size={18} className="text-gray-400" />
+                      <BookOpen size={18} className="text-gray-500 dark:text-gray-400" />
+                      <Headphones size={18} className="text-gray-500 dark:text-gray-400" />
                     </div>
                   </td>
                   <td className="px-6 py-4 text-center">
@@ -266,10 +266,10 @@ export default function PlacementTestLandingPage() {
                   <td className="px-6 py-4 text-gray-700 dark:text-gray-300 font-medium">
                     {pt('modes.compare.pauseResume')}
                   </td>
-                  <td className="px-6 py-4 text-center text-red-500">
+                  <td className="px-6 py-4 text-center text-red-600 dark:text-red-400">
                     {pt('modes.compare.no')}
                   </td>
-                  <td className="px-6 py-4 text-center text-green-500 font-medium">
+                  <td className="px-6 py-4 text-center text-green-600 dark:text-green-400 font-medium">
                     {pt('modes.compare.yes')}
                   </td>
                 </tr>

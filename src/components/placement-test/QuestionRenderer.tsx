@@ -130,7 +130,16 @@ export default function QuestionRenderer({
     } else {
       setGapAnswers({});
     }
-    setFormAnswers({});
+    // For form_filling, restore formAnswers from currentAnswer JSON instead of clearing
+    if (question.question_type === 'form_filling' && typeof currentAnswer === 'string') {
+      try {
+        setFormAnswers(JSON.parse(currentAnswer));
+      } catch {
+        setFormAnswers({});
+      }
+    } else {
+      setFormAnswers({});
+    }
     setFocusedOptionIndex(-1);
     setMatchingActiveLeft(null);
   }, [question.id, currentAnswer]);
@@ -436,7 +445,7 @@ export default function QuestionRenderer({
               {isSelected ? (
                 <CheckCircle size={24} weight="fill" className="text-amber-500 flex-shrink-0" />
               ) : (
-                <Circle size={24} className="text-gray-400 flex-shrink-0" />
+                <Circle size={24} className="text-gray-500 dark:text-gray-400 flex-shrink-0" />
               )}
               <span className={`flex-1 ${isSelected ? 'text-gray-900 dark:text-white font-medium' : 'text-gray-700 dark:text-gray-200'}`}>
                 {locale === 'es' && option.text_es ? option.text_es : option.text}
@@ -447,7 +456,7 @@ export default function QuestionRenderer({
       })}
 
       {/* Keyboard hint */}
-      <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 mt-4 pt-2 border-t border-gray-100 dark:border-gray-700">
+      <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mt-4 pt-2 border-t border-gray-100 dark:border-gray-700">
         <Keyboard size={14} />
         <span>Press 1-{shuffledOptions.length} to select, Enter to continue</span>
       </div>
@@ -492,7 +501,7 @@ export default function QuestionRenderer({
       </div>
 
       {/* Keyboard hint */}
-      <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 pt-2 border-t border-gray-100 dark:border-gray-700">
+      <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-100 dark:border-gray-700">
         <Keyboard size={14} />
         <span>Press T for True, F for False, Enter to continue</span>
       </div>
@@ -556,7 +565,7 @@ export default function QuestionRenderer({
         })}
 
         {/* Keyboard hint */}
-        <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 mt-4 pt-2 border-t border-gray-100 dark:border-gray-700">
+        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mt-4 pt-2 border-t border-gray-100 dark:border-gray-700">
           <Keyboard size={14} />
           <span>Press 1-{statements.length} to focus a statement, T for True, F for False, Enter to continue</span>
         </div>
@@ -595,7 +604,7 @@ export default function QuestionRenderer({
                     className="inline-block w-40 mx-1 px-3 py-1.5 text-lg font-medium border-b-3 border-amber-400
                                bg-amber-50/50 dark:bg-amber-900/20 text-gray-900 dark:text-white
                                focus:outline-none focus:border-amber-500 focus:bg-amber-50 dark:focus:bg-amber-900/30
-                               placeholder-gray-400 dark:placeholder-gray-500 transition-all rounded-md"
+                               placeholder-gray-500 dark:placeholder-gray-400 transition-all rounded-md"
                     placeholder="..."
                   />
                 )}
@@ -604,7 +613,7 @@ export default function QuestionRenderer({
           </div>
 
           {/* Keyboard hint */}
-          <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 pt-2 border-t border-gray-100 dark:border-gray-700">
+          <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-100 dark:border-gray-700">
             <Keyboard size={14} />
             <span>Type your answer, press Enter to continue</span>
           </div>
@@ -638,7 +647,7 @@ export default function QuestionRenderer({
         />
 
         {/* Keyboard hint */}
-        <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 pt-2 border-t border-gray-100 dark:border-gray-700">
+        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-100 dark:border-gray-700">
           <Keyboard size={14} />
           <span>Type your answer, press Enter to continue</span>
         </div>
@@ -753,7 +762,7 @@ export default function QuestionRenderer({
         <div className="grid grid-cols-2 gap-3 md:gap-5">
           {/* ── Left column ── */}
           <div className="space-y-2.5">
-            <h4 className="text-[11px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 pl-1">
+            <h4 className="text-[11px] font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 pl-1">
               Items
             </h4>
             {leftItems.map((item, index) => {
@@ -813,7 +822,7 @@ export default function QuestionRenderer({
 
           {/* ── Right column ── */}
           <div className="space-y-2.5">
-            <h4 className="text-[11px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 pl-1">
+            <h4 className="text-[11px] font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 pl-1">
               Matches
             </h4>
             {shuffledMatchingRight.map((item) => {
@@ -862,7 +871,7 @@ export default function QuestionRenderer({
         </div>
 
         {/* Hint */}
-        <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 pt-2 border-t border-gray-100 dark:border-gray-700">
+        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-100 dark:border-gray-700">
           <Keyboard size={14} />
           <span>Tap matched pairs to unmatch &middot; Enter to continue</span>
         </div>
@@ -880,7 +889,7 @@ export default function QuestionRenderer({
         className="w-full p-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl
                    focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20
                    bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none
-                   placeholder-gray-400 dark:placeholder-gray-500 transition-all"
+                   placeholder-gray-500 dark:placeholder-gray-400 transition-all"
         placeholder="Write your answer here..."
       />
       <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
@@ -1015,7 +1024,7 @@ export default function QuestionRenderer({
         </div>
 
         {/* Hint */}
-        <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 pt-2 border-t border-gray-100 dark:border-gray-700">
+        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-100 dark:border-gray-700">
           <Keyboard size={14} />
           <span>Fill in all fields, press Tab to move between fields</span>
         </div>
@@ -1086,7 +1095,7 @@ export default function QuestionRenderer({
             className="w-full p-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl
                        focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20
                        bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none
-                       placeholder-gray-400 dark:placeholder-gray-500 transition-all"
+                       placeholder-gray-500 dark:placeholder-gray-400 transition-all"
             placeholder={`Write your ${messageType.toLowerCase()} here...`}
           />
         </div>
@@ -1171,7 +1180,7 @@ export default function QuestionRenderer({
                 className="w-full p-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl
                            focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20
                            bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none
-                           placeholder-gray-400 dark:placeholder-gray-500 transition-all"
+                           placeholder-gray-500 dark:placeholder-gray-400 transition-all"
                 placeholder="Describe what you see in the picture..."
               />
               <div className="flex justify-end text-sm text-gray-500 dark:text-gray-400">

@@ -195,7 +195,7 @@ export default function QuickTestIntroPage() {
                          rounded-xl transition-all ${
                            name.trim() && !isStarting
                              ? 'bg-amber-500 hover:bg-amber-600 text-white shadow-lg shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/40 cursor-pointer'
-                             : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                             : 'bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-300 cursor-not-allowed'
                          }`}
             >
               {isStarting ? (

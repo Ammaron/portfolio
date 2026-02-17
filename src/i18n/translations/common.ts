@@ -5,6 +5,7 @@ export interface CommonTranslations {
     teachersPayTeachers: string;
     englishClasses: string;
     certifications: string;
+    placementTest: string;
     contact: string;
   };
 }
@@ -16,6 +17,7 @@ export const commonTranslations: Record<'en' | 'es', CommonTranslations> = {
       teachersPayTeachers: 'Educational Resources',
       englishClasses: 'English Classes',
       certifications: 'Certifications',
+      placementTest: 'Placement Test',
       contact: 'Connect'
     }
   },
@@ -25,6 +27,7 @@ export const commonTranslations: Record<'en' | 'es', CommonTranslations> = {
       teachersPayTeachers: 'Recursos Educativos',
       englishClasses: 'Clases de Inglés',
       certifications: 'Certificaciones',
+      placementTest: 'Prueba de Nivel',
       contact: 'Conectar'
     }
   }

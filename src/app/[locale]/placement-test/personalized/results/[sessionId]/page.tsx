@@ -71,13 +71,13 @@ interface DetailedAnswer {
 
 // Level colors
 const LEVEL_COLORS: Record<string, { bg: string; text: string; gradient: string }> = {
-  'Pre-A1': { bg: 'bg-gray-500', text: 'text-gray-700', gradient: 'from-gray-400 to-gray-600' },
-  'A1': { bg: 'bg-emerald-500', text: 'text-emerald-700', gradient: 'from-emerald-400 to-emerald-600' },
-  'A2': { bg: 'bg-teal-500', text: 'text-teal-700', gradient: 'from-teal-400 to-teal-600' },
-  'B1': { bg: 'bg-blue-500', text: 'text-blue-700', gradient: 'from-blue-400 to-blue-600' },
-  'B2': { bg: 'bg-indigo-500', text: 'text-indigo-700', gradient: 'from-indigo-400 to-indigo-600' },
-  'C1': { bg: 'bg-purple-500', text: 'text-purple-700', gradient: 'from-purple-400 to-purple-600' },
-  'C2': { bg: 'bg-amber-500', text: 'text-amber-700', gradient: 'from-amber-400 to-amber-600' }
+  'Pre-A1': { bg: 'bg-gray-500', text: 'text-gray-700 dark:text-gray-300', gradient: 'from-gray-400 to-gray-600' },
+  'A1': { bg: 'bg-emerald-500', text: 'text-emerald-700 dark:text-emerald-400', gradient: 'from-emerald-400 to-emerald-600' },
+  'A2': { bg: 'bg-teal-500', text: 'text-teal-700 dark:text-teal-400', gradient: 'from-teal-400 to-teal-600' },
+  'B1': { bg: 'bg-blue-500', text: 'text-blue-700 dark:text-blue-400', gradient: 'from-blue-400 to-blue-600' },
+  'B2': { bg: 'bg-indigo-500', text: 'text-indigo-700 dark:text-indigo-400', gradient: 'from-indigo-400 to-indigo-600' },
+  'C1': { bg: 'bg-purple-500', text: 'text-purple-700 dark:text-purple-400', gradient: 'from-purple-400 to-purple-600' },
+  'C2': { bg: 'bg-amber-500', text: 'text-amber-700 dark:text-amber-400', gradient: 'from-amber-400 to-amber-600' }
 };
 
 // Level descriptions
@@ -210,9 +210,9 @@ export default function ResultsPage({ params }: { params: Promise<{ sessionId: s
   };
 
   const getAssessment = (confidence: number): { text: string; color: string } => {
-    if (confidence >= 0.8) return { text: 'Strong', color: 'text-green-600' };
-    if (confidence >= 0.5) return { text: 'Good', color: 'text-blue-600' };
-    return { text: 'Developing', color: 'text-amber-600' };
+    if (confidence >= 0.8) return { text: 'Strong', color: 'text-green-600 dark:text-green-400' };
+    if (confidence >= 0.5) return { text: 'Good', color: 'text-blue-600 dark:text-blue-400' };
+    return { text: 'Developing', color: 'text-amber-600 dark:text-amber-400' };
   };
 
   if (isLoading) {
@@ -369,7 +369,7 @@ export default function ResultsPage({ params }: { params: Promise<{ sessionId: s
                         />
                       </div>
 
-                      <p className="mt-3 text-sm text-gray-600 dark:text-gray-400">
+                      <p className="mt-3 text-sm text-gray-600 dark:text-gray-300">
                         {data.description}
                       </p>
                     </div>
@@ -506,16 +506,16 @@ export default function ResultsPage({ params }: { params: Promise<{ sessionId: s
                 <p className="text-sm text-gray-500 dark:text-gray-400">Correct</p>
               </div>
               <div className="text-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
-                <p className="text-2xl font-bold text-gray-700 dark:text-gray-300">
+                <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                   {results.time_spent_minutes}
                 </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Minutes</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Minutes</p>
               </div>
               <div className="text-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
-                <p className="text-2xl font-bold text-gray-700 dark:text-gray-300">
+                <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
                   {results.skills_tested.length}
                 </p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Skills Tested</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Skills Tested</p>
               </div>
             </div>
           </div>

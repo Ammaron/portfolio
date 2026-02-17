@@ -275,7 +275,7 @@ export default function QuickTestPage() {
                 <span className="text-3xl font-bold text-gray-900 dark:text-white">
                   {currentIndex + 1}
                 </span>
-                <span className="text-xl text-gray-400 dark:text-gray-500 mx-1">/</span>
+                <span className="text-xl text-gray-500 dark:text-gray-400 mx-1">/</span>
                 <span className="text-xl text-gray-500 dark:text-gray-400">
                   {totalQuestions}
                 </span>
@@ -361,7 +361,7 @@ export default function QuickTestPage() {
                       <span className="text-sm font-medium">Answer selected</span>
                     </div>
                   ) : (
-                    <div className="flex items-center gap-2 text-gray-400 dark:text-gray-500">
+                    <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
                       <WarningCircle size={20} />
                       <span className="text-sm">Select an answer to continue</span>
                     </div>
@@ -374,7 +374,7 @@ export default function QuickTestPage() {
                   className={`btn-authority px-8 py-3 font-semibold transition-all duration-200 ${
                     currentAnswer !== null
                       ? 'btn-primary-authority shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-0.5'
-                      : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                      : 'bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-300 cursor-not-allowed'
                   }`}
                 >
                   {isSubmitting ? (
@@ -413,7 +413,7 @@ export default function QuickTestPage() {
           <div className="authority-card p-8 max-w-md w-full relative">
             <button
               onClick={() => setShowConfirmModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              className="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
             >
               <X size={24} />
             </button>

@@ -67,6 +67,7 @@ export async function GET(
       passage_text: question.passage_text,
       passage_text_es: question.passage_text_es,
       audio_url: question.audio_url,
+      image_url: question.image_url,
       options: question.options?.map(opt => ({
         id: opt.id,
         text: opt.text,

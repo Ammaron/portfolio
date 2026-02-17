@@ -92,13 +92,30 @@ export default function PersonalizedTestPage() {
           const parsed = JSON.parse(stored);
           if (parsed.id === sessionId) {
             setSession(parsed);
-            setTotalQuestions(parsed.total_questions);
-            setCurrentIndex(parsed.current_question_index || 0);
             setAnsweredCount(parsed.questions_answered || 0);
           }
         }
 
-        await loadQuestion(0);
+        // Query server for the first unanswered question index
+        const response = await fetch(`/api/placement-test/session/${sessionId}/question?index=0`);
+        const data = await response.json();
+
+        if (data.success) {
+          const startIndex = data.first_unanswered_index ?? 0;
+          setTotalQuestions(data.total);
+
+          // If all questions answered, go to results
+          if (startIndex >= data.total) {
+            router.push(`/${locale}/placement-test/personalized/results/${sessionId}`);
+            return;
+          }
+
+          // Load the first unanswered question
+          await loadQuestion(startIndex);
+        } else {
+          toast.error(data.error || 'Failed to load session');
+          router.push(`/${locale}/placement-test/personalized`);
+        }
       } catch {
         toast.error('Failed to load test session');
         router.push(`/${locale}/placement-test/personalized`);
@@ -253,7 +270,7 @@ export default function PersonalizedTestPage() {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setShowPauseModal(true)}
-                className="text-gray-600 hover:text-primary flex items-center gap-1 text-sm"
+                className="text-gray-600 dark:text-gray-300 hover:text-primary flex items-center gap-1 text-sm"
               >
                 <Pause size={18} />
                 Pause
@@ -334,7 +351,7 @@ export default function PersonalizedTestPage() {
           <div className="authority-card p-8 max-w-md w-full">
             <button
               onClick={() => setShowPauseModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              className="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
             >
               <X size={24} />
             </button>
@@ -349,7 +366,7 @@ export default function PersonalizedTestPage() {
               </p>
 
               <div className="bg-gray-100 dark:bg-gray-700 rounded-xl p-4 mb-6">
-                <p className="text-sm text-gray-500 mb-2">Session Code</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Session Code</p>
                 <div className="flex items-center justify-center gap-2">
                   <code className="text-2xl font-mono font-bold text-primary">
                     {session.session_code}
@@ -358,7 +375,7 @@ export default function PersonalizedTestPage() {
                     onClick={copySessionCode}
                     className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"
                   >
-                    <Copy size={20} className={codeCopied ? 'text-green-500' : 'text-gray-500'} />
+                    <Copy size={20} className={codeCopied ? 'text-green-500' : 'text-gray-600 dark:text-gray-400'} />
                   </button>
                 </div>
                 {codeCopied && (

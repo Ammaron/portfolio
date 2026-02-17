@@ -135,7 +135,7 @@ export default function PersonalizedTestIntroPage() {
               {pt('personalized.intro.title')}
             </h1>
 
-            <p className="text-lg text-gray-600 dark:text-gray-400">
+            <p className="text-lg text-gray-600 dark:text-gray-300">
               {pt('personalized.intro.subtitle')}
             </p>
           </div>
@@ -297,7 +297,7 @@ export default function PersonalizedTestIntroPage() {
 
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    {pt('personalized.registration.phone')} <span className="font-normal text-gray-500">{pt('personalized.registration.phoneOptional')}</span>
+                    {pt('personalized.registration.phone')} <span className="font-normal text-gray-500 dark:text-gray-400">{pt('personalized.registration.phoneOptional')}</span>
                   </label>
                   <input
                     type="tel"

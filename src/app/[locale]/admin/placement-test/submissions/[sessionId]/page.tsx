@@ -12,7 +12,7 @@ import {
   CheckCircle,
   XCircle,
   Clock,
-  User,
+
   EnvelopeSimple,
   BookOpen,
   Headphones,
@@ -315,15 +315,7 @@ export default function SubmissionDetailPage({ params }: { params: Promise<{ ses
   const revealAll = () => setRevealedAnswers(new Set(answers.map(a => a.id)));
   const hideAll = () => setRevealedAnswers(new Set());
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
+
 
   const formatTime = (seconds: number) => {
     if (seconds < 60) return `${seconds}s`;
@@ -1428,13 +1420,3 @@ function OpenResponseReview({ studentAnswer, skillType, rubric }: {
 }
 
 
-// ─── Helper ───────────────────────────────────────────────────
-
-function InfoField({ label, value }: { label: string; value: React.ReactNode }) {
-  return (
-    <div>
-      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1">{label}</p>
-      <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">{value}</div>
-    </div>
-  );
-}
