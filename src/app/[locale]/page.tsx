@@ -310,54 +310,54 @@ export default function HomePage() {
       </section>
 
       {/* Strategic Value Section */}
-      <section id="value" className="section-padding-authority bg-gray-50">
+      <section id="value" className="section-padding-authority bg-gray-50 dark:bg-gray-900">
         <div className="container-authority">
           <div className="text-center mb-16">
             <h2 className="text-section-title-authority mb-6 gradient-text-authority animate-fade-in-up">
               {t('home', 'businessValue.title')}
             </h2>
             <div className="w-24 h-1 bg-gradient-primary mx-auto mb-6"></div>
-            <p className="text-xl text-gray-600 max-w-4xl mx-auto animate-fade-in-up animate-stagger-2">
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto animate-fade-in-up animate-stagger-2">
               {t('home', 'businessValue.subtitle')}
             </p>
           </div>
           
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Educational Authority */}
-            <div className="authority-card text-center p-8 animate-fade-in-up animate-stagger-3">
+            <div className="authority-card text-center p-8 animate-fade-in-up animate-stagger-3 dark:text-gray-100">
               <div className="w-16 h-16 bg-gradient-primary rounded-2xl mx-auto mb-6 flex items-center justify-center">
-                <ChalkboardTeacherIcon size={64} className="text-black" />
+                <ChalkboardTeacherIcon size={64} className="text-white" />
               </div>
               <h3 className="text-2xl font-bold mb-4 gradient-text-authority">
                 {t('home', 'businessValue.educationExpert.title')}
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                 {t('home', 'businessValue.educationExpert.description')}
               </p>
             </div>
             
             {/* MBA Strategy */}
-            <div className="authority-card text-center p-8 animate-fade-in-up animate-stagger-4">
+            <div className="authority-card text-center p-8 animate-fade-in-up animate-stagger-4 dark:text-gray-100">
               <div className="w-16 h-16 bg-gradient-warm rounded-2xl mx-auto mb-6 flex items-center justify-center">
-                <BuildingsIcon size={64} className="text-black" />
+                <BuildingsIcon size={64} className="text-white" />
               </div>
               <h3 className="text-2xl font-bold mb-4 gradient-text-warm">
                 {t('home', 'businessValue.businessLeader.title')}
               </h3>
-              <p className="!text-gray-600 leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                 {t('home', 'businessValue.businessLeader.description')}
               </p>
             </div>
             
             {/* Technology Vision */}
-            <div className="authority-card text-center p-8 animate-fade-in-up animate-stagger-5">
+            <div className="authority-card text-center p-8 animate-fade-in-up animate-stagger-5 dark:text-gray-100">
               <div className="w-16 h-16 bg-gradient-accent rounded-2xl mx-auto mb-6 flex items-center justify-center">
-                <DesktopIcon size={64} className="text-black" />
+                <DesktopIcon size={64} className="text-white" />
               </div>
               <h3 className="text-2xl font-bold mb-4 gradient-text-accent">
                 {t('home', 'businessValue.techInnovator.title')}
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                 {t('home', 'businessValue.techInnovator.description')}
               </p>
             </div>
@@ -365,7 +365,7 @@ export default function HomePage() {
           
           <div className="mt-16 text-center">
             <div className="glass-authority p-8 rounded-3xl max-w-4xl mx-auto animate-fade-in-up animate-stagger-6">
-              <p className="text-lg text-gray-700 leading-relaxed">
+              <p className="text-lg text-gray-700 dark:text-gray-200 leading-relaxed">
                 <strong className="gradient-text-authority">Unique Value:</strong> {t('home', 'businessValue.uniqueValue')}
               </p>
             </div>
@@ -430,22 +430,22 @@ export default function HomePage() {
             
             {/* Experience Tabs */}
             <div className="md:w-2/5">
-              <div className="authority-card p-8">
-                <div className="flex border-b border-gray-200 mb-6">
-                  <button 
-                    className={`cursor-pointer px-4 py-3 font-semibold text-sm transition-colors ${activeTab === 'experience' ? 'text-gray-900 font-extrabold border-b-2 btn btn-blue border-primary' : 'text-gray-600 hover:text-primary'}`}
+              <div className="authority-card p-8 dark:text-gray-100">
+                <div className="flex border-b border-gray-200 dark:border-gray-700 mb-6">
+                  <button
+                    className={`cursor-pointer px-4 py-3 font-semibold text-sm transition-colors ${activeTab === 'experience' ? 'text-gray-900 dark:text-white font-extrabold border-b-2 btn btn-blue border-primary' : 'text-gray-600 dark:text-gray-400 hover:text-primary'}`}
                     onClick={() => setActiveTab('experience')}
                   >
                     {t('home', 'about.tabExperience')}
                   </button>
-                  <button 
-                    className={`cursor-pointer px-4 py-3 font-semibold text-sm transition-colors ${activeTab === 'education' ? 'text-gray-700 font-extrabold border-b-2 border-primary' : 'text-gray-600 hover:text-primary'}`}
+                  <button
+                    className={`cursor-pointer px-4 py-3 font-semibold text-sm transition-colors ${activeTab === 'education' ? 'text-gray-700 dark:text-white font-extrabold border-b-2 border-primary' : 'text-gray-600 dark:text-gray-400 hover:text-primary'}`}
                     onClick={() => setActiveTab('education')}
                   >
                     {t('home', 'about.tabEducation')}
                   </button>
-                  <button 
-                    className={`cursor-pointer px-4 py-3 font-semibold text-sm transition-colors ${activeTab === 'certifications' ? 'text-gray-700 font-extrabold border-b-2 border-primary' : 'text-gray-600 hover:text-primary'}`}
+                  <button
+                    className={`cursor-pointer px-4 py-3 font-semibold text-sm transition-colors ${activeTab === 'certifications' ? 'text-gray-700 dark:text-white font-extrabold border-b-2 border-primary' : 'text-gray-600 dark:text-gray-400 hover:text-primary'}`}
                     onClick={() => setActiveTab('certifications')}
                   >
                     {t('home', 'about.tabCertifications')}
@@ -456,27 +456,27 @@ export default function HomePage() {
                   {activeTab === 'experience' && (
                     <div className="space-y-6 animate-fade-in-up">
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(experienceData, 'education.title')}</h3>
-                        <p className="text-sm text-gray-700 font-medium">{getNestedProperty(experienceData, 'education.position')} | {getNestedProperty(experienceData, 'education.period')}</p>
-                        <ul className="mt-3 list-disc list-inside text-sm text-gray-600 space-y-1">
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">{getNestedProperty(experienceData, 'education.title')}</h3>
+                        <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">{getNestedProperty(experienceData, 'education.position')} | {getNestedProperty(experienceData, 'education.period')}</p>
+                        <ul className="mt-3 list-disc list-inside text-sm text-gray-600 dark:text-gray-400 space-y-1">
                           {getNestedArray(experienceData, 'education.achievements').map((achievement: string, index: number) => (
                             <li key={index}>{achievement}</li>
                           ))}
                         </ul>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(experienceData, 'business.title')}</h3>
-                        <p className="text-sm text-gray-700 font-medium">{getNestedProperty(experienceData, 'business.position')} | {getNestedProperty(experienceData, 'business.period')}</p>
-                        <ul className="mt-3 list-disc list-inside text-sm text-gray-600 space-y-1">
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">{getNestedProperty(experienceData, 'business.title')}</h3>
+                        <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">{getNestedProperty(experienceData, 'business.position')} | {getNestedProperty(experienceData, 'business.period')}</p>
+                        <ul className="mt-3 list-disc list-inside text-sm text-gray-600 dark:text-gray-400 space-y-1">
                           {getNestedArray(experienceData, 'business.achievements').map((achievement: string, index: number) => (
                             <li key={index}>{achievement}</li>
                           ))}
                         </ul>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(experienceData, 'growth.title')}</h3>
-                        <p className="text-sm text-gray-700 font-medium">{getNestedProperty(experienceData, 'growth.position')} | {getNestedProperty(experienceData, 'growth.period')}</p>
-                        <ul className="mt-3 list-disc list-inside text-sm text-gray-600 space-y-1">
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">{getNestedProperty(experienceData, 'growth.title')}</h3>
+                        <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">{getNestedProperty(experienceData, 'growth.position')} | {getNestedProperty(experienceData, 'growth.period')}</p>
+                        <ul className="mt-3 list-disc list-inside text-sm text-gray-600 dark:text-gray-400 space-y-1">
                           {getNestedArray(experienceData, 'growth.achievements').map((achievement: string, index: number) => (
                             <li key={index}>{achievement}</li>
                           ))}
@@ -488,19 +488,19 @@ export default function HomePage() {
                   {activeTab === 'education' && (
                     <div className="space-y-6 animate-fade-in-up">
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(educationData, 'mba.title')}</h3>
-                        <p className="text-sm text-gray-700 font-medium">{getNestedProperty(educationData, 'mba.institution')} | {getNestedProperty(educationData, 'mba.period')}</p>
-                        <p className="text-sm text-gray-600 mt-2">{getNestedProperty(educationData, 'mba.description')}</p>
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">{getNestedProperty(educationData, 'mba.title')}</h3>
+                        <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">{getNestedProperty(educationData, 'mba.institution')} | {getNestedProperty(educationData, 'mba.period')}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{getNestedProperty(educationData, 'mba.description')}</p>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(educationData, 'software.title')}</h3>
-                        <p className="text-sm text-gray-700 font-medium">{getNestedProperty(educationData, 'software.institution')} | {getNestedProperty(educationData, 'software.period')}</p>
-                        <p className="text-sm text-gray-600 mt-2">{getNestedProperty(educationData, 'software.description')}</p>
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">{getNestedProperty(educationData, 'software.title')}</h3>
+                        <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">{getNestedProperty(educationData, 'software.institution')} | {getNestedProperty(educationData, 'software.period')}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{getNestedProperty(educationData, 'software.description')}</p>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(educationData, 'businessEd.title')}</h3>
-                        <p className="text-sm text-pgray-700 font-medium">{getNestedProperty(educationData, 'businessEd.institution')}</p>
-                        <p className="text-sm text-gray-600 mt-2">{getNestedProperty(educationData, 'businessEd.description')}</p>
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">{getNestedProperty(educationData, 'businessEd.title')}</h3>
+                        <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">{getNestedProperty(educationData, 'businessEd.institution')}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{getNestedProperty(educationData, 'businessEd.description')}</p>
                       </div>
                     </div>
                   )}
@@ -508,20 +508,20 @@ export default function HomePage() {
                   {activeTab === 'certifications' && (
                     <div className="space-y-6 animate-fade-in-up">
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(certificationsData, 'management.title')}</h3>
-                        <p className="text-sm text-gray-700 font-medium">{getNestedProperty(certificationsData, 'management.issuer')} | {getNestedProperty(certificationsData, 'management.period')}</p>
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">{getNestedProperty(certificationsData, 'management.title')}</h3>
+                        <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">{getNestedProperty(certificationsData, 'management.issuer')} | {getNestedProperty(certificationsData, 'management.period')}</p>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(certificationsData, 'organizations.title')}</h3>
-                        <p className="text-sm text-gray-700 font-medium">{getNestedProperty(certificationsData, 'organizations.issuer')} | {getNestedProperty(certificationsData, 'organizations.period')}</p>
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">{getNestedProperty(certificationsData, 'organizations.title')}</h3>
+                        <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">{getNestedProperty(certificationsData, 'organizations.issuer')} | {getNestedProperty(certificationsData, 'organizations.period')}</p>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(certificationsData, 'teaching.title')}</h3>
-                        <p className="text-sm text-gray-700 font-medium">{getNestedProperty(certificationsData, 'teaching.issuer')}</p>
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">{getNestedProperty(certificationsData, 'teaching.title')}</h3>
+                        <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">{getNestedProperty(certificationsData, 'teaching.issuer')}</p>
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold text-gray-900">{getNestedProperty(certificationsData, 'microsoft.title')}</h3>
-                        <p className="text-sm text-gray-700 font-medium">{getNestedProperty(certificationsData, 'microsoft.issuer')} | {getNestedProperty(certificationsData, 'microsoft.period')}</p>
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">{getNestedProperty(certificationsData, 'microsoft.title')}</h3>
+                        <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">{getNestedProperty(certificationsData, 'microsoft.issuer')} | {getNestedProperty(certificationsData, 'microsoft.period')}</p>
                       </div>
                     </div>
                   )}
@@ -533,14 +533,14 @@ export default function HomePage() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="section-padding-authority bg-gradient-to-br from-gray-50 to-white">
+      <section id="contact" className="section-padding-authority bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
         <div className="container-authority">
           <div className="text-center mb-16">
             <h2 className="text-section-title-authority mb-6 gradient-text-authority">
               {t('home', 'contact.title')}
             </h2>
             <div className="w-24 h-1 bg-gradient-primary mx-auto mb-6"></div>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               {t('home', 'contact.subtitle')}
             </p>
           </div>
@@ -550,35 +550,35 @@ export default function HomePage() {
             <div className="grid md:grid-cols-4 gap-6 mb-16">
               <div
                 onClick={handleEmailClick}
-                className="authority-card text-center p-6 block cursor-pointer hover:scale-105 transition-transform"
+                className="authority-card text-center p-6 block cursor-pointer hover:scale-105 transition-transform dark:text-gray-100"
               >
                 <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <MailboxIcon size={40} className="text-black" />
+                  <MailboxIcon size={40} className="text-white" />
                 </div>
-                <h3 className="text-lg font-bold mb-2">{t('home', 'contact.email')}</h3>
+                <h3 className="text-lg font-bold mb-2 dark:text-white">{t('home', 'contact.email')}</h3>
                 <p className="text-primary font-medium">kirby@mrmcdonald.org</p>
               </div>
               
               <div
                 onClick={handlePhoneClick}
-                className="authority-card text-center p-6 cursor-pointer hover:scale-105 transition-transform"
+                className="authority-card text-center p-6 cursor-pointer hover:scale-105 transition-transform dark:text-gray-100"
               >
                 <div className="w-12 h-12 bg-gradient-warm rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <PhoneIcon size={40} />
+                  <PhoneIcon size={40} className="text-white" />
                 </div>
-                <h3 className="text-lg font-bold mb-2">{t('home', 'contact.phone')}</h3>
+                <h3 className="text-lg font-bold mb-2 dark:text-white">{t('home', 'contact.phone')}</h3>
                 <p className="text-warm font-medium">435-893-6006</p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   {isMobile ? t('home', 'contact.phoneHelperMobile') : t('home', 'contact.phoneHelper')}
                 </p>
               </div>
               
-              <div className="authority-card text-center p-6">
+              <div className="authority-card text-center p-6 dark:text-gray-100">
                 <div className="w-12 h-12 bg-gradient-accent rounded-xl flex items-center justify-center mx-auto mb-4">
-                <MapPinAreaIcon size={40} className="text-black" />
+                <MapPinAreaIcon size={40} className="text-white" />
 
                 </div>
-                <h3 className="text-lg font-bold mb-2">{t('home', 'contact.location')}</h3>
+                <h3 className="text-lg font-bold mb-2 dark:text-white">{t('home', 'contact.location')}</h3>
                 <p className="text-accent font-medium">Cedar City, Utah</p>
               </div>
               
@@ -586,20 +586,20 @@ export default function HomePage() {
                 href="https://www.linkedin.com/in/ammaron" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="authority-card text-center p-6 block hover:scale-105 transition-transform"
+                className="authority-card text-center p-6 block hover:scale-105 transition-transform dark:text-gray-100"
               >
                 <div className="w-12 h-12 bg-gradient-authority rounded-xl flex items-center justify-center mx-auto mb-4">
-                <LinkedinLogoIcon size={40} />
+                <LinkedinLogoIcon size={40} className="text-white" />
                 </div>
-                <h3 className="text-lg font-bold mb-2">{t('home', 'contact.linkedin')}</h3>
+                <h3 className="text-lg font-bold mb-2 dark:text-white">{t('home', 'contact.linkedin')}</h3>
                 <p className="text-secondary font-medium">Professional Network</p>
               </Link>
             </div>
             
             {/* Contact Form */}
-            <div className="authority-card p-8 lg:p-12">
+            <div className="authority-card p-8 lg:p-12 dark:text-gray-100">
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold gradient-text-authority mb-2">
+                <h3 className="text-2xl font-bold gradient-text-authority mb-2 dark:text-white">
                   {t('home', 'contact.contactFormHeader')}
                 </h3>
                 <div className="w-16 h-0.5 bg-gradient-primary mx-auto"></div>
@@ -607,7 +607,7 @@ export default function HomePage() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="name" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                       {t('home', 'contact.formName')}
                     </label>
                     <input 
@@ -616,13 +616,13 @@ export default function HomePage() {
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
                       placeholder={t('home', 'contact.namePlaceholder')}
                       required
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                       {t('home', 'contact.formEmail')}
                     </label>
                     <input 
@@ -631,14 +631,14 @@ export default function HomePage() {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
                       placeholder={t('home', 'contact.emailPlaceholder')}
                       required
                     />
                   </div>
                 </div>
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label htmlFor="subject" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                     {t('home', 'contact.formSubject')}
                   </label>
                   <input 
@@ -647,13 +647,13 @@ export default function HomePage() {
                     name="subject"
                     value={formData.subject}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
                     placeholder={t('home', 'contact.subjectPlaceholder')}
                     required
                   />
                 </div>
                 <div>
-                  <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label htmlFor="message" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                     {t('home', 'contact.formMessage')}
                   </label>
                   <textarea 
@@ -662,7 +662,7 @@ export default function HomePage() {
                     value={formData.message}
                     onChange={handleInputChange}
                     rows={6} 
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors resize-none"
+                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors resize-none"
                     placeholder={t('home', 'contact.messagePlaceholder')}
                     required
                   ></textarea>
@@ -708,8 +708,8 @@ export default function HomePage() {
             {/* Quick Actions */}
             <div className="grid md:grid-cols-2 gap-6 mt-12">
               <div className="glass-authority p-6 rounded-2xl text-center">
-                <h3 className="text-lg font-bold mb-3">{t('home', 'contact.scheduleCall')}</h3>
-                <p className="text-gray-600 text-sm mb-4">{t('home', 'contact.professionalConsultation')}</p>
+                <h3 className="text-lg font-bold mb-3 dark:text-white">{t('home', 'contact.scheduleCall')}</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">{t('home', 'contact.professionalConsultation')}</p>
                 <a 
                   href="#contact" 
                   onClick={(e) => handleAnchorClick(e, 'contact')}
@@ -720,8 +720,8 @@ export default function HomePage() {
               </div>
               
               <div className="glass-authority p-6 rounded-2xl text-center">
-                <h3 className="text-lg font-bold mb-3">{t('home', 'contact.downloadResume')}</h3>
-                <p className="text-gray-600 text-sm mb-4">{t('home', 'contact.completeExperience')}</p>
+                <h3 className="text-lg font-bold mb-3 dark:text-white">{t('home', 'contact.downloadResume')}</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">{t('home', 'contact.completeExperience')}</p>
                 <Link href="/resume.pdf" className="btn-authority btn-secondary-authority" target="_blank" rel="noopener noreferrer">
                   {t('home', 'contact.downloadPdf')}
                 </Link>

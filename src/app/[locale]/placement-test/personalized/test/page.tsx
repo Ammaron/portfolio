@@ -62,20 +62,36 @@ export default function PersonalizedTestPage() {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [startTime, setStartTime] = useState<number>(Date.now());
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [baseTimeSeconds, setBaseTimeSeconds] = useState(0);
   const [codeCopied, setCodeCopied] = useState(false);
 
-  // Timer
+  // Timer - accounts for previously accumulated time on resume
   useEffect(() => {
     const interval = setInterval(() => {
-      setElapsedSeconds(Math.floor((Date.now() - startTime) / 1000));
+      setElapsedSeconds(baseTimeSeconds + Math.floor((Date.now() - startTime) / 1000));
     }, 1000);
     return () => clearInterval(interval);
-  }, [startTime]);
+  }, [startTime, baseTimeSeconds]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  // Get timer color based on elapsed time
+  const getTimerColor = (seconds: number) => {
+    if (seconds < 1800) return 'text-green-600 dark:text-green-400'; // < 30 min
+    if (seconds < 2700) return 'text-yellow-600 dark:text-yellow-400'; // < 45 min
+    if (seconds < 3600) return 'text-orange-600 dark:text-orange-400'; // < 60 min
+    return 'text-red-600 dark:text-red-400 animate-pulse'; // > 60 min
+  };
+
+  const getTimerBg = (seconds: number) => {
+    if (seconds < 1800) return 'bg-green-100 dark:bg-green-900/30';
+    if (seconds < 2700) return 'bg-yellow-100 dark:bg-yellow-900/30';
+    if (seconds < 3600) return 'bg-orange-100 dark:bg-orange-900/30';
+    return 'bg-red-100 dark:bg-red-900/30';
   };
 
   // Load session
@@ -93,6 +109,14 @@ export default function PersonalizedTestPage() {
           if (parsed.id === sessionId) {
             setSession(parsed);
             setAnsweredCount(parsed.questions_answered || 0);
+            // Restore progress state immediately for visual feedback
+            if (parsed.total_questions) setTotalQuestions(parsed.total_questions);
+            if (parsed.current_question_index) setCurrentIndex(parsed.current_question_index);
+            // Restore accumulated time from previous session
+            if (parsed.time_spent_seconds) {
+              setBaseTimeSeconds(parsed.time_spent_seconds);
+              setElapsedSeconds(parsed.time_spent_seconds);
+            }
           }
         }
 
@@ -231,12 +255,12 @@ export default function PersonalizedTestPage() {
 
   const getSkillColor = (skill: string) => {
     const colors: Record<string, string> = {
-      reading: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-      listening: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
-      writing: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
-      speaking: 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400'
+      reading: 'bg-blue-500 text-white',
+      listening: 'bg-purple-500 text-white',
+      writing: 'bg-amber-500 text-white',
+      speaking: 'bg-pink-500 text-white'
     };
-    return colors[skill] || 'bg-gray-100 text-gray-700';
+    return colors[skill] || 'bg-gray-500 text-white';
   };
 
   if (isLoading && !currentQuestion) {
@@ -252,41 +276,57 @@ export default function PersonalizedTestPage() {
 
   return (
     <div className="min-h-screen pt-20 bg-gray-50 dark:bg-gray-900">
-      {/* Header */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-16 z-10">
-        <div className="container-authority px-4 md:px-6 py-4">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-4">
-              <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                Question {currentIndex + 1} of {totalQuestions}
-              </span>
+      {/* Header / Progress Bar */}
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-16 z-10 shadow-sm">
+        <div className="max-w-4xl mx-auto px-6 py-5">
+          {/* Top row: Question counter, skill, pause, timer */}
+          <div className="flex items-center justify-between mb-4">
+            {/* Left: Question counter + Skill badge */}
+            <div className="flex items-center gap-5">
+              <div className="flex items-baseline gap-1">
+                <span className="text-3xl font-bold text-gray-900 dark:text-white">
+                  {currentIndex + 1}
+                </span>
+                <span className="text-xl text-gray-500 dark:text-gray-400 mx-1">/</span>
+                <span className="text-xl text-gray-500 dark:text-gray-400">
+                  {totalQuestions}
+                </span>
+              </div>
               {currentQuestion && (
-                <span className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 ${getSkillColor(currentQuestion.skill_type)}`}>
+                <span className={`px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 uppercase tracking-wide ${getSkillColor(currentQuestion.skill_type)}`}>
                   {getSkillIcon(currentQuestion.skill_type)}
-                  {currentQuestion.skill_type.charAt(0).toUpperCase() + currentQuestion.skill_type.slice(1)}
+                  {currentQuestion.skill_type}
                 </span>
               )}
             </div>
+
+            {/* Right: Pause + Timer */}
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setShowPauseModal(true)}
-                className="text-gray-600 dark:text-gray-300 hover:text-primary flex items-center gap-1 text-sm"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-primary transition-colors"
               >
-                <Pause size={18} />
+                <Pause size={18} weight="bold" />
                 Pause
               </button>
-              <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                <Clock size={18} />
-                <span className="font-mono">{formatTime(elapsedSeconds)}</span>
+              <div className={`flex items-center gap-3 px-5 py-2.5 rounded-xl font-mono text-xl font-bold transition-all ${getTimerBg(elapsedSeconds)} ${getTimerColor(elapsedSeconds)}`}>
+                <Clock size={24} weight="bold" />
+                <span>{formatTime(elapsedSeconds)}</span>
               </div>
             </div>
           </div>
 
-          <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-300"
-              style={{ width: `${((currentIndex + 1) / totalQuestions) * 100}%` }}
-            />
+          {/* Progress bar with percentage */}
+          <div className="flex items-center gap-4">
+            <div className="flex-1 h-3 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-500 ease-out"
+                style={{ width: `${totalQuestions > 0 ? ((currentIndex + 1) / totalQuestions) * 100 : 0}%` }}
+              />
+            </div>
+            <span className="text-sm font-bold text-primary min-w-[3rem] text-right">
+              {totalQuestions > 0 ? Math.round(((currentIndex + 1) / totalQuestions) * 100) : 0}%
+            </span>
           </div>
         </div>
       </div>

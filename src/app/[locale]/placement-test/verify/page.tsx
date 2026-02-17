@@ -77,12 +77,19 @@ export default function VerifyResultsPage() {
   };
 
   return (
-    <div className="min-h-screen pt-20 bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-      <div className="container-authority px-4 md:px-6 py-12">
+    <div className="min-h-screen pt-20 bg-gray-900 flex items-center justify-center relative overflow-hidden">
+      {/* Subtle background */}
+      <div className="absolute inset-0 opacity-[0.03]" style={{
+        backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
+        backgroundSize: '32px 32px'
+      }} />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-primary/15 rounded-full blur-[100px]" />
+
+      <div className="relative container-authority px-4 md:px-6 py-12">
         <div className="max-w-md mx-auto">
-          <div className="authority-card p-8">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-2xl border border-gray-200 dark:border-gray-700">
             <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-gradient-primary rounded-2xl mx-auto mb-4 flex items-center justify-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl mx-auto mb-5 flex items-center justify-center shadow-lg shadow-primary/25">
                 <Certificate size={32} className="text-white" />
               </div>
 
@@ -90,14 +97,14 @@ export default function VerifyResultsPage() {
                 {pt('verify.title')}
               </h1>
 
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                 {pt('verify.subtitle')}
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-bold text-gray-800 dark:text-gray-200 mb-2">
                   {pt('verify.enterCode')}
                 </label>
                 <input
@@ -106,7 +113,7 @@ export default function VerifyResultsPage() {
                   onChange={(e) => setSessionCode(formatCode(e.target.value))}
                   placeholder={pt('verify.codePlaceholder')}
                   maxLength={9}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-center text-xl font-mono tracking-wider"
+                  className="w-full px-4 py-4 border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white text-center text-2xl font-mono tracking-[0.3em] placeholder:text-gray-400 dark:placeholder:text-gray-500 placeholder:tracking-[0.3em]"
                   disabled={isLoading}
                 />
               </div>
@@ -114,7 +121,7 @@ export default function VerifyResultsPage() {
               <button
                 type="submit"
                 disabled={isLoading || !sessionCode.trim()}
-                className="w-full btn-authority btn-primary-authority justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full btn-authority btn-primary-authority justify-center py-4 text-base disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <>
@@ -133,7 +140,7 @@ export default function VerifyResultsPage() {
             <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 text-center">
               <button
                 onClick={() => router.push(`/${locale}/placement-test`)}
-                className="text-primary hover:text-primary-dark font-medium inline-flex items-center gap-2"
+                className="text-primary dark:text-blue-400 hover:text-primary-dark dark:hover:text-blue-300 font-semibold inline-flex items-center gap-2 transition-colors"
               >
                 <ArrowLeft size={18} />
                 Back to Placement Test

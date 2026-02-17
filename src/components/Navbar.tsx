@@ -5,7 +5,8 @@ import Image from 'next/image';
 import LocalizedLink from './LocalizedLink';
 import { usePathname, useRouter } from 'next/navigation';
 import { useI18n } from '@/i18n/i18n-context';
-import { ChatCircleDotsIcon, TranslateIcon } from '@phosphor-icons/react';
+import { ChatCircleDotsIcon, TranslateIcon, Sun, Moon } from '@phosphor-icons/react';
+import { useTheme } from './ThemeProvider';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,6 +14,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { locale, t, changeLocale } = useI18n();
+  const { resolvedTheme, toggleTheme } = useTheme();
   
   // Add smooth scroll functionality
   const smoothScrollTo = (targetY: number, duration: number = 1000) => {
@@ -108,9 +110,9 @@ export default function Navbar() {
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-500 ${
-      scrolled 
-        ? 'bg-white shadow-sm border-b border-gray-100' 
-        : 'bg-white backdrop-blur-md shadow-sm'
+      scrolled
+        ? 'bg-white dark:bg-gray-900 shadow-sm border-b border-gray-100 dark:border-gray-800'
+        : 'bg-white dark:bg-gray-900 backdrop-blur-md shadow-sm'
     }`}>
       <div className="container-authority">
         <div className="flex justify-between items-center py-4 lg:py-4">
@@ -132,7 +134,7 @@ export default function Navbar() {
                   <span className="gradient-text-warm">McDonald</span>
                 </span>
                 <div className="hidden sm:block mt-1">
-                  <div className="text-xs font-semibold text-gray-600 leading-tight">
+                  <div className="text-xs font-semibold text-gray-600 dark:text-gray-400 leading-tight">
                     Educational Leader | MBA | Tech Innovator
                   </div>
                 </div>
@@ -148,9 +150,9 @@ export default function Navbar() {
                   key={link.href} 
                   href={link.href}
                   className={`relative px-3 py-3 text-base font-semibold transition-all duration-300 group ${
-                    pathname === link.href 
-                      ? 'text-blue-600 bg-blue-50 rounded-lg' 
-                      : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-lg'
+                    pathname === link.href
+                      ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50 rounded-lg'
+                      : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg'
                   }`}
                 >
                   {link.name}
@@ -168,15 +170,23 @@ export default function Navbar() {
               <a 
                 href="#contact"
                 onClick={handleContactClick}
-                className="flex items-center px-4 py-2 bg-gradient-primary text-secondary-dark text-base font-semibold rounded-sm hover:shadow-sm hover:scale-103 transition-all duration-300"
+                className="flex items-center px-4 py-2 bg-gradient-primary text-secondary-dark dark:text-white text-base font-semibold rounded-sm hover:shadow-sm hover:scale-103 transition-all duration-300"
               >
                 <span className="mr-2">{t('nav', 'contact')}</span>
                 <ChatCircleDotsIcon size={20}/> 
               </a>
+              {/* Theme Toggle */}
+              <button
+                onClick={toggleTheme}
+                className="cursor-pointer flex items-center justify-center w-9 h-9 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors duration-300 border border-gray-300 dark:border-gray-600 rounded-sm hover:border-primary/30 dark:hover:border-blue-400/30"
+                aria-label={resolvedTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {resolvedTheme === 'dark' ? <Sun size={20} weight="bold" /> : <Moon size={20} weight="bold" />}
+              </button>
               {/* Language Switcher */}
-              <button 
+              <button
                 onClick={handleLanguageSwitch}
-                className="cursor-pointer flex items-center px-2 py-2 text-sm font-medium text-gray-600 hover:text-primary transition-colors duration-300 border border-gray-300 rounded-sm hover:border-primary/30"
+                className="cursor-pointer flex items-center px-2 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors duration-300 border border-gray-300 dark:border-gray-600 rounded-sm hover:border-primary/30 dark:hover:border-blue-400/30"
                 aria-label={`Switch to ${alternateLocaleText}`}
               >
                 <TranslateIcon size={16} className="mr-1" />
@@ -187,20 +197,28 @@ export default function Navbar() {
           
           {/* Mobile Menu Section */}
           <div className="flex lg:hidden items-center space-x-2">
+            {/* Mobile Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="cursor-pointer flex items-center justify-center w-9 h-9 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors border border-gray-300 dark:border-gray-600 rounded"
+              aria-label={resolvedTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {resolvedTheme === 'dark' ? <Sun size={18} weight="bold" /> : <Moon size={18} weight="bold" />}
+            </button>
             {/* Mobile Language Switcher */}
-            <button 
+            <button
               onClick={handleLanguageSwitch}
-              className="cursor-pointer flex items-center px-3 py-2 text-xs font-medium text-gray-600 hover:text-primary transition-colors border border-gray-300 rounded"
+              className="cursor-pointer flex items-center px-3 py-2 text-xs font-medium text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors border border-gray-300 dark:border-gray-600 rounded"
               aria-label={`Switch to ${alternateLocaleText}`}
             >
               <TranslateIcon size={16} className="mr-1" />
               {locale === 'en' ? 'ES' : 'EN'}
             </button>
-            
+
             {/* Hamburger Menu */}
             <button
               onClick={toggleMenu}
-              className="cursor-pointer flex items-center justify-center w-12 h-12 text-gray-700 hover:text-primary focus:outline-none transition-colors ml-2"
+              className="cursor-pointer flex items-center justify-center w-12 h-12 text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 focus:outline-none transition-colors ml-2"
               aria-expanded={isMenuOpen}
               aria-label="Toggle main menu"
             >
@@ -226,7 +244,7 @@ export default function Navbar() {
           ? 'max-h-screen opacity-100' 
           : 'max-h-0 opacity-0 overflow-hidden'
       }`}>
-        <div className="bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-lg">
+        <div className="bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 shadow-lg">
           <div className="container-authority py-6">
             <div className="space-y-2">
               {navLinks.map((link, index) => (
@@ -234,9 +252,9 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   className={`block px-6 py-4 text-lg font-medium rounded-lg transition-all duration-300 ${
-                    pathname === link.href 
-                      ? 'text-primary bg-primary/5 border-l-4 border-primary' 
-                      : 'text-gray-700 hover:text-primary hover:bg-gray-50'
+                    pathname === link.href
+                      ? 'text-primary dark:text-blue-400 bg-primary/5 dark:bg-blue-950/30 border-l-4 border-primary dark:border-blue-400'
+                      : 'text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800'
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                   style={{ animationDelay: `${index * 0.1}s` }}
@@ -247,7 +265,7 @@ export default function Navbar() {
             </div>
             
             {/* Mobile Action Section */}
-            <div className="mt-6 pt-6 border-t border-gray-200">
+            <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
               <div className="space-y-3">
                 <a 
                   href="#contact"
@@ -255,7 +273,7 @@ export default function Navbar() {
                     handleContactClick(e);
                     setIsMenuOpen(false);
                   }}
-                  className="flex items-center justify-center w-full px-6 py-2 bg-gradient-primary text-primary font-semibold rounded-lg hover:shadow-sm transition-all duration-300"
+                  className="flex items-center justify-center w-full px-6 py-2 bg-gradient-primary text-primary dark:text-white font-semibold rounded-lg hover:shadow-sm transition-all duration-300"
                 >
                   <ChatCircleDotsIcon size={24} className="mr-2" />
                   {t('nav', 'contact')}
@@ -267,7 +285,7 @@ export default function Navbar() {
                       handleLanguageSwitch();
                       setIsMenuOpen(false);
                     }}
-                    className="cursor-pointer inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-primary transition-colors"
+                    className="cursor-pointer inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-blue-400 transition-colors"
                   >
                     <TranslateIcon size={20} className="mr-1" />
                     Switch to {alternateLocaleText}
@@ -277,11 +295,11 @@ export default function Navbar() {
             </div>
             
             {/* Professional Info in Mobile */}
-            <div className="mt-6 pt-6 border-t border-gray-200 text-center">
-              <div className="text-xs text-gray-500">
+            <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 text-center">
+              <div className="text-xs text-gray-500 dark:text-gray-400">
                 Educational Leader | MBA | Technology Innovator
               </div>
-              <div className="text-xs text-gray-400 mt-1">
+              <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
                 Cedar City, Utah
               </div>
             </div>
@@ -292,7 +310,7 @@ export default function Navbar() {
       {/* Mobile Overlay */}
       {isMenuOpen && (
         <div 
-          className="lg:hidden fixed inset-0 bg-white/20 backdrop-blur-sm -z-10"
+          className="lg:hidden fixed inset-0 bg-white/20 dark:bg-black/40 backdrop-blur-sm -z-10"
           onClick={() => setIsMenuOpen(false)}
         />
       )}

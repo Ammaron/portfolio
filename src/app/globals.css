@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@variant dark (&:where(.dark, .dark *));
+
 /* Import modular CSS files with correct paths */
 @import "../styles/variables.css";
 @import "../styles/animations.css";
@@ -326,15 +328,13 @@ a:focus {
 }
 
 /* Authority Card Dark Mode Override */
-@media (prefers-color-scheme: dark) {
-  .authority-card {
-    background: rgba(30, 41, 59, 0.95) !important;
-    border-color: rgba(148, 163, 184, 0.2) !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
-  }
+.dark .authority-card {
+  background: rgba(30, 41, 59, 0.95) !important;
+  border-color: rgba(148, 163, 184, 0.2) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
 
-  .authority-card:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
-    border-color: rgba(59, 130, 246, 0.3) !important;
-  }
+.dark .authority-card:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
 }
