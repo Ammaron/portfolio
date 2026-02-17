@@ -66,7 +66,11 @@ export async function POST(request: NextRequest) {
         validationErrors.push(`Row ${rowNum}: Missing question_code`);
         continue;
       }
-      if (!q.cefr_level || !VALID_LEVELS.includes(q.cefr_level)) {
+      // Normalize cefr_level: handle case variations like "PRE-A1", "pre-a1", etc.
+      const normalizedLevel = q.cefr_level
+        ? VALID_LEVELS.find((l) => l.toLowerCase() === q.cefr_level.toLowerCase())
+        : null;
+      if (!normalizedLevel) {
         validationErrors.push(`Row ${rowNum}: Invalid cefr_level "${q.cefr_level}"`);
         continue;
       }
@@ -123,7 +127,7 @@ export async function POST(request: NextRequest) {
 
       validatedQuestions.push({
         question_code: q.question_code,
-        cefr_level: q.cefr_level as CEFRLevel,
+        cefr_level: normalizedLevel,
         skill_type: q.skill_type.toLowerCase() as SkillType,
         question_type: q.question_type.toLowerCase() as QuestionType,
         question_text: q.question_text,
